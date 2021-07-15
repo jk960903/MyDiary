@@ -8,8 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 import Bean.ComponentTest;
 
+
 @SpringBootApplication
 @ComponentScan(basePackages = {"Bean"})
+@ComponentScan(basePackageClasses = Controller.ControllerTest.class)
 public class SampleProjectApplication implements CommandLineRunner{
 	@Autowired
 	ComponentTest component;
