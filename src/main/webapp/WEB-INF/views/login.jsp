@@ -1,19 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>·Î±×ÀÎ</title>
+<title>ë¡œê·¸ì¸</title>
 </head>
 <body>
-	<input type = "text" name ="IDÀÔ·Â">
-	<input type = "text" name = "passwordÀÔ·Â">
-	<button type ="button">·Î±×ÀÎ</button>
-	<a href ="">¾ÆÀÌµð Ã£±â</a>
-	<a href ="">ÆÐ½º¿öµå Ã£±â</a>
-	<button>È¸¿ø°¡ÀÔ</button> 
-	<h2>this is just this</h2>
+	<Form action = "login.do" method ="get">
+		ID : <input type ="text" name = "userID"><br>
+		PASSWORD : <input type ="text" name = "password"><br>
+		<input type ="submit" value = "ë¡œê·¸ì¸">
+	</Form>
+	<a href ="FindID">ì•„ì´ë””ì°¾ê¸°</a>
+	<a href ="FindPassWord">ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°</a>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +9,9 @@
 <body>	
 	<h2>This is JUST TEST</h2>
 	<form action ="test.do" method="get">
-		¿Ã∏ß : <input type = "text" name="userName"><br>
-		∞Ë¡§ : <input type = "text" name="userId">
-		<input type ="submit" value="¿¸º€πˆ∆∞">
+		Ïù¥Î¶Ñ : <input type = "text" name="userName"><br>
+		Í≥ÑÏ†ï : <input type = "text" name="userId">
+		<input type ="submit" value="Ï†ÑÏÜ°Î≤ÑÌäº">
 	</form>
 </body>
 </html>

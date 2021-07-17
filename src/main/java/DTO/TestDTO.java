@@ -4,13 +4,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class TestDTO {
-	private String title;
-	private String content;
-	private String authoor;
+	private String userName;
+	private String userID;
 	
-	public TestDTO(String title, String content, String authoor) {
-		this.title = title;
-		this.content = content;
-		this.authoor = authoor;
+	public TestDTO(String userID, String userName) {
+		this.userID = userID;
+		this.userName = userName;
 	}
 }

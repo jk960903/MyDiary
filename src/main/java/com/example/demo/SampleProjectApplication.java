@@ -5,13 +5,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import Bean.ComponentTest;
+import com.example.demo.Repository.*;
 
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"Bean"})
-@ComponentScan(basePackageClasses = Controller.ControllerTest.class)
+@ComponentScan(basePackages = {"Controller"})
+@EnableJpaRepositories(basePackages= {"com.example.demo.Repository"})
 public class SampleProjectApplication implements CommandLineRunner{
 	@Autowired
 	ComponentTest component;

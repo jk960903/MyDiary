@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
+import DTO.TestDTO;
 @RestController
 public class ControllerTest {
 	@Autowired
@@ -36,6 +36,15 @@ public class ControllerTest {
 	@RequestMapping("/login")
 	public ModelAndView Login() {
 		return new ModelAndView("login");
+	}
+	
+	@RequestMapping("/FindID")
+	public ModelAndView FindID() {
+		return new ModelAndView("FindID");
+	}
+	@RequestMapping("/FindPassWord")
+	public ModelAndView FindPassWord() {
+		return new ModelAndView("FindPassWord");
 	}
 	@RequestMapping(value = "/restTest")
 	public String restTest(@RequestParam String str) {
@@ -53,8 +62,9 @@ public class ControllerTest {
 		return str;
 	}
 	@RequestMapping(value ="test.do", method = RequestMethod.GET)
-	public String TestDo(String userName, String userID) {
+	public String TestDo(String userName, String userID,TestDTO testDTO) {
 		System.out.println(userName);
+		System.out.println(testDTO.getUserName());
 		return "succesS";
 	}
 	@RequestMapping(value = "/ReadAPI")
