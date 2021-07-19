@@ -1,4 +1,4 @@
-package com.example.demo.VO;
+package com.example.demo.VO.Notice;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,34 +17,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="members")
 @Builder
-public class MemberVO {
+@Entity
+@Table(name="notice_detail")
+public class NoticeDetailVO {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	//Primary Key
 	private Long idx;
-	//ID
-	@Column
-	private String ID;
-	//password
-	@Column
-	private String pwd;
-	//Email
-	@Column
-	private String Email;
-	//전화번호
-	@Column
-	private String phone;
-	//이름
-	@Column
-	private String name;
-	//성별
-	@Column
-	private Byte sex;
 	
-	@Column
-	private Byte isdeleted;
+	@Column(name ="content")
+	private String content;
 	
-}
+	@Column(name ="noticeidx")
+	private Long noticeidx;
+	
+	@Column(name ="imageurl")
+	private String imageurl;
+}	

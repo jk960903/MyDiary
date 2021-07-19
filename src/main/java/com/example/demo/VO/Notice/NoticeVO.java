@@ -1,4 +1,6 @@
-package com.example.demo.VO;
+package com.example.demo.VO.Notice;
+
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,33 +20,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="members")
+@Table(name="notice")
 @Builder
-public class MemberVO {
+public class NoticeVO {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	//Primary Key
 	private Long idx;
-	//ID
-	@Column
-	private String ID;
-	//password
-	@Column
-	private String pwd;
-	//Email
-	@Column
-	private String Email;
-	//전화번호
-	@Column
-	private String phone;
-	//이름
-	@Column
-	private String name;
-	//성별
-	@Column
-	private Byte sex;
 	
-	@Column
-	private Byte isdeleted;
+	@Column(name="title")
+	private String title;
+	
+	@Column(name="writer")
+	private String writer;
+	
+	@Column(name="regdate")
+	private Date regdate;
+	
+	@Column(name="viewcount")
+	private Integer viewcount;
 	
 }

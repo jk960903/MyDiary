@@ -8,9 +8,10 @@
 <title>로그인</title>
 </head>
 <body>
-	<Form action = "login.do" method ="get">
+	<Form action = "/member/Login" method ="get">
 		ID : <input type ="text" name = "userID"><br>
 		PASSWORD : <input type ="text" name = "password"><br>
+		<input type ="checkbox" name = "autologin" value="1">자동로그인<br>
 		<input type ="submit" value = "로그인">
 	</Form>
 	<a href ="FindID">아이디찾기</a>

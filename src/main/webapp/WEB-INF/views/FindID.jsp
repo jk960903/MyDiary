@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	This IS FindID Page
+	<Form action = "member/FindByID" method ="get">
+		ID : <input type ="text" name = "ID"><br>
+		<input type ="submit" value = "로그인">
+	</Form>
 </body>
 </html>

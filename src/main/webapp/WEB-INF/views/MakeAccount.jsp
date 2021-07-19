@@ -7,9 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<Form action = "member/FindB" method ="get">
-		ID : <input type ="text" name = "userID"><br>
-		PASSWORD : <input type ="text" name = "password"><br>
+	<Form action = "member/MakeAccount" method ="post">
+		ID : <input type ="text" name = "ID">
+		PASSWORD : <input type ="text" name = "pwd"><br>
+		Email : <input type = "text" name = "Email"><br>
+		phone : <input type = "text" name = "phone"><br>
+		name : <input type = "text" name = "name"><br>
+		<input type='radio' name ='sex' value='1'>남성<br>
+		<input type='radio' name ='sex' value='2'>여성<br>
 		<input type ="submit" value = "로그인">
 	</Form>
 </body>

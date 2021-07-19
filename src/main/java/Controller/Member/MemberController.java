@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Models.Login.LoginRequestModel;
 import com.example.demo.Repository.*;
 import com.example.demo.VO.*;
 
 @RestController
-@RequestMapping(value = "member")
+@RequestMapping(value = "/member")
 public class MemberController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -20,19 +21,46 @@ public class MemberController {
 	@Autowired(required = true)
 	MemberService memberService;
 	
-	
+	@RequestMapping(value="/")
+	public String Test() {
+		return "Test Page";
+	}
 	
 	@RequestMapping(value ="/FindByID" ,method = RequestMethod.GET)
 	public MemberVO FindByID(@RequestParam String ID) {
-		return memberService.findByID(ID);
+		MemberVO result;
+		try {
+			result = memberService.findByID(ID).get(0);
+			return result;
+		}catch(Exception e) {
+			
+		}
+		return null;
 	}
 	
 	@RequestMapping(value ="/FindByEmail", method = RequestMethod.GET)
 	public MemberVO FindByEmail(@RequestParam String email) {
-		return memberService.findByEmail(email);
+		MemberVO result;
+		try {
+			result = memberService.findByEmail(email).get(0);
+			
+			//null이 아니라면 메일 보내기
+		}catch(Exception e) {
+			result = null;
+		}
+		return result;
 	}
+	
 	@RequestMapping(value ="/MakeAccount", method = RequestMethod.POST)
 	public Integer MakeAccount(MemberVO memberVO) {
+		memberVO.setIsdeleted(Byte.parseByte("1"));
 		return memberService.MakeAccount(memberVO);
+	}
+	
+	@RequestMapping(value = "/Login", method = RequestMethod.GET)
+	public MemberVO Login(LoginRequestModel model) {
+		if(model.getAutologin() == 1) {
+			
+		}
 	}
 }
