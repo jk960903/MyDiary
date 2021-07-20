@@ -18,7 +18,7 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
 	public List<NoticeVO> GetSearchNoticeList(String search);
 	
 	@Query(value = "insert into notice(title,writer,regdate,viewcount)"
-			+"value(:#{#notice.title},:#{#notice.writer},now(),0)")
+			+"value(:#{#notice.title},:#{#notice.writer},now(),0)", nativeQuery = true)
 	public void AddNotice(NoticeVO notice);
 	
 	

@@ -175,4 +175,9 @@ public class ControllerTest {
 	private String JspTest() {
 		return "test";
 	}
+	
+	@RequestMapping(value = "/main")
+	public ModelAndView Main() {
+		return new ModelAndView("Main");
+	}
 }

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<Form action = "/member/FindEmail" method = "get">
+	<Form action = "member/FindEmail" method = "get">
 	Email : <input type ="text" name="email"><br>
 	<input type = "submit" value="findemail">
 	</Form>

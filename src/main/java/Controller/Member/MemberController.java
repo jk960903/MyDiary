@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.Models.Login.LoginRequestModel;
 import com.example.demo.Repository.*;
@@ -58,9 +59,15 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
-	public MemberVO Login(LoginRequestModel model) {
-		if(model.getAutologin() == 1) {
+	public ModelAndView Login(LoginRequestModel model) {
+		MemberVO result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
+		
+		if(model.getAutologin() == 1 && result!=null) {
+			//쿠키를 생성하여 넣어줌
+			return new ModelAndView("login");
 			
 		}
+		
+		return new ModelAndView("test");
 	}
 }
