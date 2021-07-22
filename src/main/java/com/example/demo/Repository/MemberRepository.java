@@ -26,7 +26,7 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
 	public Integer MakeAccount(MemberVO member);
 	
 	
-	@Query(value = "select * from Members where Members.ID = :ID and Members.password = :password" ,nativeQuery= true)
+	@Query(value = "select * from members where members.ID = :ID and members.pwd = :password" ,nativeQuery= true)
 	public List<MemberVO> Login(String ID,String password);
 	
 }

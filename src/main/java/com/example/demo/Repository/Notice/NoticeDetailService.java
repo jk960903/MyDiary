@@ -13,15 +13,16 @@ public class NoticeDetailService {
 		return noticeDetailRepository.GetNoticeDetail(notice);
 	}
 	
-	public int DeleteNoticeDetail(NoticeDetailVO noticeDetail) {
-		return noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+	public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) {
+		noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+		
 	}
 	
-	public int UpdateNoticeDetail(NoticeDetailVO noticeDetail) {
-		return noticeDetailRepository.UpdateNoticeDetail(noticeDetail);
+	public void UpdateNoticeDetail(NoticeDetailVO noticeDetail) {
+		noticeDetailRepository.UpdateNoticeDetail(noticeDetail);
 	}
 	
-	public int InsertNoticeDetail(NoticeDetailVO noteiceDetail) {
-		return noticeDetailRepository.InsertNoticeDetail(noteiceDetail);
+	public void InsertNoticeDetail(NoticeDetailVO noteiceDetail) {
+		noticeDetailRepository.InsertNoticeDetail(noteiceDetail);
 	}
 }
