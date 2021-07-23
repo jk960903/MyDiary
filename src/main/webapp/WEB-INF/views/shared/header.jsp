@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<button>공지사항</button>
+	<button>내정보</button>
 </body>
 </html>

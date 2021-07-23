@@ -63,7 +63,7 @@ public class ControllerTest {
 	
 	@RequestMapping("/login")
 	public ModelAndView Login(@CookieValue(value="id", defaultValue="0", required=true)String id,
-			@CookieValue(value="password",defaultValue="0",required=true) String password,
+			@CookieValue(value="pwd",defaultValue="0",required=true) String password,
 			@CookieValue(value="autologin",defaultValue="0",required=true) String AutoLogin,
 			HttpServletRequest req) {
 		List<MemberVO> members;

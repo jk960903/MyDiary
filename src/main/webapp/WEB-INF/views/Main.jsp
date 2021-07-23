@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@include file ="shared/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>메인페이지</title>
 </head>
 <body>
 	<div id ="map" style="width:100%;height:400px;"></div>

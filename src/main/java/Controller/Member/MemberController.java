@@ -66,7 +66,7 @@ public class MemberController {
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
 	public ModelAndView Login(LoginRequestModel model,
 			@CookieValue(value="id", defaultValue="", required=true) String id,
-			@CookieValue(value="password", defaultValue="", required=true) String pwd,
+			@CookieValue(value="pwd", defaultValue="", required=true) String pwd,
 			@CookieValue(value="autologin", defaultValue="0", required=true) String auto,
 			final HttpSession session,
 			HttpServletResponse response) {
