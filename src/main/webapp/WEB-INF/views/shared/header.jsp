@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<button>공지사항</button>
-	<button>내정보</button>
+	<button id="noticebutton" onclick ="location.href='Notice.jsp' ">공지사항</button>
+	<button id="myinfo" onclick="location.href = 'info.jsp'"">내정보</button>	
 </body>
 </html>
