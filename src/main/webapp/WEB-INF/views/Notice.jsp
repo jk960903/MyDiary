@@ -19,36 +19,36 @@
 		
 	</table>
 	<input type='text' id='search' placeholder='검색어 입력'>
-	<input type='search' id='search'/>
+	<button id='searchbtn'>전송</button>
 	<script>
 	$(document).ready(function(){
 		$.ajax({
 			type:'get',
-			url: '/Notice/NoticeGet',
+			url: 'NoticeGet',
 			data:{
 				'email' : ''
 			},
 			success: function(get){
-				
-			}
-			error: function(data){
-				
+				console.log("success");
+			},
+			error: function(get){
+				console.log("fail");
 			}
 		})
 	})
-	$("#search").click(function(){
+	$("#searchbtn").click(function(){
 		var search = document.getElementbyId('search').value;
 		$.ajax({
 			type:'get',
-			url:'/Notice/NoticeGet',
+			url:'Notice/NoticeGet',
 			data:{
 				'search' : search
-			}
+			},
 			success: function(get){
-				
-			}
-			error: function(data){
-				
+				console.log("success");
+			},
+			error: function(get){
+				console.log("fail");
 			}
 		})
 	})

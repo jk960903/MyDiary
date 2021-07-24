@@ -1,13 +1,16 @@
 package com.example.demo.Repository.Notice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.VO.Notice.NoticeDetailVO;
 import com.example.demo.VO.Notice.NoticeVO;
 
+@Service
 public class NoticeDetailService {
-	@Autowired
+	@Autowired(required=true)
 	private NoticeDetailRepository noticeDetailRepository;
+	
 	
 	public NoticeDetailVO GetNoticeDetailVO(NoticeVO notice) {
 		return noticeDetailRepository.GetNoticeDetail(notice);
