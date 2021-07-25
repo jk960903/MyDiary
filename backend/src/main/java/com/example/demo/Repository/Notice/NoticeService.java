@@ -1,12 +1,10 @@
 package com.example.demo.Repository.Notice;
 
-import java.util.List;
-
-
+import com.example.demo.VO.Notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.VO.Notice.NoticeVO;
+import java.util.List;
 
 @Service
 public class NoticeService {
