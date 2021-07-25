@@ -1,11 +1,10 @@
 package com.example.demo.Repository;
 
-import java.util.List;
-
+import com.example.demo.VO.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.VO.*;
+import java.util.List;
 @Service
 public class MemberService {
 	
