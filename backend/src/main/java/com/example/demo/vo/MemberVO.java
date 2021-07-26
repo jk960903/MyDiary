@@ -1,4 +1,4 @@
-package com.example.demo.VO;
+package com.example.demo.vo;
 
 import lombok.*;
 
