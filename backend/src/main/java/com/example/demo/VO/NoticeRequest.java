@@ -1,4 +1,4 @@
-package com.example.demo.Notice;
+package com.example.demo.vo;
 
 import lombok.*;
 

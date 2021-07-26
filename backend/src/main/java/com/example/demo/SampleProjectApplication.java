@@ -1,8 +1,5 @@
 package com.example.demo;
 
-import Bean.ComponentTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,12 +7,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"Bean"})
-@ComponentScan(basePackages = {"Controller"})
-@EnableJpaRepositories(basePackages= {"com.example.demo.Repository"})
-public class SampleProjectApplication implements CommandLineRunner{
-	@Autowired
-	ComponentTest component;
+@ComponentScan(basePackages = {"com.example.demo"})
+@EnableJpaRepositories(basePackages= {"com.example.demo"})
+public class SampleProjectApplication{
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SampleProjectApplication.class, args);
@@ -23,9 +17,4 @@ public class SampleProjectApplication implements CommandLineRunner{
 	}
 	
 
-	@Override
-	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
-		component.run();
-	}
 }
