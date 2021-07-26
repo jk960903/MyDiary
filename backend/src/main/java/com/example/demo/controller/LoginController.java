@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.VO.MemberVO;
+import com.example.demo.vo.MemberVO;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.LoginRequestVO;
 import org.slf4j.Logger;

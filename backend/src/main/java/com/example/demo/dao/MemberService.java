@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.VO.MemberVO;
+import com.example.demo.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

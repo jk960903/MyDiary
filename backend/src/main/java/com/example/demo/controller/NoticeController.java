@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.NoticeService;
 import com.example.demo.vo.NoticeRequest;
-import com.example.demo.VO.Notice.NoticeVO;
+import com.example.demo.vo.notice.NoticeVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

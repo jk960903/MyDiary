@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.VO.Notice.NoticeVO;
+import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
