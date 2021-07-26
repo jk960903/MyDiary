@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import com.example.demo.Repository.Test.TestService;
+import com.example.demo.VO.TestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -36,7 +38,10 @@ public class ControllerTest {
 	
 	@Autowired
 	MemberService memberService;
-	
+
+	@Autowired
+	TestService testService;
+
 	@RequestMapping(value="/1")
 	public String TableTest() {
 		try {
@@ -55,7 +60,11 @@ public class ControllerTest {
 		}
 		return "success";
 	}
-	
+
+	@RequestMapping(value="/dbtest")
+	public List<TestVO> DbTest(){
+		return testService.DBTest();
+	}
 	@RequestMapping(value="/")
 	public ModelAndView Test() {
 		return new ModelAndView("test");

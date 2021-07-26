@@ -30,5 +30,3 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
 	public List<MemberVO> Login(String ID,String password);
 	
 }
-
-

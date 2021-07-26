@@ -30,6 +30,7 @@
 			},
 			success: function(get){
 				console.log("success");
+				console.log(get);
 			},
 			error: function(get){
 				console.log("fail");
