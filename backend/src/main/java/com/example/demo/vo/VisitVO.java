@@ -2,12 +2,13 @@ package com.example.demo.vo;
 
 import lombok.*;
 
+import javax.persistence.Entity;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NoticeRequest {
-	private String email;
+@Entity
+public class VisitVO {
 }

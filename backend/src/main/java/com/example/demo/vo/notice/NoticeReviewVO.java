@@ -8,8 +8,7 @@ import javax.persistence.Entity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class NoticeReReviewVO {
-
+@Builder
+public class NoticeReviewVO {
 }
