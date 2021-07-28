@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping(value = "/member")
+@RequestMapping(value = "/Login")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
