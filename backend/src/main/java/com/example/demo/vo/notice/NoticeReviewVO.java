@@ -3,6 +3,7 @@ package com.example.demo.vo.notice;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -11,4 +12,6 @@ import javax.persistence.Entity;
 @Entity
 @Builder
 public class NoticeReviewVO {
+    @Id
+    public Long Seq;
 }

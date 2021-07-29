@@ -1,5 +1,10 @@
 package com.example.demo.controller;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.Jwts;
+import java.io.UnsupportedEncodingException;
 
 import com.example.demo.vo.MemberVO;
 import com.example.demo.dao.MemberService;
@@ -68,6 +73,7 @@ public class LoginController {
                               HttpServletResponse response) {
         MemberVO result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
         //오토로그인 체크하고 오토로그인이 되어있으며 로그인 성공
+        
         if(Integer.parseInt(auto)!=0 && model.getAutologin().equals("1") && result!=null) {
 
             return new ModelAndView("Main");
