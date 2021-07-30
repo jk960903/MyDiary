@@ -24,7 +24,7 @@ public class MemberVO {
 	private String pwd;
 	//Email
 	@Column
-	private String Email;
+	private String email;
 	//전화번호
 	@Column
 	private String phone;

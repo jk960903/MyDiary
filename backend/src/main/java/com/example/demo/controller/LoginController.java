@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.JWT.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,6 +29,8 @@ public class LoginController {
     @Autowired(required = true)
     MemberService memberService;
 
+    @Autowired(required = true)
+    JwtService jwtService;
     @RequestMapping(value="/")
     public String Test() {
         return "Test Page";
@@ -71,9 +74,18 @@ public class LoginController {
                               @CookieValue(value="autologin", defaultValue="0", required=true) String auto,
                               final HttpSession session,
                               HttpServletResponse response) {
-        MemberVO result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
+        MemberVO result;
+        if(id.equals("")&&pwd.equals("")){
+            result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
+        }
+        else{
+            result=memberService.Login(id,pwd).get(0);
+        }
+
         //오토로그인 체크하고 오토로그인이 되어있으며 로그인 성공
-        
+
+        String jwt = jwtService.createLoginToken(result);
+
         if(Integer.parseInt(auto)!=0 && model.getAutologin().equals("1") && result!=null) {
 
             return new ModelAndView("Main");
@@ -101,5 +113,26 @@ public class LoginController {
         }
 
         return new ModelAndView("Main");
+    }
+
+    @RequestMapping(value="/TestJwt")
+    public String TestJwt(LoginRequestVO model,
+                          @CookieValue(value="tempjwt",defaultValue = "", required =true) String jwt,
+                          HttpServletResponse response){
+        MemberVO result =  memberService.Login("1234","1234").get(0);
+        if(result !=null){
+            if(jwt.equals("")){//jwt 있음
+                jwt = jwtService.createLoginToken(result);
+                Cookie cookie = new Cookie("tempjwt",jwt);
+                cookie.setPath("/");
+                cookie.setMaxAge(60*60*24*30);
+                response.addCookie(cookie);
+            }else{
+                MemberVO member = jwtService.getUserID(jwt);
+                System.out.println(member.getID());
+            }
+        }
+
+        return jwt;
     }
 }
