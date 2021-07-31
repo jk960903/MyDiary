@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import com.example.demo.vo.MemberVO;
 import com.example.demo.dao.MemberService;
@@ -128,8 +127,7 @@ public class LoginController {
                 cookie.setMaxAge(60*60*24*30);
                 response.addCookie(cookie);
             }else{
-                MemberVO member = jwtService.getUserID(jwt);
-                System.out.println(member.getID());
+
             }
         }
 
