@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NoticeReReviewService {
-    @Autowired(required = false)
-    NoticeReReviewRepository noticeReReviewRepository;
+public class NoticeReviewReviewService {
+    @Autowired(required = true)
+    NoticeReviewReviewRepository noticeReviewReviewRepository;
+
+
 }

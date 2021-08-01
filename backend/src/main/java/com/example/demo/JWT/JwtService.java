@@ -2,11 +2,10 @@ package com.example.demo.JWT;
 
 import com.example.demo.vo.MemberVO;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
+
 @RequiredArgsConstructor
 @Service
 public class JwtService {
@@ -31,7 +30,6 @@ public class JwtService {
     //하드코드 되어있어서 수정이 필요합니다.
     private final String key ="thisisjung9keyipnida";
 
-    private final UserDetailsService userDetailsService;
 
     //토큰생성성
    public String createLoginToken(MemberVO member){
@@ -59,15 +57,31 @@ public class JwtService {
     }
 
     //JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthentication(String token){
+    /*public Authentication getAuthentication(String token){
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserID(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-   }
+   }*/
+    public Map<String,Object> getUserID(String token){
+        Map<String,Object> claimMap =null;
+        try{
+            Claims claims = Jwts.parser()
+                    .setSigningKey(key.getBytes("UTF-8"))
+                    .parseClaimsJws(token)
+                    .getBody();
 
-    public String getUserID(String token){
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
-   }
+            claimMap =claims;
 
+            System.out.println("check");
+        }catch(ExpiredJwtException e){
+            System.out.println(e);
+        }catch(Exception e){
+            System.out.println(e);
+
+        }
+        return claimMap;
+
+   }
+    /*
     public String resolveToken(HttpServletRequest request){
         return request.getHeader("X-AUTH-TOKEN");
     }
@@ -80,6 +94,6 @@ public class JwtService {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
 }

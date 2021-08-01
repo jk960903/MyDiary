@@ -2,8 +2,8 @@ package com.example.demo.vo.notice;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -13,5 +13,26 @@ import javax.persistence.Id;
 @Builder
 public class NoticeReviewVO {
     @Id
-    public Long Seq;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Seq;
+
+    @Column(name="notice_idx")
+    private Long  notice_idx;
+
+    @Column(name="content")
+    private String content;
+
+    @Column(name="regdate")
+    private Date regDate;
+
+    @Column(name="isdeleted")
+    private Byte isDeleted;
+
+    @Column(name="memberidx")
+    private Long memberidx;
+
+
+
+
+
 }

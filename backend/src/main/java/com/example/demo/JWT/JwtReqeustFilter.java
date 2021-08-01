@@ -1,6 +1,7 @@
 package com.example.demo.JWT;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,13 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtReqeustFilter extends GenericFilterBean {
+
+    @Autowired(required=true)
     private final JwtService jwtService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //헤더에서 jwt를 받아오고
+        /*//헤더에서 jwt를 받아오고
         String token  = jwtService.resolveToken((HttpServletRequest) request);
         //토큰의 유효 확인
         if(token!=null && jwtService.validateToken(token)){
@@ -28,5 +31,6 @@ public class JwtReqeustFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request,response);
+         */
     }
 }
