@@ -1,5 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.JWT.JwtService;
+import io.jsonwebtoken.*;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import com.example.demo.vo.MemberVO;
 import com.example.demo.dao.MemberService;
@@ -11,17 +16,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping(value = "/member")
+@RequestMapping(value = "/Login")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired(required = true)
     MemberService memberService;
+
+    @Autowired(required = true)
+    JwtService jwtService;
 
     @RequestMapping(value="/")
     public String Test() {
@@ -65,35 +74,55 @@ public class LoginController {
                               @CookieValue(value="pwd", defaultValue="", required=true) String pwd,
                               @CookieValue(value="autologin", defaultValue="0", required=true) String auto,
                               final HttpSession session,
-                              HttpServletResponse response) {
-        MemberVO result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
+                              HttpServletResponse response,
+                              HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        MemberVO result=null;
+        if(token.equals("") || token==null) {
+            //토큰값이 없어여
+
+            if(id.equals("")&&pwd.equals("")){
+                result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
+            }
+            String jwt = jwtService.createLoginToken(result);
+            response.addHeader("token",jwt);
+        }else{
+            Map<String,Object> results = jwtService.getUserID(token);
+            var maps = results.get("member");
+        }
         //오토로그인 체크하고 오토로그인이 되어있으며 로그인 성공
+
         if(Integer.parseInt(auto)!=0 && model.getAutologin().equals("1") && result!=null) {
 
             return new ModelAndView("Main");
 
         }
-        //오토로그인 체크했으나 쿠키는 없고 로그인은 성공 했으니 쿠키생성
-        else if(Integer.parseInt(auto)==0 &&model.getAutologin().equals("1") && result!=null) {
-            Cookie[] cookies = new Cookie[3];
-            cookies[0] = new Cookie("id", model.getUserID());
-            cookies[1] = new Cookie("pwd", model.getPassword());
-            cookies[2] = new Cookie("autologin", model.getAutologin());
-            for(int i = 0 ; i<3; i++) {
-                cookies[i].setPath("/");
-                cookies[i].setMaxAge(60*60*24*30);
-                response.addCookie(cookies[i]);
-            }
-        }
 
         else {
             return new ModelAndView("Login");
         }
-        if(result!=null) {
-            session.setAttribute("member", result);
-            session.setMaxInactiveInterval(60*30);
+    }
+
+    @RequestMapping(value="/TestJwt")
+    public String TestJwt(LoginRequestVO model,
+                          @CookieValue(value="tempjwt",defaultValue = "", required =true) String jwt,
+                          HttpServletResponse response){
+        MemberVO result =  memberService.Login("1234","1234").get(0);
+        if(result !=null){
+            if(jwt.equals("")){//jwt 있음
+                jwt = jwtService.createLoginToken(result);
+                Cookie cookie = new Cookie("tempjwt",jwt);
+                cookie.setPath("/");
+                cookie.setMaxAge(60*60*24*30);
+                response.addCookie(cookie);
+            }else{
+                Map<String,Object> results = jwtService.getUserID(jwt);
+                var maps = results.get("member");
+
+                System.out.println("check");
+            }
         }
 
-        return new ModelAndView("Main");
+        return jwt;
     }
 }
