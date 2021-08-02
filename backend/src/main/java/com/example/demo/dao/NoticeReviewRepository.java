@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface NoticeReviewRepository extends JpaRepository<NoticeReviewVO,Long> {
 
-    @Query
-    public List<NoticeReviewVO> getNoticeReviewVOByNotice_idx();
+    //@Query
+    //public List<NoticeReviewVO> getNoticeReviewVOByNoticeidx(Long Noticeidx);
 
 }

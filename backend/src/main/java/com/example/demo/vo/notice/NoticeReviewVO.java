@@ -16,8 +16,8 @@ public class NoticeReviewVO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Seq;
 
-    @Column(name="notice_idx")
-    private Long  notice_idx;
+    @Column(name="noticeidx")
+    private Long  noticeidx;
 
     @Column(name="content")
     private String content;
