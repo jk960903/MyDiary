@@ -19,6 +19,6 @@ public interface CategoryRepository extends JpaRepository<CategoryVO,Long> {
     @Query(value="update category set category = :category where idx = :idx",nativeQuery = true )
     public void ChangeCategory(Integer category,Long idx);
 
-    @Query
-    public List<CategoryVO> findCategoryVOByMemberidx(Long memberIdx);
+    @Query(value="select * from category where category.memberidx=:memberidx",nativeQuery = true)
+    public List<CategoryVO> GetCategoryList(Long memberIdx);
 }

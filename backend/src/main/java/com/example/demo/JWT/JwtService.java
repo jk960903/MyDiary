@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -74,12 +75,28 @@ public class JwtService {
             System.out.println("check");
         }catch(ExpiredJwtException e){
             System.out.println(e);
+            return null;
         }catch(Exception e){
             System.out.println(e);
-
+            return null;
         }
         return claimMap;
 
+   }
+   public Map<String,Object> requestAuthorization(HttpServletRequest request){
+       String token = request.getHeader("Authorization");
+       token = token.substring(7);
+       Map<String,Object> map = null;
+       LinkedHashMap<String,Object> result =null;
+       if(!token.equals("") && token !=null){
+           map = this.getUserID(token);
+           if(map!=null){
+               result =(LinkedHashMap<String,Object>) map.get("member");
+           }
+       }else{
+               return null;
+       }
+       return result;
    }
     /*
     public String resolveToken(HttpServletRequest request){

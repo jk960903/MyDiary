@@ -30,6 +30,6 @@ public class CategoryService {
 
 
     public List<CategoryVO> getCategoryList(Long memberIdx){
-        return categoryRepository.findCategoryVOByMemberidx(memberIdx);
+        return categoryRepository.GetCategoryList(memberIdx);
     }
 }

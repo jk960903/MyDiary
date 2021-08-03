@@ -4,6 +4,7 @@ import com.example.demo.JWT.JwtService;
 import io.jsonwebtoken.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.example.demo.vo.MemberVO;
@@ -117,7 +118,7 @@ public class LoginController {
                 response.addCookie(cookie);
             }else{
                 Map<String,Object> results = jwtService.getUserID(jwt);
-                var maps = results.get("member");
+                LinkedHashMap<String,Object> maps = (LinkedHashMap<String,Object>)results.get("member");
 
                 System.out.println("check");
             }
