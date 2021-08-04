@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.vo.CategoryVO;
+import com.example.demo.vo.Category.CategoryVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,6 +19,6 @@ public interface CategoryRepository extends JpaRepository<CategoryVO,Long> {
     @Query(value="update category set category = :category where idx = :idx",nativeQuery = true )
     public void ChangeCategory(Integer category,Long idx);
 
-    @Query(value="select * from category where category.memberidx=:memberidx",nativeQuery = true)
+    @Query(value="select * from diary.category where category.memberidx = :memberIdx",nativeQuery = true)
     public List<CategoryVO> GetCategoryList(Long memberIdx);
 }

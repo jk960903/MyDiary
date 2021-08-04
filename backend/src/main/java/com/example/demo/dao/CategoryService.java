@@ -1,8 +1,7 @@
 package com.example.demo.dao;
 
-import com.example.demo.vo.CategoryVO;
+import com.example.demo.vo.Category.CategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

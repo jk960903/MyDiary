@@ -2,23 +2,20 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.CategoryService;
-import com.example.demo.vo.CategoryVO;
+import com.example.demo.vo.Category.CategoryVO;
 import com.example.demo.vo.Enum.StatusEnum;
-import com.example.demo.vo.MemberVO;
 import com.example.demo.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +58,7 @@ public class CategoryController {
         if(map == null) {
             sendMessage = new SendMessage<List<CategoryVO>>(null,StatusEnum.UNAUTHORIZED,"token expired");
             //return
+
             return new ResponseEntity<>(sendMessage,headers, HttpStatus.UNAUTHORIZED);
         }
         //토큰이 유효하여 해당 멤버에 대한 선택 카테고리 종목 가져오기
@@ -72,4 +70,44 @@ public class CategoryController {
 
 
     }
+    @RequestMapping(value ="/AddCategory", method = RequestMethod.POST)
+    public ResponseEntity<SendMessage<CategoryVO>> AddCategory(HttpServletRequest request,int value ){
+
+        Map<String ,Object> member= jwtService.requestAuthorization(request);
+        SendMessage<CategoryVO> sendMessage=null;
+        HttpHeaders headers = new HttpHeaders();
+        CategoryVO categoryVO;
+        if(value < 0 ) return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        if(member == null){
+            sendMessage = new SendMessage<CategoryVO>(null,StatusEnum.UNAUTHORIZED,"token expired");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        }
+        categoryVO = CategoryVO.builder().idx(Long.valueOf(String.valueOf(member.get("idx"))))
+                .category(Byte.valueOf((String.valueOf(value))))
+                .legdate(null)
+                .isdeleted(Byte.valueOf((String.valueOf("1")))).build();
+        try{
+            categoryService.AddCategory(categoryVO);
+
+        }catch(Exception e){
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"Server_Error");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
+    }
+    @RequestMapping(value = "/DeleteCategory")
+    public ResponseEntity<SendMessage<CategoryVO>> DeleteCategory(HttpServletRequest request , Long Seq){
+        Map<String,Object> member= jwtService.requestAuthorization(request);
+        SendMessage<CategoryVO> sendMessage=null;
+        HttpHeaders headers = new HttpHeaders();
+        if(Seq < 0 ) return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        if(member == null){
+            sendMessage = new SendMessage<CategoryVO>(null,StatusEnum.UNAUTHORIZED,"token expired");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        }
+        return null;
+    }
+
 }
