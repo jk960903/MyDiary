@@ -1,13 +1,13 @@
 import React from 'react';
 
-function App() {
-    return (
-        <div className="App">
-            <div className="constant-values-container">
-                Sub container
+export default class Sub extends React.Component {
+    render() {
+        return(
+            <div className="container-fluid">
+                <div className="constant-values-container">
+                    Sub container
+                </div>
             </div>
-        </div>
-    );
+        )
+    }
 }
-
-export default App;

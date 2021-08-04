@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Main from "../page/Main";
 import Sub from "../page/Sub";
 
-export default class Routes extends React.Component {
+export default class Routes extends React.Component{
+
     render() {
         return (
             <Router>
