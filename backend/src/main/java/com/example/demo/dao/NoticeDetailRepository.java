@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface NoticeDetailRepository extends JpaRepository<NoticeDetailVO,Long>{
 
-    @Query(value="select * from notice_detail where notice_detail.noticeidx=:#{#notice.idx}", nativeQuery=true)
-    public NoticeDetailVO GetNoticeDetail(NoticeVO notice);
+    @Query(value="select * from notice_detail where notice_detail.noticeidx=:idx", nativeQuery=true)
+    public List<NoticeDetailVO> GetNoticeDetail(Long idx);
 
     @Modifying
     @Query(value ="delete from notice_detail where notice_detail.idx=:#{#notice.idx", nativeQuery=true)

@@ -101,13 +101,22 @@ public class CategoryController {
         Map<String,Object> member= jwtService.requestAuthorization(request);
         SendMessage<CategoryVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
+        CategoryVO deleteCategory;
         if(Seq < 0 ) return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         if(member == null){
             sendMessage = new SendMessage<CategoryVO>(null,StatusEnum.UNAUTHORIZED,"token expired");
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
         }
-        return null;
+        deleteCategory = categoryService.DeleteCategory(Seq);
+        if(deleteCategory == null){
+            sendMessage = new SendMessage<CategoryVO>(deleteCategory,StatusEnum.BAD_REQUEST,"해당 카테고리가 없습니다.");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        }
+        sendMessage = new SendMessage<CategoryVO>(deleteCategory,StatusEnum.OK,"OK");
+        return new ResponseEntity<SendMessage<CategoryVO>>(sendMessage,headers,HttpStatus.OK);
+
     }
+
 
 }

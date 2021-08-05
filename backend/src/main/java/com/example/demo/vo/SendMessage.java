@@ -5,6 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 public class SendMessage<T> {
     private StatusEnum status;
     private String message;

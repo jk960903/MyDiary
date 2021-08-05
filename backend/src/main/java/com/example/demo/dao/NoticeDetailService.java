@@ -5,14 +5,16 @@ import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoticeDetailService {
     @Autowired(required=true)
     private NoticeDetailRepository noticeDetailRepository;
 
 
-    public NoticeDetailVO GetNoticeDetailVO(NoticeVO notice) {
-        return noticeDetailRepository.GetNoticeDetail(notice);
+    public List<NoticeDetailVO> GetNoticeDetail(Long idx) {
+        return noticeDetailRepository.GetNoticeDetail(idx);
     }
 
     public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) {
