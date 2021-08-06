@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,27 +36,44 @@ public class NoticeReviewController {
     @Autowired(required = true)
     private JwtService jwtService;
 
-    @RequestMapping(value = "/AddNoticeReview", method = RequestMethod.GET)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, NoticeReviewReqeust model){
+    @RequestMapping(value = "/AddNoticeReview", method = RequestMethod.POST)
+    public ResponseEntity<SendMessage<Integer>> AddNoticeReview(HttpServletRequest request, NoticeReviewReqeust model){
 
         Map<String, Object> auth= jwtService.requestAuthorization(request);
-        SendMessage<NoticeReviewVO> sendMessage=null;
+        SendMessage<Integer> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        CategoryVO deleteCategory;
         NoticeReviewVO noticeReviewVO=null;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         if(model.getNotice_idx() < 0 || model.getMember_idx()  < 0 ) return new ResponseEntity<>(null,headers, HttpStatus.BAD_REQUEST);
         if(auth == null){
-            sendMessage = new SendMessage<NoticeReviewVO>(noticeReviewVO, StatusEnum.UNAUTHORIZED,"Token Expired");
-            return new ResponseEntity<SendMessage<NoticeReviewVO>>(sendMessage , headers, HttpStatus.UNAUTHORIZED);
+            sendMessage = new SendMessage<Integer>(401, StatusEnum.UNAUTHORIZED,"Token Expired");
+            return new ResponseEntity<SendMessage<Integer>>(sendMessage , headers, HttpStatus.UNAUTHORIZED);
         }
         noticeReviewVO = NoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
                 .memberidx(model.getMember_idx()).isDeleted(Byte.parseByte("1")).build();
         int queryresult = noticeReviewService.AddNoticeReview(noticeReviewVO);
         if(queryresult <0) {
-
+            sendMessage = new SendMessage<Integer>(500,StatusEnum.INTERNAL_SERVER_ERROOR,"Intever ServerError");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
         }
-        
-
+        sendMessage = new SendMessage<>(200,StatusEnum.OK,"OK");
+        return new ResponseEntity<SendMessage<Integer>>(sendMessage,headers,HttpStatus.OK);
     }
+
+    @RequestMapping(value ="/GetNoticeReview", method = RequestMethod.GET)
+    public ResponseEntity<SendMessage<List<NoticeReviewVO>>> GetNoticeReview(HttpServletRequest request, Long notice_seq){
+        Map<String, Object> auth = jwtService.requestAuthorization(request);
+        SendMessage<List<NoticeReviewVO>> sendMessage = null;
+        HttpHeaders headers = new HttpHeaders();
+        List<NoticeReviewVO> noticeReviewVOList = new ArrayList<>();
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        if(notice_seq <= 0){
+            return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
+        }
+        if(auth == null){
+            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"Token Expired");
+            return new ResponseEntity<>(sendMessage,headers, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }
