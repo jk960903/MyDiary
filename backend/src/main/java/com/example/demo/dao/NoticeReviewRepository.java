@@ -13,4 +13,7 @@ public interface NoticeReviewRepository extends JpaRepository<NoticeReviewVO,Lon
     //@Query
     //public List<NoticeReviewVO> getNoticeReviewVOByNoticeidx(Long Noticeidx);
 
+    @Query(value ="insert into notice_review(noticeidx,content,memberidx,regdate,isdeleted) value(:#{#reviewVO.noticeidx},:#{#reviewVO.content},:#{#reviewVO.memberidx},now(),1)")
+    public void AddNoticeReview(NoticeReviewVO reviewVO);
+
 }
