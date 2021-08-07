@@ -74,6 +74,14 @@ public class NoticeReviewController {
             sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"Token Expired");
             return new ResponseEntity<>(sendMessage,headers, HttpStatus.UNAUTHORIZED);
         }
+        noticeReviewVOList = noticeReviewService.getNoticeReviewList(notice_seq);
+        if(noticeReviewVOList == null){
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"SERVER ERROR ");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
+
+
     }
 
 }
