@@ -10,10 +10,10 @@ import java.util.List;
 @Repository
 public interface NoticeReviewRepository extends JpaRepository<NoticeReviewVO,Long> {
 
-    //@Query
-    //public List<NoticeReviewVO> getNoticeReviewVOByNoticeidx(Long Noticeidx);
 
     @Query(value ="insert into notice_review(noticeidx,content,memberidx,regdate,isdeleted) value(:#{#reviewVO.noticeidx},:#{#reviewVO.content},:#{#reviewVO.memberidx},now(),1)")
     public void AddNoticeReview(NoticeReviewVO reviewVO);
 
+    @Query(value = "select * from notice_review where notice_review.notice_seq = :Notice_Seq")
+    public List<NoticeReviewVO> getNoticeReviewList(Long Notice_Seq);
 }

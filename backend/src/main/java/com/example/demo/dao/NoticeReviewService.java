@@ -4,6 +4,9 @@ import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class NoticeReviewService {
     @Autowired
@@ -18,5 +21,14 @@ public class NoticeReviewService {
             return -1;
         }
         return 1;
+    }
+    public List<NoticeReviewVO> getNoticeReviewList(Long notice_seq){
+        List<NoticeReviewVO> list = new ArrayList<>();
+        try{
+            list = noticeReviewRepository.getNoticeReviewList(notice_seq);
+        }catch (Exception e){
+            list = null;
+        }
+        return list;
     }
 }
