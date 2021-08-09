@@ -5,6 +5,7 @@ import com.example.demo.dao.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 ///MyPage
 @RestController
@@ -15,4 +16,9 @@ public class MyInfoController {
 
     @Autowired(required = true)
     MemberService memberService;
+
+    @RequestMapping(value= "/MyPage")
+    public ModelAndView MyPage(){
+        
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value="/NoticeReviewReview")
+@RestController
+@RequestMapping(value = "/NoticeReview")
 public class NoticeReview_ReviewController {
 
 }

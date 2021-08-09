@@ -48,6 +48,13 @@ public class NoticeDetailController {
 
 
     }
+    @RequestMapping(value = "/AddNoticeDetail", method=RequestMethod.POST)
+    public ResponseEntity<SendMessage<Integer>> AddNoticeDetail(HttpServletRequest request, NoticeDetailVO noticeDetailVO){
+        SendMessage<Integer> sendMessage = new SendMessage<>(1,StatusEnum.OK,"OK");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
+    }
 
 
 }
