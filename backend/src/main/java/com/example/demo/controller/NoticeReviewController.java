@@ -7,6 +7,7 @@ import com.example.demo.dao.NoticeService;
 import com.example.demo.vo.Category.CategoryVO;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
+import com.example.demo.vo.notice.ChangeNoticeReviewVO;
 import com.example.demo.vo.notice.NoticeReviewReqeust;
 import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +84,37 @@ public class NoticeReviewController {
 
 
     }
+
+    @RequestMapping(value = "/ChangeNoticeReview", method = RequestMethod.POST)
+    public ResponseEntity<SendMessage<NoticeReviewVO>> ChangeNoticeReview(HttpServletRequest request , ChangeNoticeReviewVO changeNoticeReviewVO){
+        Map<String,Object> auth  =jwtService.requestAuthorization(request);
+        SendMessage<NoticeReviewVO> sendMessage = null;
+        HttpHeaders headers = new HttpHeaders();
+        NoticeReviewVO noticeReviewVO = null;
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+
+        if(auth == null){
+            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED, "TokenExpired");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        }
+        if(changeNoticeReviewVO.getNotice_seq() < 0 || changeNoticeReviewVO.getReview_seq() < 0 || changeNoticeReviewVO.getMember_seq() <0){
+            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        }
+        noticeReviewVO = noticeReviewService.getNoticeReview(changeNoticeReviewVO.getReview_seq());
+        if(noticeReviewVO == null){
+            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQEUST");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        }
+        noticeReviewVO.setContent(changeNoticeReviewVO.getContent());
+        int update = noticeReviewService.UpdateNoticeReview(noticeReviewVO);
+        if(update == -1 ){
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR , "INTERVAL SERVER ERROR");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        sendMessage = new SendMessage<>(noticeReviewVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
+    }
+
 
 }

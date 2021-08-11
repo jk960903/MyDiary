@@ -29,11 +29,10 @@ public class MyInfoController {
 
     @Autowired(required = true)
     MemberService memberService;
-
+    //mypage main
     @RequestMapping(value= "/MyPage")
     public ModelAndView MyPage(HttpServletRequest request){
         Map<String, Object> auth = jwtService.requestAuthorization(request);
-        SendMessage<List<MemberVO>> sendMessage = null;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         if(auth == null){
@@ -42,5 +41,14 @@ public class MyInfoController {
         return new ModelAndView("MyPage");
 
     }
+    //내정보 수정
     @RequestMapping
+    public ModelAndView ChangeMyData(HttpServletRequest request){
+        Map<String ,Object> auth = jwtService.requestAuthorization(request);
+        if(auth == null){
+            return new ModelAndView("login");
+        }
+        return new ModelAndView("ChangeMyData");
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
+import com.example.demo.vo.SendMessage;
 import io.jsonwebtoken.*;
 
 import java.io.UnsupportedEncodingException;
@@ -13,6 +14,7 @@ import com.example.demo.vo.LoginRequestVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,39 +72,12 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/Login", method = RequestMethod.GET)
-    public ModelAndView Login(LoginRequestVO model,
-                              @CookieValue(value="id", defaultValue="", required=true) String id,
-                              @CookieValue(value="pwd", defaultValue="", required=true) String pwd,
-                              @CookieValue(value="autologin", defaultValue="0", required=true) String auto,
-                              final HttpSession session,
-                              HttpServletResponse response,
-                              HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        MemberVO result=null;
-        if(token.equals("") || token==null) {
-            //토큰값이 없어여
-
-            if(id.equals("")&&pwd.equals("")){
-                result =  memberService.Login(model.getUserID(),model.getPassword()).get(0);
-            }
-            String jwt = jwtService.createLoginToken(result);
-            response.addHeader("token",jwt);
-        }else{
-            Map<String,Object> results = jwtService.getUserID(token);
-            var maps = results.get("member");
-        }
-        //오토로그인 체크하고 오토로그인이 되어있으며 로그인 성공
-
-        if(Integer.parseInt(auto)!=0 && model.getAutologin().equals("1") && result!=null) {
-
-            return new ModelAndView("Main");
-
-        }
-
-        else {
-            return new ModelAndView("Login");
-        }
+    public ModelAndView Login() {
+        return new ModelAndView("login");
     }
+
+    /*@RequestMapping(value = "/LoginAction", method = RequestMethod.GET)
+    public ResponseEntity<SendMessage<String>>*/
 
     @RequestMapping(value="/TestJwt")
     public String TestJwt(LoginRequestVO model,

@@ -31,4 +31,24 @@ public class NoticeReviewService {
         }
         return list;
     }
+
+    public NoticeReviewVO getNoticeReview(Long Seq){
+        NoticeReviewVO noticeReviewVO =null;
+        try{
+            noticeReviewVO = noticeReviewRepository.getNoticeReview(Seq).get(0);
+        }catch(Exception e){
+            noticeReviewVO = null;
+        }
+        return noticeReviewVO;
+    }
+
+    public int UpdateNoticeReview(NoticeReviewVO noticeReviewVO){
+        try{
+            noticeReviewRepository.UpdateNoticeReview(noticeReviewVO);
+        }catch (Exception e){
+            return -1;
+        }
+        return 1;
+    }
+
 }
