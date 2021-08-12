@@ -25,7 +25,8 @@ public class NoticeController {
 
     @Autowired(required = true)
     JwtService jwtService;
-    @RequestMapping(value="/Notice")
+
+    @RequestMapping(value="/Notice")//공지사항들만 보여주는 리스트
     public ModelAndView GetNoticeList() {
         return new ModelAndView("Notice");
     }

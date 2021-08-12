@@ -33,7 +33,7 @@ public class JwtService {
 
 
     //토큰생성성
-   public String createLoginToken(MemberVO member){
+   public String createLoginToken(MemberVO member,int auto){
         long curTime = System.currentTimeMillis();
 
         Map<String ,Object> headers = new HashMap<>();
@@ -42,7 +42,13 @@ public class JwtService {
 
         Map<String,Object> payload = new HashMap<>();
         payload.put("member",member);
-        Long ExpiredTime = 1000*60L * 60L *24L;
+        Long ExpiredTime;
+        if(auto == 1){
+            ExpiredTime = 1000*60L * 60L *24L * 30L;//한달
+        }else{
+            ExpiredTime = 1000*60L * 60L;//한시간
+        }
+
         Date ext = new Date();
         ext.setTime(ext.getTime() + ExpiredTime);// 토큰 유효시간
 
