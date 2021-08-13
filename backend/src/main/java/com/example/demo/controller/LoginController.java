@@ -79,7 +79,7 @@ public class LoginController {
     @RequestMapping(value = "/Login", method = RequestMethod.GET)
     public ModelAndView Login(@CookieValue(value="jwttoken",defaultValue ="",required = true) String jwt,
                               HttpServletRequest request) {
-        Map<String,Object> login = jwtService.requestAuthorization(request);
+        Map<String,Object> login = jwtService.getUserID(jwt);
         String id = null , pwd =null;
         MemberVO User = null;
         Cookie cookie;
@@ -124,7 +124,7 @@ public class LoginController {
             try{
                 memberVO= memberService.Login(loginRequestVO.getUserID(),loginRequestVO.getPassword()).get(0);
                 if(memberVO !=null){
-                    if(loginRequestVO.getAutologin().equals("1")){
+                    if(loginRequestVO.getAutologin()==null){
                         token =jwtService.createLoginToken(memberVO,1);
                         cookie = new Cookie("jwttoken",token);
                         cookie.setMaxAge(60*60*24*30);
