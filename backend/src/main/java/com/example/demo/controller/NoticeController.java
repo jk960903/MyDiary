@@ -42,4 +42,10 @@ public class NoticeController {
 
         return list;
     }
+
+    @RequestMapping(value="/NoticeAdd")
+    //공지사항 작성 페이지로 글을 작성하는것 NoticeAction으로 처리할땐 페이지에서 만약 들어가지더라도 권한레벨? 을 처리하는게 좋을듯 싶습니다.
+    public ModelAndView NoticeAddPage(){
+        return new ModelAndView("NoticeAddPage");
+    }
 }

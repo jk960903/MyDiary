@@ -142,6 +142,8 @@ public class LoginController {
 
             cookie.setPath("/");
             response.addCookie(cookie);
+            message=new SendMessage<>(token,StatusEnum.OK,"OK");
+
 
         }
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
