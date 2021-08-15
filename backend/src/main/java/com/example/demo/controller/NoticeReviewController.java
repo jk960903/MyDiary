@@ -116,5 +116,10 @@ public class NoticeReviewController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
+    @RequestMapping(value ="DeleteNoticeReview", method=RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request,Long notice_Seq){
+
+    }
+
 
 }
