@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import {InputGroup, InputGroupText, InputGroupAddon, Input} from 'reactstrap';
+import LoginApi from "../apis/LoginApi";
 
 export default function LoginModal(props: any) {
     const {
@@ -18,9 +19,11 @@ export default function LoginModal(props: any) {
         setModal(!modal)
     };
 
-    function login() {
+    async function login() {
         toggle();
         console.log(id, pw)
+        let token = await LoginApi.login({id:id,pw:pw});
+
     }
 
     function idChange(e: any) {
