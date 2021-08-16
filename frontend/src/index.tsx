@@ -5,7 +5,7 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'ts-polyfill';
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,11 +18,11 @@ import reportWebVitals from './reportWebVitals';
 document.title = "Title"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Header />
-    <Routes />
-    <Footer/>
-  </React.StrictMode>,
+    <div>
+        <Header />
+        <Routes />
+        <Footer/>
+    </div>,
   document.getElementById('root')
 );
 
