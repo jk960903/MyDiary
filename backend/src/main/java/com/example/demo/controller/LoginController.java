@@ -77,7 +77,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/Login", method = RequestMethod.GET)
-    public ModelAndView Login(@CookieValue(value="jwttoken",defaultValue ="",required = true) String jwt,
+    /*public ModelAndView Login(@CookieValue(value="jwttoken",defaultValue ="",required = true) String jwt,
                               HttpServletRequest request) {
         Map<String,Object> login = jwtService.getUserID(jwt);
         String id = null , pwd =null;
@@ -96,7 +96,7 @@ public class LoginController {
         }
         // 토큰 만료 혹은 로그아웃되어있는 상태
         return new ModelAndView("login");
-    }
+    }*/
 
     @RequestMapping(value = "/LoginAction", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,

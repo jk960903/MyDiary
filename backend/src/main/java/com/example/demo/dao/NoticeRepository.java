@@ -25,10 +25,8 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
     public void AddNotice(NoticeVO notice);
 
 
-    @Modifying
     @Query
-    @Transactional
-    public List<NoticeVO> PlusCountView()
+    public List<NoticeVO> GetNoticeViewCount();
 
-
+    public void PlusNtoiceView();
 }
