@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value="/Category")
+@RequestMapping(value="/api/category")
 public class CategoryController {
     @Autowired(required = true)
     private JwtService jwtService;
@@ -41,7 +41,7 @@ public class CategoryController {
         }
         return new ModelAndView("");
     }
-    @RequestMapping(value="/GetCategoryAction")
+    @RequestMapping(value="/getcategoryaction")
     public ResponseEntity<SendMessage<List<CategoryVO>>> GetCategoryAction(HttpServletRequest request){
         //로그인 되어있는지 확인
         Map<String,Object> map =jwtService.requestAuthorization(request);
@@ -70,7 +70,7 @@ public class CategoryController {
 
 
     }
-    @RequestMapping(value ="/AddCategory", method = RequestMethod.POST)
+    @RequestMapping(value ="/addcategory", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<CategoryVO>> AddCategory(HttpServletRequest request,int value ){
 
         Map<String ,Object> member= jwtService.requestAuthorization(request);
@@ -96,7 +96,7 @@ public class CategoryController {
         }
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
-    @RequestMapping(value = "/DeleteCategory")
+    @RequestMapping(value = "/deletecategory")
     public ResponseEntity<SendMessage<CategoryVO>> DeleteCategory(HttpServletRequest request , Long Seq){
         Map<String,Object> member= jwtService.requestAuthorization(request);
         SendMessage<CategoryVO> sendMessage=null;

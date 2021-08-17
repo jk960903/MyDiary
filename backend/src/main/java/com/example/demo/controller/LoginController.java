@@ -45,7 +45,7 @@ public class LoginController {
         return "Test Page";
     }
 
-    @RequestMapping(value ="/FindByID" ,method = RequestMethod.GET)
+    @RequestMapping(value ="/findbyiD" ,method = RequestMethod.GET)
     public MemberVO FindByID(@RequestParam String ID) {
         MemberVO result;
         try {
@@ -57,7 +57,7 @@ public class LoginController {
         return null;
     }
 
-    @RequestMapping(value ="/FindByEmail", method = RequestMethod.GET)
+    @RequestMapping(value ="/findByemail", method = RequestMethod.GET)
     public MemberVO FindByEmail(@RequestParam String email) {
         MemberVO result;
         try {
@@ -70,13 +70,13 @@ public class LoginController {
         return result;
     }
 
-    @RequestMapping(value ="/MakeAccount", method = RequestMethod.POST)
+    @RequestMapping(value ="/makeaccount", method = RequestMethod.POST)
     public Integer MakeAccount(MemberVO memberVO) {
         memberVO.setIsdeleted(Byte.parseByte("1"));
         return memberService.MakeAccount(memberVO);
     }
 
-    @RequestMapping(value = "/Login", method = RequestMethod.GET)
+    //@RequestMapping(value = "/Login", method = RequestMethod.GET)
     /*public ModelAndView Login(@CookieValue(value="jwttoken",defaultValue ="",required = true) String jwt,
                               HttpServletRequest request) {
         Map<String,Object> login = jwtService.getUserID(jwt);
@@ -98,7 +98,7 @@ public class LoginController {
         return new ModelAndView("login");
     }*/
 
-    @RequestMapping(value = "/LoginAction", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginaction", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,
                                                                        LoginRequestVO loginRequestVO,
                                                                         HttpServletResponse response){

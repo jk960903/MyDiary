@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/NoticeReview")
+@RequestMapping("/api/noticereview")
 public class NoticeReviewController {
     @Autowired(required = true)
     private NoticeService noticeService;
@@ -37,7 +37,7 @@ public class NoticeReviewController {
     @Autowired(required = true)
     private JwtService jwtService;
 
-    @RequestMapping(value = "/AddNoticeReview", method = RequestMethod.POST)
+    @RequestMapping(value = "/addnoticereview", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<Integer>> AddNoticeReview(HttpServletRequest request, NoticeReviewReqeust model){
 
         Map<String, Object> auth= jwtService.requestAuthorization(request);
@@ -61,7 +61,7 @@ public class NoticeReviewController {
         return new ResponseEntity<SendMessage<Integer>>(sendMessage,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value ="/GetNoticeReview", method = RequestMethod.GET)
+    @RequestMapping(value ="/getnoticereview", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<List<NoticeReviewVO>>> GetNoticeReview(HttpServletRequest request, Long notice_seq){
         Map<String, Object> auth = jwtService.requestAuthorization(request);
         SendMessage<List<NoticeReviewVO>> sendMessage = null;
@@ -85,7 +85,7 @@ public class NoticeReviewController {
 
     }
 
-    @RequestMapping(value = "/ChangeNoticeReview", method = RequestMethod.POST)
+    @RequestMapping(value = "/changenoticereview", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<NoticeReviewVO>> ChangeNoticeReview(HttpServletRequest request , ChangeNoticeReviewVO changeNoticeReviewVO){
         Map<String,Object> auth  =jwtService.requestAuthorization(request);
         SendMessage<NoticeReviewVO> sendMessage = null;
@@ -116,9 +116,14 @@ public class NoticeReviewController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value ="DeleteNoticeReview", method=RequestMethod.PATCH)
+    @RequestMapping(value ="deletenoticereview", method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request,Long notice_Seq){
-
+        Map<String,Object> auth  =jwtService.requestAuthorization(request);
+        SendMessage<Integer> sendMessage = null;
+        HttpHeaders headers = new HttpHeaders();
+        NoticeReviewVO noticeReviewVO = null;
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
 
