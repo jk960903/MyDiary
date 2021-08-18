@@ -23,4 +23,10 @@ public class NoticeService {
     public void AddNotice(NoticeVO notice) {
         noticeRepository.AddNotice(notice);
     }
+
+    /*public List<NoticeVO> GetNoticeViewCount(Long seq){
+        List<NoticeVO>
+    }
+
+    public void PlusNotoiceView(int viewcount, Long idx);*/
 }

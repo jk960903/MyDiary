@@ -19,12 +19,12 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/NoticeDetail")
+@RequestMapping(value="api/noticedetail")
 public class NoticeDetailController {
     @Autowired(required = true)
     NoticeDetailService noticeDetailService;
 
-    @RequestMapping(value = "/GetNoticeDetail", method = RequestMethod.GET )
+    @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
     public ResponseEntity<SendMessage<List<NoticeDetailVO>>> GetNoticeDetail(HttpServletRequest request , Long notice_idx){
         //공지사항 관련은 로그인 하지 않아도 가능 할수 있도록 설계
         SendMessage<List<NoticeDetailVO>> sendMessage = null;
@@ -48,7 +48,7 @@ public class NoticeDetailController {
 
 
     }
-    @RequestMapping(value = "/AddNoticeDetail", method=RequestMethod.POST)
+    @RequestMapping(value = "/addNoticedetail", method=RequestMethod.POST)
     public ResponseEntity<SendMessage<Integer>> AddNoticeDetail(HttpServletRequest request, NoticeDetailVO noticeDetailVO){
         SendMessage<Integer> sendMessage = new SendMessage<>(1,StatusEnum.OK,"OK");
         HttpHeaders headers = new HttpHeaders();

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/VisitDetail")
+@RequestMapping(value="api/visitdetail")
 public class VisitDetailController {
     @Autowired(required = true)
     VisitDetailService visitDetailService;

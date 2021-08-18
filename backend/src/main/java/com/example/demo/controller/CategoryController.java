@@ -29,7 +29,7 @@ public class CategoryController {
     @Autowired(required = true)
     private CategoryService categoryService;
 
-    @RequestMapping(value ="/GetCategory")
+    /*@RequestMapping(value ="/getcategory")
     public ModelAndView GetCategoryView(HttpServletRequest request){
         Map<String, Object> map = jwtService.requestAuthorization(request);
         if(map == null){
@@ -40,7 +40,7 @@ public class CategoryController {
 
         }
         return new ModelAndView("");
-    }
+    }*/
     @RequestMapping(value="/getcategoryaction")
     public ResponseEntity<SendMessage<List<CategoryVO>>> GetCategoryAction(HttpServletRequest request){
         //로그인 되어있는지 확인

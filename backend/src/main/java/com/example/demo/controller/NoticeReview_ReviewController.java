@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/NoticeReview")
+@RequestMapping(value = "api/notice-review-review")
 public class NoticeReview_ReviewController {
 
 }

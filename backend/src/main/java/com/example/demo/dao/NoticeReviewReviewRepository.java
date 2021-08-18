@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReviewReviewVO,Long> {
 
-    @Query
+    /*@Query
     public List<NoticeReviewReviewVO> GetNoticeReviewReview();
 
     @Query
@@ -28,7 +28,7 @@ public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReview
     @Query
     @Transactional
     @Modifying
-    public void DeleteNoticeReviewReview();
+    public void DeleteNoticeReviewReview();*/
 
 }
 
