@@ -23,7 +23,12 @@ public interface NoticeReviewRepository extends JpaRepository<NoticeReviewVO,Lon
     public List<NoticeReviewVO> getNoticeReview(Long Seq);
 
     @Modifying
-    @Query(value = "update notice_review set notice_review.content = :#{#reviewVO.content} where notice_review.seq = :#{#reviewVO.seq}",nativeQuery = true)
+    @Query(value = "update notice_review set notice_review.content = :#{#reviewVO.content} where notice_review.idx = :#{#reviewVO.seq}",nativeQuery = true)
     @Transactional
     public void UpdateNoticeReview(NoticeReviewVO reviewVO);
+
+    @Modifying
+    @Query(value = "update notice_review set notice_review.isdeleted=9 where notice_review.idx = :idx",nativeQuery = true)
+    @Transactional
+    public void DeleteNoticeReview(Long idx);
 }

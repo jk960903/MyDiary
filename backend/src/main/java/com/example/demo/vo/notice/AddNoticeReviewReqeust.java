@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NoticeReviewReqeust {
+public class AddNoticeReviewReqeust {
     private Long notice_idx;
     private Long member_idx;
     private String content;

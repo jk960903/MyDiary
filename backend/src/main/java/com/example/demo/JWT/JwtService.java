@@ -92,7 +92,7 @@ public class JwtService {
    public Map<String,Object> requestAuthorization(HttpServletRequest request){
        String token = request.getHeader("Authorization");
        if(token==null) return null;
-       token = token.substring(7);
+       //token = token.substring(7);
        Map<String,Object> map = null;
        LinkedHashMap<String,Object> result =null;
        if(!token.equals("") && token !=null){

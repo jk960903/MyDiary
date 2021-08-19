@@ -12,15 +12,16 @@ import java.util.List;
 @Repository
 public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReviewReviewVO,Long> {
 
-    /*@Query
-    public List<NoticeReviewReviewVO> GetNoticeReviewReview();
+    @Query(value="select * from notice_review_reivew where notice_review_review.reviewidx = :reviewidx", nativeQuery = true)
+    public List<NoticeReviewReviewVO> GetNoticeReviewReview(Long reviewidx);
 
-    @Query
+    @Query(value="insert into notice_reveiew_review(reviewidx,memberidx,content,regdate,isdeleted) " +
+            "value(:#{#review.reviewidx},:#{#review.memberidx},:#{#review.content},now(),1)})",nativeQuery = true)
     @Transactional
     @Modifying
-    public NoticeReviewReviewVO AddNoticeReviewReview();
+    public NoticeReviewReviewVO AddNoticeReviewReview(NoticeReviewReviewVO review);
 
-    @Query
+    /*@Query
     @Transactional
     @Modifying
     public void ChangeNoticeReviewReview();

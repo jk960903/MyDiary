@@ -50,5 +50,16 @@ public class NoticeReviewService {
         }
         return 1;
     }
+    public int DeleteNoticeReview(Long idx){
+        //delete 시도
+        try{
+            noticeReviewRepository.DeleteNoticeReview(idx);
+        }catch(Exception e){
+            //실패
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
+    }
 
 }

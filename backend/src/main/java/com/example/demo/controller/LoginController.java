@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping(value = "/Login")
+@RequestMapping(value = "/api/login")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -109,6 +109,10 @@ public class LoginController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         String token = null;
         Cookie cookie= null;
+        if(loginRequestVO.getUserID()==null || loginRequestVO.getPassword()==null || loginRequestVO.getAutologin() ==null){
+            message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,"parameter error");
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }
         if(!jwt.equals("")){//토큰이있음
             Map<String,Object> map = jwtService.getUserID(jwt);
             if(map!=null){

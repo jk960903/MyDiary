@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
-import com.example.demo.dao.NoticeReviewRepository;
 import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
-import com.example.demo.vo.Category.CategoryVO;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
 import com.example.demo.vo.notice.ChangeNoticeReviewVO;
-import com.example.demo.vo.notice.NoticeReviewReqeust;
+import com.example.demo.vo.notice.AddNoticeReviewReqeust;
 import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +35,18 @@ public class NoticeReviewController {
     private JwtService jwtService;
 
     @RequestMapping(value = "/addnoticereview", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<Integer>> AddNoticeReview(HttpServletRequest request, NoticeReviewReqeust model){
+    public ResponseEntity<SendMessage<Integer>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
 
         Map<String, Object> auth= jwtService.requestAuthorization(request);
         SendMessage<Integer> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
         NoticeReviewVO noticeReviewVO=null;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        if(model.getNotice_idx() < 0 || model.getMember_idx()  < 0 ) return new ResponseEntity<>(null,headers, HttpStatus.BAD_REQUEST);
+        if(model.getNotice_idx() == null || model.getNotice_idx() < 0
+                || model.getMember_idx()  < 0 ) {
+            sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+            return new ResponseEntity<>(sendMessage,headers, HttpStatus.BAD_REQUEST);
+        }
         if(auth == null){
             sendMessage = new SendMessage<Integer>(401, StatusEnum.UNAUTHORIZED,"Token Expired");
             return new ResponseEntity<SendMessage<Integer>>(sendMessage , headers, HttpStatus.UNAUTHORIZED);
@@ -85,8 +86,8 @@ public class NoticeReviewController {
 
     }
 
-    @RequestMapping(value = "/changenoticereview", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> ChangeNoticeReview(HttpServletRequest request , ChangeNoticeReviewVO changeNoticeReviewVO){
+    @RequestMapping(value = "/updatenoticereview", method = RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , ChangeNoticeReviewVO changeNoticeReviewVO){
         Map<String,Object> auth  =jwtService.requestAuthorization(request);
         SendMessage<NoticeReviewVO> sendMessage = null;
         HttpHeaders headers = new HttpHeaders();
@@ -117,12 +118,27 @@ public class NoticeReviewController {
     }
 
     @RequestMapping(value ="deletenoticereview", method=RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request,Long notice_Seq){
+    public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request,Long idx){
         Map<String,Object> auth  =jwtService.requestAuthorization(request);
         SendMessage<Integer> sendMessage = null;
         HttpHeaders headers = new HttpHeaders();
         NoticeReviewVO noticeReviewVO = null;
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        int result = 0;
+        if(auth == null){
+            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"TOKEN EXPIRED");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        }
+        if(idx == null || idx < 0){
+            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        }
+        result = noticeReviewService.DeleteNoticeReview(idx);
+        if(result == -1){
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"INTERVAL SERVER ERROR");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        sendMessage=new SendMessage<>(1,StatusEnum.OK,"API OK");
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
