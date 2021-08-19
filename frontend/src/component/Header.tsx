@@ -32,7 +32,7 @@ export default class Header extends React.Component{
                         </UncontrolledDropdown>
                     </Nav>
                     <Nav className="ms-auto me-4">
-                        <LoginModal/>
+                        <LoginModal buttonLabel="Login"/>
                     </Nav>
                 </Navbar>
             </div>
