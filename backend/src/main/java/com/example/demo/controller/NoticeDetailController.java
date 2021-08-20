@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeDetailService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
@@ -17,12 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="api/noticedetail")
 public class NoticeDetailController {
     @Autowired(required = true)
     NoticeDetailService noticeDetailService;
+
+    @Autowired(required = true)
+    JwtService jwtService;
 
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
     public ResponseEntity<SendMessage<List<NoticeDetailVO>>> GetNoticeDetail(HttpServletRequest request , Long notice_idx){
@@ -48,11 +53,13 @@ public class NoticeDetailController {
 
 
     }
-    @RequestMapping(value = "/addNoticedetail", method=RequestMethod.POST)
+    @RequestMapping(value = "/addnoticedetail", method=RequestMethod.POST)
     public ResponseEntity<SendMessage<Integer>> AddNoticeDetail(HttpServletRequest request, NoticeDetailVO noticeDetailVO){
         SendMessage<Integer> sendMessage = new SendMessage<>(1,StatusEnum.OK,"OK");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        //Map<String,Object> auth = jwtService.requestAuthorization(request); // 관리자용 로그인을 위해 새로 만들거나 혹은 로그인 테이블에 칼럼을 추가해야할듯
+
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
