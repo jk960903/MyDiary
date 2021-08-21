@@ -16,6 +16,9 @@ public class NoticeReviewReviewService {
         List<NoticeReviewReviewVO> list= new ArrayList<>();
         try{
             list=noticeReviewReviewRepository.GetNoticeReviewReview(notice_reviewidx);
+            if(list.size() <=0){
+                list = new ArrayList<>();
+            }
         }catch(Exception e){
             list= null;
         }
