@@ -45,7 +45,7 @@ public class LoginController {
         return "Test Page";
     }
 
-    @RequestMapping(value ="/findbyiD" ,method = RequestMethod.GET)
+    @RequestMapping(value ="/findbyid" ,method = RequestMethod.GET)
     public MemberVO FindByID(@RequestParam String ID) {
         MemberVO result;
         try {

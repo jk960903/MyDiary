@@ -12,24 +12,26 @@ import java.util.List;
 @Repository
 public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReviewReviewVO,Long> {
 
-    @Query(value="select * from notice_review_reivew where notice_review_review.reviewidx = :reviewidx", nativeQuery = true)
+    @Query(value="select * from notice_review_reivew where notice_review_review.reviewidx = :reviewidx and notice_review_review.isdeleted=1", nativeQuery = true)
     public List<NoticeReviewReviewVO> GetNoticeReviewReview(Long reviewidx);
 
     @Query(value="insert into notice_reveiew_review(reviewidx,memberidx,content,regdate,isdeleted) " +
             "value(:#{#review.reviewidx},:#{#review.memberidx},:#{#review.content},now(),1)})",nativeQuery = true)
     @Transactional
     @Modifying
-    public NoticeReviewReviewVO AddNoticeReviewReview(NoticeReviewReviewVO review);
+    public void AddNoticeReviewReview(NoticeReviewReviewVO review);
 
-    /*@Query
+    @Query(value ="update notice_review_reivew set notice_review_review.content = :#{#request.contnet}, " +
+            "notice_review_reivew.regdate=now() where notice_review_review.idx = :#{#request.idx}",nativeQuery = true)
     @Transactional
     @Modifying
     public void ChangeNoticeReviewReview();
 
-    @Query
+    @Query(value="update notice_review_review set notice_review_review.isdeleted=9 where notice_review_review.idx=:idx",nativeQuery = true)
     @Transactional
     @Modifying
-    public void DeleteNoticeReviewReview();*/
+    public void DeleteNoticeReviewReview(Long idx);
+
 
 }
 

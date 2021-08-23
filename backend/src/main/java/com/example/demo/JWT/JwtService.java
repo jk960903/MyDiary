@@ -89,7 +89,7 @@ public class JwtService {
         return claimMap;
 
    }
-   public Map<String,Object> requestAuthorization(HttpServletRequest request){
+   public Map<String,Object> requestAuthorization(HttpServletRequest request) throws IllegalAccessException{
        String token = request.getHeader("Authorization");
        if(token==null) return null;
        //token = token.substring(7);
@@ -101,7 +101,7 @@ public class JwtService {
                result =(LinkedHashMap<String,Object>) map.get("member");
            }
        }else{
-               return null;
+               throw new IllegalAccessException("No Token Or Token is Expired");
        }
        return result;
    }

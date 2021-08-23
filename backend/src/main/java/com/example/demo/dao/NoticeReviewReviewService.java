@@ -25,9 +25,12 @@ public class NoticeReviewReviewService {
         return list;
     }
 
-    public NoticeReviewReviewVO AddNoticeReviewReview(NoticeReviewReviewVO review){
-        NoticeReviewReviewVO result= noticeReviewReviewRepository.AddNoticeReviewReview(review);
-
-        return result;
+    public NoticeReviewReviewVO AddNoticeReviewReview(NoticeReviewReviewVO review) throws Exception{
+        try{
+            noticeReviewReviewRepository.AddNoticeReviewReview(review);
+        }catch(Exception e){
+            throw new Exception("INTERVAL SERVERERROR");
+        }
+        return null;
     }
 }

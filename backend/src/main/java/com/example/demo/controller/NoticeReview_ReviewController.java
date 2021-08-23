@@ -53,30 +53,52 @@ public class NoticeReview_ReviewController {
 
     @RequestMapping(value="/addnotice_review_review")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> AddNoticeReviewReview(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
-        Map<String,Object> auth = jwtService.requestAuthorization(request);
+        Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        if(auth == null){
+        try{
+            auth=jwtService.requestAuthorization(request);
+            noticeReviewReviewVO.setMemberidx(Long.parseLong(((String)auth.get("memberidx"))));
+            if(noticeReviewReviewVO.getReviewidx() == null || noticeReviewReviewVO.getReviewidx() < 0 || noticeReviewReviewVO.getMemberidx() == null || noticeReviewReviewVO.getMemberidx() <=0) {
+                throw new NullPointerException("BAD REQEUST");
+            }
+            noticeReviewReviewService.AddNoticeReviewReview(noticeReviewReviewVO);
+        }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
             message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
             return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
-        }
-        noticeReviewReviewVO.setMemberidx(Long.parseLong(((String)auth.get("memberidx"))));
-        if(noticeReviewReviewVO.getReviewidx() == null || noticeReviewReviewVO.getReviewidx() < 0 || noticeReviewReviewVO.getMemberidx() == null || noticeReviewReviewVO.getMemberidx() <=0) {
+        }catch(NullPointerException e){// 파라미터 값 이상
             message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,"BADREQUEST");
             return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e) {
+            message = new SendMessage<>(null, StatusEnum.INTERNAL_SERVER_ERROOR, e.getMessage());
+            return new ResponseEntity<>(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        NoticeReviewReviewVO result=noticeReviewReviewService.AddNoticeReviewReview(noticeReviewReviewVO);
-        if(result == null){
-            message = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"INTERVALSERVERERROR");
-            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        message = new SendMessage<>(result,StatusEnum.OK,"OK");
+        message = new SendMessage<>(noticeReviewReviewVO,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
     @RequestMapping(value="/updatenotice_review_reivew")
-    public ResponseEntity<NoticeReviewReviewVO> UpdateNoticeReviewReviewVO(NoticeReviewReviewVO noticeReviewReviewVO){
+    public ResponseEntity<SendMessage<NoticeReviewReviewVO>> UpdateNoticeReviewReviewVO(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
+        Map<String,Object> auth;
+        SendMessage<NoticeReviewReviewVO> message;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        NoticeReviewReviewVO noticeReviewReviewVO1;
+        try{
+            auth = jwtService.requestAuthorization(request);
+
+
+        }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
+            return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
+        }catch(NullPointerException e){// 파라미터 값 이상
+            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,"BADREQUEST");
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e) {
+            message = new SendMessage<>(null, StatusEnum.INTERNAL_SERVER_ERROOR, e.getMessage());
+            return new ResponseEntity<>(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return null;
     }
 

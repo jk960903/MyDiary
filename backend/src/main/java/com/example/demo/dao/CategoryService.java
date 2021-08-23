@@ -13,23 +13,31 @@ public class CategoryService {
     private  CategoryRepository categoryRepository;
 
 
-    public void AddCategory(CategoryVO categoryVO){
-        categoryRepository.AddCategory(categoryVO);
+    public void AddCategory(CategoryVO categoryVO) throws Exception{
+        try{
+            categoryRepository.AddCategory(categoryVO);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+
+
     }
 
 
-    public CategoryVO DeleteCategory(Long categoryIdx){
+    public CategoryVO DeleteCategory(Long categoryIdx) throws IndexOutOfBoundsException,Exception{
         CategoryVO findCategoryVO = null;
         try{
             //먼저 삭제할 것이 있는지 확인해주고
             findCategoryVO = categoryRepository.findCategoryByIdx(categoryIdx).get(0);
-        }catch(NullPointerException e){
-            //없다면 null처리
-            findCategoryVO = null;
-        }finally {
             if(findCategoryVO != null){
                 categoryRepository.DeleteCategory(categoryIdx);
             }
+        }catch(IndexOutOfBoundsException e){
+            //없다면 null처리
+            throw new IndexOutOfBoundsException("NO DATA BAD REQUEST");
+        }catch(Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
         }
         return findCategoryVO;
     }

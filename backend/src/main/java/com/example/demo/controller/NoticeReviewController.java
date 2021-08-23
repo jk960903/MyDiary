@@ -5,8 +5,9 @@ import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
-import com.example.demo.vo.notice.ChangeNoticeReviewVO;
+import com.example.demo.vo.notice.ChangeNoticeReviewRequest;
 import com.example.demo.vo.notice.AddNoticeReviewReqeust;
+import com.example.demo.vo.notice.DeleteNoticeReviewRequest;
 import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,48 +36,51 @@ public class NoticeReviewController {
     private JwtService jwtService;
 
     @RequestMapping(value = "/addnoticereview", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<Integer>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
-
-        Map<String, Object> auth= jwtService.requestAuthorization(request);
-        SendMessage<Integer> sendMessage=null;
+    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
+        Map<String,Object> auth;
+        SendMessage<NoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO=null;
+        NoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        if(model.getNotice_idx() == null || model.getNotice_idx() < 0
-                || model.getMember_idx()  < 0 ) {
-            sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
-            return new ResponseEntity<>(sendMessage,headers, HttpStatus.BAD_REQUEST);
-        }
-        if(auth == null){
-            sendMessage = new SendMessage<Integer>(401, StatusEnum.UNAUTHORIZED,"Token Expired");
-            return new ResponseEntity<SendMessage<Integer>>(sendMessage , headers, HttpStatus.UNAUTHORIZED);
-        }
-        noticeReviewVO = NoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
-                .memberidx(model.getMember_idx()).isDeleted(Byte.parseByte("1")).build();
-        int queryresult = noticeReviewService.AddNoticeReview(noticeReviewVO);
-        if(queryresult <0) {
-            sendMessage = new SendMessage<Integer>(500,StatusEnum.INTERNAL_SERVER_ERROOR,"Intever ServerError");
+        int result=0;
+        try{
+            auth= jwtService.requestAuthorization(request);
+            model.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            model.CheckValidate();
+            noticeReviewVO = NoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
+                    .memberidx(model.getMember_idx()).isDeleted(Byte.parseByte("1")).build();
+            result= noticeReviewService.AddNoticeReview(noticeReviewVO);
+        } catch (IllegalAccessException e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        } catch(NullPointerException e){
+            sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        sendMessage = new SendMessage<>(200,StatusEnum.OK,"OK");
-        return new ResponseEntity<SendMessage<Integer>>(sendMessage,headers,HttpStatus.OK);
+        sendMessage = new SendMessage<>(noticeReviewVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
-
+    //단순 보이는 것이기 때문에 로그인 필요없음
     @RequestMapping(value ="/getnoticereview", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<List<NoticeReviewVO>>> GetNoticeReview(HttpServletRequest request, Long notice_seq){
-        Map<String, Object> auth = jwtService.requestAuthorization(request);
-        SendMessage<List<NoticeReviewVO>> sendMessage = null;
+        SendMessage<List<NoticeReviewVO>> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
         List<NoticeReviewVO> noticeReviewVOList = new ArrayList<>();
-        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        if(notice_seq <= 0){
-            return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try{
+            if(notice_seq <= 0){
+                return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
+            }
+            noticeReviewVOList = noticeReviewService.getNoticeReviewList(notice_seq);
+
+        } catch (Exception e) {
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if(auth == null){
-            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"Token Expired");
-            return new ResponseEntity<>(sendMessage,headers, HttpStatus.UNAUTHORIZED);
-        }
-        noticeReviewVOList = noticeReviewService.getNoticeReviewList(notice_seq);
+
         if(noticeReviewVOList == null){
             sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"SERVER ERROR ");
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,30 +91,28 @@ public class NoticeReviewController {
     }
 
     @RequestMapping(value = "/updatenoticereview", method = RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , ChangeNoticeReviewVO changeNoticeReviewVO){
-        Map<String,Object> auth  =jwtService.requestAuthorization(request);
-        SendMessage<NoticeReviewVO> sendMessage = null;
+    public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , ChangeNoticeReviewRequest changeNoticeReviewVO){
+        Map<String,Object> auth;
+        SendMessage<NoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO = null;
-        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-
-        if(auth == null){
-            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED, "TokenExpired");
+        NoticeReviewVO noticeReviewVO;
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        int result=0;
+        try {
+            auth = jwtService.requestAuthorization(request);
+            changeNoticeReviewVO.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            changeNoticeReviewVO.CheckValidate();
+            noticeReviewVO = noticeReviewService.getNoticeReview(changeNoticeReviewVO.getReview_idx());
+            noticeReviewVO.setContent(changeNoticeReviewVO.getContent());
+            result= noticeReviewService.UpdateNoticeReview(noticeReviewVO);
+        } catch (IllegalAccessException e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
-        }
-        if(changeNoticeReviewVO.getNotice_seq() < 0 || changeNoticeReviewVO.getReview_seq() < 0 || changeNoticeReviewVO.getMember_seq() <0){
-            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+        } catch(NullPointerException e){
+            sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
-        }
-        noticeReviewVO = noticeReviewService.getNoticeReview(changeNoticeReviewVO.getReview_seq());
-        if(noticeReviewVO == null){
-            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQEUST");
-            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
-        }
-        noticeReviewVO.setContent(changeNoticeReviewVO.getContent());
-        int update = noticeReviewService.UpdateNoticeReview(noticeReviewVO);
-        if(update == -1 ){
-            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR , "INTERVAL SERVER ERROR");
+        } catch (Exception e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         sendMessage = new SendMessage<>(noticeReviewVO,StatusEnum.OK,"OK");
@@ -118,24 +120,27 @@ public class NoticeReviewController {
     }
 
     @RequestMapping(value ="deletenoticereview", method=RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request,Long idx){
-        Map<String,Object> auth  =jwtService.requestAuthorization(request);
-        SendMessage<Integer> sendMessage = null;
+    public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request, DeleteNoticeReviewRequest model){
+        Map<String,Object> auth;
+        SendMessage<Integer> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO = null;
+        NoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        int result = 0;
-        if(auth == null){
-            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"TOKEN EXPIRED");
+        int result=0;
+        try{
+            auth=jwtService.requestAuthorization(request);
+            model.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            model.CheckValidate();
+            noticeReviewVO = noticeReviewService.getNoticeReview(model.getReview_idx());
+            result= noticeReviewService.DeleteNoticeReview(noticeReviewVO.getIdx());
+        } catch (IllegalAccessException e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
-        }
-        if(idx == null || idx < 0){
-            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+        } catch(NullPointerException e){
+            sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
-        }
-        result = noticeReviewService.DeleteNoticeReview(idx);
-        if(result == -1){
-            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"INTERVAL SERVER ERROR");
+        } catch (Exception e) {
+            sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         sendMessage=new SendMessage<>(1,StatusEnum.OK,"API OK");
