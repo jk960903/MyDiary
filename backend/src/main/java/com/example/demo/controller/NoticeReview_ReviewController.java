@@ -6,8 +6,6 @@ import com.example.demo.dao.NoticeReviewReviewService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
-import com.example.demo.vo.notice.NoticeReviewVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,14 +22,20 @@ import java.util.Map;
 @RequestMapping(value = "api/notice-review-review")
 public class NoticeReview_ReviewController {
 
-    @Autowired(required = true)
-    NoticeReviewReviewService noticeReviewReviewService;
 
-    @Autowired(required = true)
-    JwtService jwtService;
+    private final NoticeReviewReviewService noticeReviewReviewService;
+
+
+    private final JwtService jwtService;
+
+    public NoticeReview_ReviewController(NoticeReviewReviewService noticeReviewReviewService, JwtService jwtService) {
+        this.noticeReviewReviewService = noticeReviewReviewService;
+        this.jwtService = jwtService;
+    }
+
     @RequestMapping(value ="/getnotice_reivew_review_list")
     public ResponseEntity<SendMessage<List<NoticeReviewReviewVO>>> getNoticeReviewReviewList(Long notice_review_idx){
-        List<NoticeReviewReviewVO> noticeReviewReviewVOList= noticeReviewReviewService.GetNoticeReviewReview(notice_review_idx);
+        List<NoticeReviewReviewVO> noticeReviewReviewVOList= noticeReviewReviewService.GetNoticeReviewReviewList(notice_review_idx);
         SendMessage<List<NoticeReviewReviewVO>> message;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
@@ -60,9 +64,8 @@ public class NoticeReview_ReviewController {
         try{
             auth=jwtService.requestAuthorization(request);
             noticeReviewReviewVO.setMemberidx(Long.parseLong(((String)auth.get("memberidx"))));
-            if(noticeReviewReviewVO.getReviewidx() == null || noticeReviewReviewVO.getReviewidx() < 0 || noticeReviewReviewVO.getMemberidx() == null || noticeReviewReviewVO.getMemberidx() <=0) {
-                throw new NullPointerException("BAD REQEUST");
-            }
+            noticeReviewReviewVO.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            noticeReviewReviewVO.CheckValidate();
             noticeReviewReviewService.AddNoticeReviewReview(noticeReviewReviewVO);
         }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
             message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
@@ -84,11 +87,14 @@ public class NoticeReview_ReviewController {
         SendMessage<NoticeReviewReviewVO> message;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        NoticeReviewReviewVO noticeReviewReviewVO1;
+        NoticeReviewReviewVO findnoticeReviewReviewVO;
         try{
             auth = jwtService.requestAuthorization(request);
-
-
+            noticeReviewReviewVO.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            noticeReviewReviewVO.CheckValidate();
+            findnoticeReviewReviewVO=noticeReviewReviewService.GetNoticeReviewReview(noticeReviewReviewVO.getIdx());
+            findnoticeReviewReviewVO.setContent(noticeReviewReviewVO.getContent());
+            noticeReviewReviewService.UpdateNoticeReviewReview(findnoticeReviewReviewVO);
         }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
             message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
             return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);

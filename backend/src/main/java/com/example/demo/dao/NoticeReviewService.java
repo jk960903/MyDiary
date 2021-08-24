@@ -10,8 +10,13 @@ import java.util.List;
 
 @Service
 public class NoticeReviewService {
+
+    private NoticeReviewRepository noticeReviewRepository;
+
     @Autowired
-    NoticeReviewRepository noticeReviewRepository;
+    public NoticeReviewService(NoticeReviewRepository noticeReviewRepository){
+        this.noticeReviewRepository=noticeReviewRepository;
+    }
 
     public int AddNoticeReview(NoticeReviewVO noticeReviewVO) throws Exception{
         try{

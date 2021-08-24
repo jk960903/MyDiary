@@ -9,9 +9,13 @@ import java.util.List;
 @Service
 public class NoticeService {
 
-    @Autowired(required=true)
+
     private NoticeRepository noticeRepository;
 
+    @Autowired
+    public NoticeService(NoticeRepository noticeRepository){
+        this.noticeRepository=noticeRepository;
+    }
     public List<NoticeVO> GetNoticeList(){
         return noticeRepository.GetNoticeList();
     }

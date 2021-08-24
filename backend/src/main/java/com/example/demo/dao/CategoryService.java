@@ -9,9 +9,12 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    @Autowired(required = true)
-    private  CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
+    @Autowired
+    public CategoryService(CategoryRepository categoryRepository){
+        this.categoryRepository=categoryRepository;
+    }
 
     public void AddCategory(CategoryVO categoryVO) throws Exception{
         try{

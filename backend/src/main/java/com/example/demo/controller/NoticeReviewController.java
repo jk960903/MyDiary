@@ -9,7 +9,6 @@ import com.example.demo.vo.notice.ChangeNoticeReviewRequest;
 import com.example.demo.vo.notice.AddNoticeReviewReqeust;
 import com.example.demo.vo.notice.DeleteNoticeReviewRequest;
 import com.example.demo.vo.notice.NoticeReviewVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,13 +26,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/noticereview")
 public class NoticeReviewController {
-    @Autowired(required = true)
-    private NoticeService noticeService;
+    private final NoticeService noticeService;
 
-    @Autowired(required = true)
-    private NoticeReviewService noticeReviewService;
-    @Autowired(required = true)
-    private JwtService jwtService;
+    private final NoticeReviewService noticeReviewService;
+
+    private final JwtService jwtService;
+
+    public NoticeReviewController(NoticeService noticeService, NoticeReviewService noticeReviewService, JwtService jwtService) {
+        this.noticeService = noticeService;
+        this.noticeReviewService = noticeReviewService;
+        this.jwtService = jwtService;
+    }
 
     @RequestMapping(value = "/addnoticereview", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
@@ -80,7 +83,6 @@ public class NoticeReviewController {
             sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         if(noticeReviewVOList == null){
             sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"SERVER ERROR ");
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);

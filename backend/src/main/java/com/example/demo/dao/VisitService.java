@@ -5,6 +5,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VisitService {
-    @Autowired(required=true)
-    VisitRepository visitRepository;
+
+    private VisitRepository visitRepository;
+
+    @Autowired
+    public VisitService(VisitRepository visitRepository){
+        this.visitRepository = visitRepository;
+    }
 }

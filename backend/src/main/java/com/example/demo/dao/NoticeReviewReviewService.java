@@ -9,10 +9,15 @@ import java.util.List;
 
 @Service
 public class NoticeReviewReviewService {
-    @Autowired(required = true)
-    NoticeReviewReviewRepository noticeReviewReviewRepository;
 
-    public List<NoticeReviewReviewVO> GetNoticeReviewReview(Long notice_reviewidx){
+    private NoticeReviewReviewRepository noticeReviewReviewRepository;
+
+
+    @Autowired
+    public NoticeReviewReviewService(NoticeReviewReviewRepository noticeReviewReviewRepository){
+        this.noticeReviewReviewRepository = noticeReviewReviewRepository;
+    }
+    public List<NoticeReviewReviewVO> GetNoticeReviewReviewList(Long notice_reviewidx){
         List<NoticeReviewReviewVO> list= new ArrayList<>();
         try{
             list=noticeReviewReviewRepository.GetNoticeReviewReview(notice_reviewidx);
@@ -25,6 +30,18 @@ public class NoticeReviewReviewService {
         return list;
     }
 
+    public NoticeReviewReviewVO GetNoticeReviewReview(Long idx) throws NullPointerException,Exception{
+        NoticeReviewReviewVO result;
+        try{
+            result=noticeReviewReviewRepository.GetNoticeReviewReview(idx).get(0);
+        }catch(NullPointerException e){
+            throw new NullPointerException("BAD REQUEST");
+        }catch(Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+        return result;
+    }
+
     public NoticeReviewReviewVO AddNoticeReviewReview(NoticeReviewReviewVO review) throws Exception{
         try{
             noticeReviewReviewRepository.AddNoticeReviewReview(review);
@@ -32,5 +49,13 @@ public class NoticeReviewReviewService {
             throw new Exception("INTERVAL SERVERERROR");
         }
         return null;
+    }
+
+    public void UpdateNoticeReviewReview(NoticeReviewReviewVO noticeReviewReviewVO) throws Exception{
+        try{
+            noticeReviewReviewRepository.UpdateNoticeReviewReview(noticeReviewReviewVO);
+        }catch (Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
     }
 }

@@ -6,7 +6,6 @@ import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
 import com.example.demo.vo.notice.NoticeDetailVO;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,16 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value="api/noticedetail")
 public class NoticeDetailController {
-    @Autowired(required = true)
-    NoticeDetailService noticeDetailService;
 
-    @Autowired(required = true)
-    JwtService jwtService;
+    private final NoticeDetailService noticeDetailService;
+
+
+    private final JwtService jwtService;
+
+    public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService) {
+        this.noticeDetailService = noticeDetailService;
+        this.jwtService = jwtService;
+    }
 
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
     public ResponseEntity<SendMessage<List<NoticeDetailVO>>> GetNoticeDetail(HttpServletRequest request , Long notice_idx){

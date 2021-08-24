@@ -9,8 +9,14 @@ import java.util.List;
 
 @Service
 public class NoticeDetailService {
-    @Autowired(required=true)
+
     private NoticeDetailRepository noticeDetailRepository;
+
+    @Autowired
+    public NoticeDetailService (NoticeDetailRepository noticeDetailRepository){
+        this.noticeDetailRepository=noticeDetailRepository;
+    }
+
 
 
     public List<NoticeDetailVO> GetNoticeDetail(Long idx) {

@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.JWT.JwtService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.SendMessage;
-import io.jsonwebtoken.*;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,32 +11,27 @@ import java.util.Map;
 import com.example.demo.vo.MemberVO;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.LoginRequestVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 @RestController
-@RequestMapping(value = "/api/login")
+@RequestMapping(value="/api/login")
 public class LoginController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final MemberService memberService;
+    private final JwtService jwtService;
 
-    @Autowired(required = true)
-    MemberService memberService;
-
-    @Autowired(required = true)
-    JwtService jwtService;
+    public LoginController(MemberService memberService, JwtService jwtService) {
+        this.memberService = memberService;
+        this.jwtService = jwtService;
+    }
 
     @RequestMapping(value="/")
     public String Test() {
@@ -75,32 +68,9 @@ public class LoginController {
         memberVO.setIsdeleted(Byte.parseByte("1"));
         return memberService.MakeAccount(memberVO);
     }
-
-    //@RequestMapping(value = "/Login", method = RequestMethod.GET)
-    /*public ModelAndView Login(@CookieValue(value="jwttoken",defaultValue ="",required = true) String jwt,
-                              HttpServletRequest request) {
-        Map<String,Object> login = jwtService.getUserID(jwt);
-        String id = null , pwd =null;
-        MemberVO User = null;
-        Cookie cookie;
-        if(login != null){
-            id = login.get("ID").toString();
-            pwd = login.get("pwd").toString();
-            try{
-                User = memberService.Login(id,pwd).get(0);
-            }
-            catch(Exception e){
-                return new ModelAndView("login");
-            }
-            return new ModelAndView("main");
-        }
-        // 토큰 만료 혹은 로그아웃되어있는 상태
-        return new ModelAndView("login");
-    }*/
-
     @RequestMapping(value = "/loginaction", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,
-                                                                       LoginRequestVO loginRequestVO,
+                                                                        LoginRequestVO loginRequestVO,
                                                                         HttpServletResponse response){
 
         MemberVO memberVO;
@@ -115,7 +85,7 @@ public class LoginController {
         }
         if(!jwt.equals("")){//토큰이있음
             Map<String,Object> map = jwtService.getUserID(jwt);
-            if(map!=null){
+            if(map==null){
                 message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃");
                 cookie = new Cookie("jwttoken","");
                 cookie.setPath("/");
@@ -144,12 +114,13 @@ public class LoginController {
                 return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            message=new SendMessage<>(token,StatusEnum.OK,"OK");
+
 
 
         }
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        message=new SendMessage<>(token,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 

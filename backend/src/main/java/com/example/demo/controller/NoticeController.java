@@ -2,18 +2,28 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeService;
+import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.NoticeRequest;
+import com.example.demo.vo.SendMessage;
+import com.example.demo.vo.notice.NoticeReviewReviewVO;
 import com.example.demo.vo.notice.NoticeVO;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="api/notice")
@@ -26,10 +36,6 @@ public class NoticeController {
     @Autowired(required = true)
     JwtService jwtService;
 
-    /*@RequestMapping(value="/notice")//공지사항들만 보여주는 리스트
-    public ModelAndView GetNoticeList() {
-        return new ModelAndView("Notice");
-    }*/
 
     @RequestMapping(value="/noticeget", method = RequestMethod.GET)
     public List<NoticeVO> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
@@ -43,9 +49,28 @@ public class NoticeController {
         return list;
     }
 
-    /*@RequestMapping(value="/oticeAdd")
-    //공지사항 작성 페이지로 글을 작성하는것 NoticeAction으로 처리할땐 페이지에서 만약 들어가지더라도 권한레벨? 을 처리하는게 좋을듯 싶습니다.
-    public ModelAndView NoticeAddPage(){
-        return new ModelAndView("NoticeAddPage");
-    }*/
+    @RequestMapping(value="addnotice",method=RequestMethod.POST)
+    public ResponseEntity<SendMessage<NoticeVO>> AddNotice(NoticeVO noticeVO,HttpServletRequest request){
+        Map<String,Object> auth;
+        SendMessage<NoticeVO> message;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try{
+            auth=jwtService.requestAuthorization(request);
+            noticeVO.CheckValidate();
+            noticeService.AddNotice(noticeVO);
+        } catch (IllegalAccessException e) {
+            message= new SendMessage<>(null, StatusEnum.UNAUTHORIZED,e.getMessage());
+            return new ResponseEntity<>(message,headers, HttpStatus.UNAUTHORIZED);
+        }catch(Exception e){
+            message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        message = new SendMessage<>(noticeVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
+
+    }
+
+
 }

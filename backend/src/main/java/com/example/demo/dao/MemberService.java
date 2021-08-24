@@ -12,10 +12,12 @@ import java.util.List;
 @Service
 public class MemberService  {
 
-    @Autowired(required=true)
+
     private MemberRepository memberRepository;
 
-
+    public MemberService(MemberRepository memberRepository){
+        this.memberRepository = memberRepository;
+    }
     public List<MemberVO> findByID(String id) {
         return memberRepository.findByID(id);
     }
