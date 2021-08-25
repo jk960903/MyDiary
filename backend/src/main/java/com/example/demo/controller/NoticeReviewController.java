@@ -38,7 +38,7 @@ public class NoticeReviewController {
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value = "/addnoticereview", method = RequestMethod.POST)
+    @RequestMapping(value = "/addnotice-review", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
         Map<String,Object> auth;
         SendMessage<NoticeReviewVO> sendMessage=null;
@@ -67,7 +67,7 @@ public class NoticeReviewController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
     //단순 보이는 것이기 때문에 로그인 필요없음
-    @RequestMapping(value ="/getnoticereview", method = RequestMethod.GET)
+    @RequestMapping(value ="/getnotice-review", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<List<NoticeReviewVO>>> GetNoticeReview(HttpServletRequest request, Long notice_seq){
         SendMessage<List<NoticeReviewVO>> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
@@ -92,7 +92,7 @@ public class NoticeReviewController {
 
     }
 
-    @RequestMapping(value = "/updatenoticereview", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updatenotice-review", method = RequestMethod.PATCH)
     public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , ChangeNoticeReviewRequest changeNoticeReviewVO){
         Map<String,Object> auth;
         SendMessage<NoticeReviewVO> sendMessage=null;
@@ -121,7 +121,7 @@ public class NoticeReviewController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value ="deletenoticereview", method=RequestMethod.PATCH)
+    @RequestMapping(value ="deletenotice-review", method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request, DeleteNoticeReviewRequest model){
         Map<String,Object> auth;
         SendMessage<Integer> sendMessage=null;

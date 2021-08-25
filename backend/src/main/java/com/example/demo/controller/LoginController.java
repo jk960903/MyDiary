@@ -50,7 +50,7 @@ public class LoginController {
         return null;
     }
 
-    @RequestMapping(value ="/findByemail", method = RequestMethod.GET)
+    @RequestMapping(value ="/findbyemail", method = RequestMethod.GET)
     public MemberVO FindByEmail(@RequestParam String email) {
         MemberVO result;
         try {
@@ -64,9 +64,23 @@ public class LoginController {
     }
 
     @RequestMapping(value ="/makeaccount", method = RequestMethod.POST)
-    public Integer MakeAccount(MemberVO memberVO) {
-        memberVO.setIsdeleted(Byte.parseByte("1"));
-        return memberService.MakeAccount(memberVO);
+    public ResponseEntity<SendMessage<MemberVO>> MakeAccount(MemberVO memberVO) {
+        SendMessage<MemberVO> message = null;
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try{
+            memberVO.CheckValidate();
+            memberVO.setIsdeleted(Byte.parseByte("1"));
+            memberService.MakeAccount(memberVO);
+        }catch(NullPointerException e){
+            message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            message= new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        message=new SendMessage<>(memberVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
     @RequestMapping(value = "/loginaction", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,
@@ -124,7 +138,7 @@ public class LoginController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/TestJwt")
+    /*@RequestMapping(value="/testjwt")
     public String TestJwt(LoginRequestVO model,
                           @CookieValue(value="tempjwt",defaultValue = "", required =true) String jwt,
                           HttpServletResponse response){
@@ -145,5 +159,5 @@ public class LoginController {
         }
 
         return jwt;
-    }
+    }*/
 }

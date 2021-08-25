@@ -37,10 +37,10 @@ public class NoticeController {
     @RequestMapping(value="/noticeget", method = RequestMethod.GET)
     public List<NoticeVO> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
         List<NoticeVO> list;
-        if(request.getEmail().equals("")) {
+        if(request.getSearch()==null||request.getSearch().equals("")) {
             list=noticeService.GetNoticeList();
         }else {
-            list=noticeService.GetSearchNoticeList(request.getEmail());
+            list=noticeService.GetSearchNoticeList(request.getSearch());
         }
 
         return list;

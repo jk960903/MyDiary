@@ -27,8 +27,13 @@ public class MemberService  {
     }
 
 
-    public Integer MakeAccount(MemberVO member) {
-        return memberRepository.MakeAccount(member);
+    public Integer MakeAccount(MemberVO member) throws Exception {
+        try{
+            memberRepository.MakeAccount(member);
+        }catch (Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+        return 1;
     }
 
     public List<MemberVO> Login(String ID, String password) {

@@ -33,7 +33,7 @@ public class NoticeReview_ReviewController {
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value ="/getnotice_reivew_review_list")
+    @RequestMapping(value ="/getnotice-reivew-review-list")
     public ResponseEntity<SendMessage<List<NoticeReviewReviewVO>>> getNoticeReviewReviewList(Long notice_review_idx){
         List<NoticeReviewReviewVO> noticeReviewReviewVOList= noticeReviewReviewService.GetNoticeReviewReviewList(notice_review_idx);
         SendMessage<List<NoticeReviewReviewVO>> message;
@@ -81,7 +81,7 @@ public class NoticeReview_ReviewController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/updatenotice_review_reivew")
+    @RequestMapping(value="/updatenotice-review-reivew")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> UpdateNoticeReviewReviewVO(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
         Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;
@@ -108,7 +108,7 @@ public class NoticeReview_ReviewController {
         return null;
     }
 
-    @RequestMapping(value="/deletenotice_review_review")
+    @RequestMapping(value="/deletenotice-review-review")
     public ResponseEntity<NoticeReviewReviewVO> DeleteNoticeReviewReviewVO(NoticeReviewReviewVO noticeReviewReviewVO){
         return null;
     }

@@ -28,7 +28,7 @@ public interface NoticeDetailRepository extends JpaRepository<NoticeDetailVO,Lon
     @Query(value = "insert into notice_detail(content,noticeidx,imageurl)"
             + " value(:#{#notice_detail.content}, :#{notice_detail.noticeidx , :#{#notice_detail.imageurl});",nativeQuery = true)
     @Transactional
-    public void InsertNoticeDetail(NoticeDetailVO notice_detail);
+    public void AddNoticeDetail(NoticeDetailVO notice_detail);
 
 
 }

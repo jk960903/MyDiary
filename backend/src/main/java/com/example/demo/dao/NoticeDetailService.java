@@ -31,8 +31,12 @@ public class NoticeDetailService {
         return noticeDetailVO;
     }
 
-    public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) {
-        noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+    public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) throws Exception{
+        try{
+            noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+        }catch (Exception e){
+            throw new Exception("Interver SERVER ERROR");
+        }
 
     }
 
@@ -40,7 +44,13 @@ public class NoticeDetailService {
         noticeDetailRepository.UpdateNoticeDetail(noticeDetail);
     }
 
-    public void InsertNoticeDetail(NoticeDetailVO noteiceDetail) {
-        noticeDetailRepository.InsertNoticeDetail(noteiceDetail);
+    public void AddNoticeDetail(NoticeDetailVO noteiceDetail) throws Exception{
+        try{
+            noticeDetailRepository.AddNoticeDetail(noteiceDetail);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+
     }
 }
