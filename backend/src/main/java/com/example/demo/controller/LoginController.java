@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.vo.Enum.StatusEnum;
-import com.example.demo.vo.SendMessage;
+import com.example.demo.SendMessage.SendMessage;
 
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;

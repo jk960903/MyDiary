@@ -70,6 +70,8 @@ public class JwtService {
    }*/
     public Map<String,Object> getUserID(String token){
         Map<String,Object> claimMap =null;
+        String temp = token.substring(0,7);
+        if(temp.equals("Bearer ")) token = token.substring(7);
         try{
             Claims claims = Jwts.parser()
                     .setSigningKey(key.getBytes("UTF-8"))

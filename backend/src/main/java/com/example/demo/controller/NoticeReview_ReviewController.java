@@ -4,7 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeReviewReviewService;
 import com.example.demo.vo.Enum.StatusEnum;
-import com.example.demo.vo.SendMessage;
+import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -19,8 +19,16 @@ public class NoticeDetailService {
 
 
 
-    public List<NoticeDetailVO> GetNoticeDetail(Long idx) {
-        return noticeDetailRepository.GetNoticeDetail(idx);
+    public NoticeDetailVO GetNoticeDetail(Long idx) throws NullPointerException,Exception{
+        NoticeDetailVO noticeDetailVO =null;
+        try{
+            noticeDetailRepository.GetNoticeDetail(idx).get(0);
+        }catch(IndexOutOfBoundsException e){
+            throw new NullPointerException("NO DATA");
+        }catch(Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+        return noticeDetailVO;
     }
 
     public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) {

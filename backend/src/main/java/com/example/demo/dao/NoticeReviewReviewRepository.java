@@ -24,8 +24,8 @@ public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReview
     @Modifying
     public void AddNoticeReviewReview(NoticeReviewReviewVO review);
 
-    @Query(value ="update notice_review_reivew set notice_review_review.content = :#{#request.contnet}, " +
-            "notice_review_reivew.regdate=now() where notice_review_review.idx = :#{#request.idx}",nativeQuery = true)
+    @Query(value ="update notice_review_reivew set notice_review_review.content = :#{#noticeReviewReviewVO.contnet}, " +
+            "notice_review_reivew.regdate=now() where notice_review_review.idx = :#{#noticeReveiewReivewVO.idx}",nativeQuery = true)
     @Transactional
     @Modifying
     public void UpdateNoticeReviewReview(NoticeReviewReviewVO noticeReviewReviewVO);

@@ -1,4 +1,4 @@
-package com.example.demo.vo;
+package com.example.demo.SendMessage;
 
 import com.example.demo.vo.Enum.StatusEnum;
 import lombok.*;
