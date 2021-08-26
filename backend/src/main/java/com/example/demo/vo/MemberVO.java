@@ -50,10 +50,12 @@ public class MemberVO{
 
 
 	public boolean CheckValidate() throws NullPointerException{
-		if(ID==null || pwd == null || email == null || phone == null || name == null || sex <=0 || isdeleted <0) throw new NullPointerException("BAD REQEUST");
+		if(ID==null || pwd == null || email == null || phone == null || name == null || sex <=0 || isdeleted <0) throw new NullPointerException("BAD REQUEST");
 		return true;
 	}
 
+
+	//유효아이디인지 확인메서드
 	public boolean IsValidateID(){
 		Pattern pattern = Pattern.compile("[ !@#$%^&*(),.?\\\":{}|<>]");
 		Matcher matcher = pattern.matcher(ID);
@@ -62,4 +64,5 @@ public class MemberVO{
 		}
 		return true;
 	}
+
 }

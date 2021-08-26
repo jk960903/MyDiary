@@ -40,5 +40,31 @@ public class MemberService  {
         return memberRepository.Login(ID, password);
     }
 
+    public boolean isDuplicated(String ID) throws Exception{
+        MemberVO memberVO;
+        try{
+            memberVO=memberRepository.DuplicateID(ID).get(0);
+        }catch(IndexOutOfBoundsException e){
+            //검색 결과가 나오지 않는다면 indexoutofbounds 가 발생한다. 즉 중복되지 않았다
+            return true;
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+        //익셉션이 발생하지 않는다면 중복
+        return false;
+    }
+
+    public boolean isDuplicatedEmail(String email) throws Exception{
+        MemberVO memberVO;
+        try{
+            memberVO = memberRepository.DuplicateEmail(email).get(0);
+        }catch(IndexOutOfBoundsException e){
+            return true;
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+        return false;
+    }
+
 
 }

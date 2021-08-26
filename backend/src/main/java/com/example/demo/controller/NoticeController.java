@@ -50,7 +50,7 @@ public class NoticeController {
     공지사항 추가 api
 
      */
-    @RequestMapping(value="addnotice",method=RequestMethod.POST)
+    @RequestMapping(value="/addnotice",method=RequestMethod.POST)
     public ResponseEntity<SendMessage<NoticeVO>> AddNotice(NoticeVO noticeVO,HttpServletRequest request){
         Map<String,Object> auth;
         SendMessage<NoticeVO> message;
@@ -63,7 +63,11 @@ public class NoticeController {
         } catch (IllegalAccessException e) {
             message= new SendMessage<>(null, StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(message,headers, HttpStatus.UNAUTHORIZED);
-        }catch(Exception e){
+        }catch(NullPointerException e){
+            message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e){
             message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,6 +76,17 @@ public class NoticeController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
 
     }
+
+    /*@RequestMapping(value="/updatenoticeview" ,method=RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<Integer>> UpdateNoticeCountView(Long idx){
+        SendMessage<Integer> message;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        NoticeVO noticeVO = null;
+        try{
+
+        }
+    }*/
 
 
 }

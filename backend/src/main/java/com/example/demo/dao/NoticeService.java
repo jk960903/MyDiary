@@ -28,9 +28,23 @@ public class NoticeService {
         noticeRepository.AddNotice(notice);
     }
 
-    /*public List<NoticeVO> GetNoticeViewCount(Long seq){
-        List<NoticeVO>
+    public NoticeVO GetNoticeViewCount(Long idx)throws IndexOutOfBoundsException,Exception{
+        NoticeVO noticeVO = null;
+        try{
+            noticeVO = noticeRepository.GetNoticeViewCount(idx).get(0);
+        }catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("BAD REQUEST");
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+        return noticeVO;
     }
 
-    public void PlusNotoiceView(int viewcount, Long idx);*/
+    public void PlusNotoiceView(int viewcount, Long idx) throws Exception {
+        try{
+            noticeRepository.PlusNotoiceView(viewcount+1,idx);
+        }catch(Exception e){
+            throw new Exception ("INTERNAL SERVER ERROR");
+        }
+    }
 }
