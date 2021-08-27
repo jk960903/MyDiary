@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.UpdateNoticeCountRequest;
+import com.example.demo.dto.UpdateNoticeViewCountRequest;
 import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +42,9 @@ public class NoticeService {
         return noticeVO;
     }
 
-    public void PlusNotoiceView(int viewcount, Long idx) throws Exception {
+    public void UpdateNotoiceView(UpdateNoticeCountRequest updateNoticeCountRequest) throws Exception {
         try{
-            noticeRepository.PlusNotoiceView(viewcount+1,idx);
+            noticeRepository.UpdateNotoiceView(updateNoticeCountRequest);
         }catch(Exception e){
             throw new Exception ("INTERNAL SERVER ERROR");
         }

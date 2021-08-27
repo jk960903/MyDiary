@@ -6,7 +6,7 @@ import com.example.demo.dao.NoticeService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dto.ChangeNoticeReviewRequest;
-import com.example.demo.dto.AddNoticeReviewReqeust;
+import com.example.demo.dto.AddNoticeReviewRequest;
 import com.example.demo.dto.DeleteNoticeReviewRequest;
 import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.http.HttpHeaders;
@@ -39,7 +39,7 @@ public class NoticeReviewController {
     }
 
     @RequestMapping(value = "/addnotice-review", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewReqeust model){
+    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewRequest model){
         Map<String,Object> auth;
         SendMessage<NoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();

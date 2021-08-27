@@ -31,7 +31,6 @@ public class JwtService {
     //하드코드 되어있어서 수정이 필요합니다.
     private final String key ="thisisjung9keyipnida";
 
-
     //토큰생성성
    public String createLoginToken(MemberVO member,int auto){
         long curTime = System.currentTimeMillis();

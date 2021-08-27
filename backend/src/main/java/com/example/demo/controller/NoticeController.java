@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeService;
+import com.example.demo.dto.UpdateNoticeCountRequest;
+import com.example.demo.dto.UpdateNoticeViewCountRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.NoticeRequest;
 import com.example.demo.SendMessage.SendMessage;
@@ -77,16 +79,32 @@ public class NoticeController {
 
     }
 
-    /*@RequestMapping(value="/updatenoticeview" ,method=RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<Integer>> UpdateNoticeCountView(Long idx){
+    @RequestMapping(value="/updatenoticeview" ,method=RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<Integer>> UpdateNoticeCountView( UpdateNoticeCountRequest updateNoticeCountRequest){
         SendMessage<Integer> message;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> auth;
         NoticeVO noticeVO = null;
         try{
-
+            if(updateNoticeCountRequest.checkValidate()){
+                noticeVO=noticeService.GetNoticeViewCount(updateNoticeCountRequest.getIdx());
+                updateNoticeCountRequest.setViewCount(noticeVO.getViewcount()+1);
+                noticeService.UpdateNotoiceView(updateNoticeCountRequest);
+            }
+        }catch(NullPointerException e){
+            message =new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(IndexOutOfBoundsException e){
+            message=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            message= new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+        message = new SendMessage<>(noticeVO.getViewcount()+1,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
+    }
 
 
 }

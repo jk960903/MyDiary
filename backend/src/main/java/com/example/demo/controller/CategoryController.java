@@ -21,11 +21,15 @@ import java.util.Map;
 @RestController
 @RequestMapping(value="/api/category")
 public class CategoryController {
-    @Autowired(required = true)
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     @Autowired(required = true)
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryController(JwtService jwtService, CategoryService categoryService) {
+        this.jwtService = jwtService;
+        this.categoryService = categoryService;
+    }
 
     /*@RequestMapping(value ="/getcategory")
     public ModelAndView GetCategoryView(HttpServletRequest request){
