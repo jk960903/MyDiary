@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -30,9 +31,8 @@ public class JwtService {
     //하드코드 되어있어서 수정이 필요합니다.
     private final String key ="thisisjung9keyipnida";
 
-
     //토큰생성성
-   public String createLoginToken(MemberVO member){
+   public String createLoginToken(MemberVO member,int auto){
         long curTime = System.currentTimeMillis();
 
         Map<String ,Object> headers = new HashMap<>();
@@ -41,7 +41,13 @@ public class JwtService {
 
         Map<String,Object> payload = new HashMap<>();
         payload.put("member",member);
-        Long ExpiredTime = 1000*60L * 60L *24L;
+        Long ExpiredTime;
+        if(auto == 1){
+            ExpiredTime = 1000*60L * 60L *24L * 30L;//한달
+        }else{
+            ExpiredTime = 1000*60L * 60L;//한시간
+        }
+
         Date ext = new Date();
         ext.setTime(ext.getTime() + ExpiredTime);// 토큰 유효시간
 
@@ -63,6 +69,8 @@ public class JwtService {
    }*/
     public Map<String,Object> getUserID(String token){
         Map<String,Object> claimMap =null;
+        String temp = token.substring(0,7);
+        if(temp.equals("Bearer ")) token = token.substring(7);
         try{
             Claims claims = Jwts.parser()
                     .setSigningKey(key.getBytes("UTF-8"))
@@ -74,12 +82,29 @@ public class JwtService {
             System.out.println("check");
         }catch(ExpiredJwtException e){
             System.out.println(e);
+            return null;
         }catch(Exception e){
             System.out.println(e);
-
+            return null;
         }
         return claimMap;
 
+   }
+   public Map<String,Object> requestAuthorization(HttpServletRequest request) throws IllegalAccessException{
+       String token = request.getHeader("Authorization");
+       if(token==null) return null;
+       //token = token.substring(7);
+       Map<String,Object> map = null;
+       LinkedHashMap<String,Object> result =null;
+       if(!token.equals("") && token !=null){
+           map = this.getUserID(token);
+           if(map!=null){
+               result =(LinkedHashMap<String,Object>) map.get("member");
+           }
+       }else{
+               throw new IllegalAccessException("No Token Or Token is Expired");
+       }
+       return result;
    }
     /*
     public String resolveToken(HttpServletRequest request){

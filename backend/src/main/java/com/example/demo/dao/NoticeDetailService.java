@@ -5,18 +5,38 @@ import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoticeDetailService {
-    @Autowired(required=true)
+
     private NoticeDetailRepository noticeDetailRepository;
 
-
-    public NoticeDetailVO GetNoticeDetailVO(NoticeVO notice) {
-        return noticeDetailRepository.GetNoticeDetail(notice);
+    @Autowired
+    public NoticeDetailService (NoticeDetailRepository noticeDetailRepository){
+        this.noticeDetailRepository=noticeDetailRepository;
     }
 
-    public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) {
-        noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+
+
+    public NoticeDetailVO GetNoticeDetail(Long idx) throws NullPointerException,Exception{
+        NoticeDetailVO noticeDetailVO =null;
+        try{
+            noticeDetailRepository.GetNoticeDetail(idx).get(0);
+        }catch(IndexOutOfBoundsException e){
+            throw new NullPointerException("NO DATA");
+        }catch(Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+        return noticeDetailVO;
+    }
+
+    public void DeleteNoticeDetail(NoticeDetailVO noticeDetail) throws Exception{
+        try{
+            noticeDetailRepository.DeleteNoticeDetail(noticeDetail);
+        }catch (Exception e){
+            throw new Exception("Interver SERVER ERROR");
+        }
 
     }
 
@@ -24,7 +44,13 @@ public class NoticeDetailService {
         noticeDetailRepository.UpdateNoticeDetail(noticeDetail);
     }
 
-    public void InsertNoticeDetail(NoticeDetailVO noteiceDetail) {
-        noticeDetailRepository.InsertNoticeDetail(noteiceDetail);
+    public void AddNoticeDetail(NoticeDetailVO noteiceDetail) throws Exception{
+        try{
+            noticeDetailRepository.AddNoticeDetail(noteiceDetail);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("INTERVAL SERVER ERROR");
+        }
+
     }
 }

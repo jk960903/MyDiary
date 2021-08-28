@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class NoticeRequest {
-	private String email;
+	private String search;
 }
