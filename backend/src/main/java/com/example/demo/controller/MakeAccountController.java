@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.charset.Charset;
 

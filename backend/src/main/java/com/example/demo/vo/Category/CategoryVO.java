@@ -23,6 +23,9 @@ public class CategoryVO {
     @Column(name="category")
     private Byte category;
 
+    @Column(name="categoryname")
+    private String categoryname;
+
     @Column(name="legdate")
     private Date legdate;
 

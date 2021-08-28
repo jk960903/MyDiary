@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateNoticeViewCountRequest {
-    private Integer viewCount;
+public class MyInfoVO {
     private Long idx;
-
-
 }

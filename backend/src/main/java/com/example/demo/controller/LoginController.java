@@ -5,12 +5,11 @@ import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 
 import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 import com.example.demo.dao.MemberService;
-import com.example.demo.vo.LoginRequestVO;
+import com.example.demo.vo.Login.LoginRequestVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,26 +1,16 @@
 package com.example.demo.JWT;
 
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 
 @RequiredArgsConstructor
@@ -106,19 +96,11 @@ public class JwtService {
        }
        return result;
    }
-    /*
-    public String resolveToken(HttpServletRequest request){
-        return request.getHeader("X-AUTH-TOKEN");
-    }
 
-    public boolean validateToken(String jwtToken){
-        try{
-            Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }*/
+   public boolean isValidateRequest(Long requestIdx,Long memberIdx) throws IllegalAccessException{
+        if(requestIdx == memberIdx) throw new IllegalAccessException("BAD REQUEST");
+        return true;
+   }
+
 
 }

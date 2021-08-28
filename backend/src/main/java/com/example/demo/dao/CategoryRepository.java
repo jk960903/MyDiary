@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.Category.DeleteCategoryRequest;
 import com.example.demo.vo.Category.CategoryVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,14 +19,16 @@ public interface CategoryRepository extends JpaRepository<CategoryVO,Long> {
     public void AddCategory(CategoryVO categoryVO);
 
     @Modifying
-    @Query(value="update category set isdeleted=9 where idx =:#{#categoryIdx}" ,nativeQuery = true)
-    public void DeleteCategory(Long categoryIdx);
+    @Query(value="update category set isdeleted=9 where idx =:#{#deleteCategoryRequest.idx}" ,nativeQuery = true)
+    public void DeleteCategory(DeleteCategoryRequest deleteCategoryRequest);
 
     @Modifying
     @Query(value="update category set category = :category where idx = :idx",nativeQuery = true )
     public void ChangeCategory(Integer category,Long idx);
 
-    @Query(value="select * from diary.category where category.memberidx = :memberIdx",nativeQuery = true)
+    @Query(value="select category.idx , category_detail.categoryname , category.regdate , category.isdeleted" +
+            "from category" +
+            "inner join category_detail on category.category = category_detail.idx where category.memberidx = :memberIdx",nativeQuery = true)
     public List<CategoryVO> GetCategoryList(Long memberIdx);
 
     @Query

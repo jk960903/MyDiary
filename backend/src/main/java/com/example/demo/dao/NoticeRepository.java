@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.dto.UpdateNoticeCountRequest;
-import com.example.demo.dto.UpdateNoticeViewCountRequest;
+import com.example.demo.dto.Notice.UpdateNoticeCountRequest;
 import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
