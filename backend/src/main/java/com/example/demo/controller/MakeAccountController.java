@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.JWT.JwtService;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/makeaccount")
@@ -20,8 +23,11 @@ public class MakeAccountController {
 
     private final MemberService memberService;
 
-    public MakeAccountController(MemberService memberService){
+    private final JwtService jwtService;
+
+    public MakeAccountController(MemberService memberService, JwtService jwtService){
         this.memberService = memberService;
+        this.jwtService = jwtService;
     }
 
     @RequestMapping(value="/checkduplicateid", method= RequestMethod.GET)
@@ -84,4 +90,16 @@ public class MakeAccountController {
         message=new SendMessage<>(memberVO,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
+
+    /*@RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<MemberVO>> UpdateAccount(HttpServletRequest request ,MemberVO memberVO){
+        SendMessage<MemberVO> message = null;
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> auth;
+        try{
+            auth=jwtService.requestAuthorization(request);
+            memberVO.CheckValidate();
+        }
+    }*/
 }
