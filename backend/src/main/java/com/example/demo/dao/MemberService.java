@@ -61,6 +61,14 @@ public class MemberService  {
         }
         return false;
     }
+    public void UpdateAccount(MemberVO member) throws Exception{
+        try{
+            memberRepository.UpdateAccount(member);
 
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+
+    }
 
 }

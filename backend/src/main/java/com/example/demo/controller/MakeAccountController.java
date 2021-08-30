@@ -91,7 +91,7 @@ public class MakeAccountController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-    /*@RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
+    @RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<MemberVO>> UpdateAccount(HttpServletRequest request ,MemberVO memberVO){
         SendMessage<MemberVO> message = null;
         HttpHeaders headers= new HttpHeaders();
@@ -100,6 +100,19 @@ public class MakeAccountController {
         try{
             auth=jwtService.requestAuthorization(request);
             memberVO.CheckValidate();
+            memberService.UpdateAccount(memberVO);
+        }catch(IllegalAccessException e){
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
+        }catch(NullPointerException e){
+            message=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+        message = new SendMessage<>(memberVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
+
+    }
 }

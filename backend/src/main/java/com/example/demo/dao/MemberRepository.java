@@ -33,4 +33,9 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
 
     @Query(value="select * from members where members.email=:email",nativeQuery = true)
     public List<MemberVO> DuplicateEmail(String email);
+
+    @Modifying
+    @Query(value="Update set members.Email=:#{#member.email},members.phone=:#{member.phone} from members where members.idx=:#{#member.idx}",nativeQuery = true)
+    @Transactional
+    public void UpdateAccount(MemberVO member);
 }
