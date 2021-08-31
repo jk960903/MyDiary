@@ -26,7 +26,9 @@ public class MyInfoController {
     }
 
     @RequestMapping(value="/getmypageinfo")
-    public ResponseEntity<SendMessage<MyInfoVO>> UpdateMyInfo(HttpServletRequest request){
+    public ResponseEntity<SendMessage<MyInfoVO>> GetMyInfo(HttpServletRequest request){
         return null;
     }
+
+    
 }

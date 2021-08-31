@@ -120,26 +120,5 @@ public class LoginController {
     }
 
 
-    /*@RequestMapping(value="/testjwt")
-    public String TestJwt(LoginRequestVO model,
-                          @CookieValue(value="tempjwt",defaultValue = "", required =true) String jwt,
-                          HttpServletResponse response){
-        MemberVO result =  memberService.Login("1234","1234").get(0);
-        if(result !=null){
-            if(jwt.equals("")){//jwt 있음
-                jwt = jwtService.createLoginToken(result,1);
-                Cookie cookie = new Cookie("tempjwt",jwt);
-                cookie.setPath("/");
-                cookie.setMaxAge(60*60*24*30);
-                response.addCookie(cookie);
-            }else{
-                Map<String,Object> results = jwtService.getUserID(jwt);
-                LinkedHashMap<String,Object> maps = (LinkedHashMap<String,Object>)results.get("member");
 
-                System.out.println("check");
-            }
-        }
-
-        return jwt;
-    }*/
 }
