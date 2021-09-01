@@ -30,5 +30,5 @@ public class MyInfoController {
         return null;
     }
 
-    
+
 }

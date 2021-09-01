@@ -47,8 +47,13 @@ public class CategoryService {
     }
 
 
-    public void ChangeCategory(Integer categorynum,Long cateogryIdx){
-        categoryRepository.ChangeCategory(categorynum,cateogryIdx);
+    public void UpdateCategory(Integer categorynum,Long cateogryIdx) throws Exception{
+        try{
+            categoryRepository.UpdateCategory(categorynum,cateogryIdx);
+        }
+        catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
     }
 
 
