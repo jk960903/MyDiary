@@ -48,4 +48,12 @@ public class NoticeService {
             throw new Exception ("INTERNAL SERVER ERROR");
         }
     }
+
+    public void DeleteNotice(Long notice_idx) throws Exception{
+        try{
+            noticeRepository.DeleteNotice(notice_idx);
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+    }
 }

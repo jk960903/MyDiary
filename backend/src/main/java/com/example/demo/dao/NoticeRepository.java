@@ -16,7 +16,7 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
     @Query(value = "select * from notice", nativeQuery = true)
     public List<NoticeVO> GetNoticeList();
 
-    @Query(value = "select * from notice where notice.title = :search" ,nativeQuery = true)
+    @Query(value = "select * from notice where notice.title = :search and notice.isdeleted=0" ,nativeQuery = true)
     public List<NoticeVO> GetSearchNoticeList(String search);
 
     @Modifying
@@ -30,5 +30,12 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
     public List<NoticeVO> GetNoticeViewCount(Long idx);
 
     @Query(value= "update notice set notice.viewcount = :#{#updateNoticeCountRequest.viewCount} where notice.idx = :#{#updateNoticeCountRequest.idx}",nativeQuery = true)
+    @Modifying
+    @Transactional
     public void UpdateNotoiceView(UpdateNoticeCountRequest updateNoticeCountRequest);
+
+    @Query(value="update notice set notice.isdeleted =1 where notice.idx=:notice_idx",nativeQuery = true)
+    @Modifying
+    @Transactional
+    public void DeleteNotice(Long notice_idx);
 }

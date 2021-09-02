@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeDetailService;
+import com.example.demo.dao.NoticeService;
 import com.example.demo.dto.Notice.DeleteNoticeDetailRequest;
 import com.example.demo.dto.Notice.UpdateNoticeDetailRequest;
 import com.example.demo.vo.Enum.StatusEnum;
@@ -29,9 +30,12 @@ public class NoticeDetailController {
 
     private final JwtService jwtService;
 
-    public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService) {
+    private final NoticeService noticeService;
+
+    public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService, NoticeService noticeService) {
         this.noticeDetailService = noticeDetailService;
         this.jwtService = jwtService;
+        this.noticeService = noticeService;
     }
 
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
@@ -111,6 +115,7 @@ public class NoticeDetailController {
         try{
             deleteNoticeDetailRequest.CheckValidate();
             noticeDetailVO=noticeDetailService.GetNoticeDetail(deleteNoticeDetailRequest.getIdx());
+            noticeService.DeleteNotice(noticeDetailVO.getNoticeidx());
             noticeDetailService.DeleteNoticeDetail(noticeDetailVO);
         }catch(NullPointerException e){
             sendMessage = new SendMessage<>(0,StatusEnum.BAD_REQUEST,e.getMessage());
