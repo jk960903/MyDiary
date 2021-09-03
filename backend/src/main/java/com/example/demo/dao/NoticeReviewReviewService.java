@@ -58,4 +58,12 @@ public class NoticeReviewReviewService {
             throw new Exception("INTERVAL SERVER ERROR");
         }
     }
+
+    public void DeleteNoticeReviewReview(Long idx) throws Exception{
+        try{
+            noticeReviewReviewRepository.DeleteNoticeReviewReview(idx);
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+    }
 }

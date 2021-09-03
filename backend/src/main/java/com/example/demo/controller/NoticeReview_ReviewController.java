@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeReviewReviewService;
+import com.example.demo.dto.Notice.DeleteNoticeReviewReviewRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
@@ -109,7 +110,18 @@ public class NoticeReview_ReviewController {
     }
 
     @RequestMapping(value="/deletenotice-review-review")
-    public ResponseEntity<NoticeReviewReviewVO> DeleteNoticeReviewReviewVO(NoticeReviewReviewVO noticeReviewReviewVO){
+    public ResponseEntity<SendMessage<NoticeReviewReviewVO>> DeleteNoticeReviewReviewVO(HttpServletRequest request, DeleteNoticeReviewReviewRequest deleteNoticeReviewReviewRequest){
+        Map<String,Object> auth;
+        SendMessage<NoticeReviewReviewVO> message;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
+        NoticeReviewReviewVO findnoticeReviewReviewVO;
+        /*try{
+            auth = jwtService.requestAuthorization(request);
+            findnoticeReviewReviewVO = noticeReviewReviewService.GetNoticeReviewReview(deleteNoticeReviewReviewRequest.getIdx());
+            noticeReviewReviewService.DeleteNoticeReviewReview(findnoticeReviewReviewVO.getIdx());
+
+        }*/
         return null;
     }
 }
