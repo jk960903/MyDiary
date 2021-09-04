@@ -7,8 +7,6 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="notice")
 @Builder
