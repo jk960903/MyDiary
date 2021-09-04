@@ -4,7 +4,7 @@ const url = "http://localhost:8080";
 
 export default {
     login(params:object){
-        return axios.get("/api/loginAction",params)
+        return axios.get(url+"/api/loginAction",params)
             .then(response=>{
                 let data= response.data;
                 return data
