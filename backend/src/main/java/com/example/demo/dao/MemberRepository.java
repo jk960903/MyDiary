@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberVO, Long>{
@@ -28,4 +29,9 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
     @Query(value = "select * from members where members.ID = :ID and members.pwd = :password" ,nativeQuery= true)
     public List<MemberVO> Login(String ID,String password);
 
+    @Query(value="select * from members where members.id=:ID" ,nativeQuery = true)
+    public List<MemberVO> DuplicateID(String ID);
+
+    @Query(value="select * from members where members.email=:email",nativeQuery = true)
+    public List<MemberVO> DuplicateEmail(String email);
 }
