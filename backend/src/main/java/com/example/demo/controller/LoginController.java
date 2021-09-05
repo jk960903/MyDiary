@@ -81,7 +81,7 @@ public class LoginController {
         if(!jwt.equals("")){//토큰이있음
             Map<String,Object> map = jwtService.getUserID(jwt);
             if(map==null){
-                message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃");
+                message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃"); //토큰이 만료되었을때 다시 재발급하는 거에대해서 고민해보기
                 cookie = new Cookie("jwttoken","");
                 cookie.setPath("/");
                 response.addCookie(cookie);
