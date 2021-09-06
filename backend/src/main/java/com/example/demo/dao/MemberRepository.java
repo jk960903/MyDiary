@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberVO, Long>{
@@ -34,4 +33,9 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
 
     @Query(value="select * from members where members.email=:email",nativeQuery = true)
     public List<MemberVO> DuplicateEmail(String email);
+
+    @Modifying
+    @Query(value="Update set members.Email=:#{#member.email},members.phone=:#{member.phone} from members where members.idx=:#{#member.idx}",nativeQuery = true)
+    @Transactional
+    public void UpdateAccount(MemberVO member);
 }

@@ -5,12 +5,11 @@ import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 
 import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 import com.example.demo.dao.MemberService;
-import com.example.demo.vo.LoginRequestVO;
+import com.example.demo.vo.Login.LoginRequestVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -82,7 +81,7 @@ public class LoginController {
         if(!jwt.equals("")){//토큰이있음
             Map<String,Object> map = jwtService.getUserID(jwt);
             if(map==null){
-                message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃");
+                message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃"); //토큰이 만료되었을때 다시 재발급하는 거에대해서 고민해보기
                 cookie = new Cookie("jwttoken","");
                 cookie.setPath("/");
                 response.addCookie(cookie);
@@ -121,26 +120,5 @@ public class LoginController {
     }
 
 
-    /*@RequestMapping(value="/testjwt")
-    public String TestJwt(LoginRequestVO model,
-                          @CookieValue(value="tempjwt",defaultValue = "", required =true) String jwt,
-                          HttpServletResponse response){
-        MemberVO result =  memberService.Login("1234","1234").get(0);
-        if(result !=null){
-            if(jwt.equals("")){//jwt 있음
-                jwt = jwtService.createLoginToken(result,1);
-                Cookie cookie = new Cookie("tempjwt",jwt);
-                cookie.setPath("/");
-                cookie.setMaxAge(60*60*24*30);
-                response.addCookie(cookie);
-            }else{
-                Map<String,Object> results = jwtService.getUserID(jwt);
-                LinkedHashMap<String,Object> maps = (LinkedHashMap<String,Object>)results.get("member");
 
-                System.out.println("check");
-            }
-        }
-
-        return jwt;
-    }*/
 }

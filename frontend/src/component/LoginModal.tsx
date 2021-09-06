@@ -22,7 +22,8 @@ export default function LoginModal(props: any) {
     async function login() {
         toggle();
         console.log(id, pw)
-        let token = await LoginApi.login({id:id,pw:pw});
+        let token = await LoginApi.login({userID:id,password:pw,autologin:"1"});
+        console.log(token);
 
     }
 

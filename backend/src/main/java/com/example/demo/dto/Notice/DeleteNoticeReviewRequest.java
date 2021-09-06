@@ -1,18 +1,19 @@
-package com.example.demo.dto;
+package com.example.demo.dto.Notice;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
+//solid 원칙때문에 새로 팜
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChangeNoticeReviewRequest {
+public class DeleteNoticeReviewRequest {
     private Long notice_idx;
     private Long member_idx;
     private Long review_idx;
     private String content;
+
     public boolean CheckValidate(){
         if(content==null || content.equals("") || this.notice_idx <=0 || this.member_idx <=0||review_idx<=0) throw new NullPointerException("BAD REQEUST");
         return true;

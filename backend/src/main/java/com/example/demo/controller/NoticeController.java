@@ -2,8 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeService;
-import com.example.demo.dto.UpdateNoticeCountRequest;
-import com.example.demo.dto.UpdateNoticeViewCountRequest;
+import com.example.demo.dto.Notice.UpdateNoticeCountRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.NoticeRequest;
 import com.example.demo.SendMessage.SendMessage;
@@ -105,6 +104,8 @@ public class NoticeController {
         message = new SendMessage<>(noticeVO.getViewcount()+1,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
+
+
 
 
 }

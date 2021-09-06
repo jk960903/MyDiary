@@ -1,4 +1,4 @@
-package com.example.demo.vo;
+package com.example.demo.vo.Member;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

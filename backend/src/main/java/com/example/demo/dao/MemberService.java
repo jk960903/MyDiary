@@ -1,11 +1,7 @@
 package com.example.demo.dao;
 
-import com.example.demo.vo.MemberVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.vo.Member.MemberVO;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +61,14 @@ public class MemberService  {
         }
         return false;
     }
+    public void UpdateAccount(MemberVO member) throws Exception{
+        try{
+            memberRepository.UpdateAccount(member);
 
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+
+    }
 
 }

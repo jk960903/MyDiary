@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.JWT.JwtService;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
-import com.example.demo.vo.MemberVO;
+import com.example.demo.vo.Member.MemberVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/makeaccount")
@@ -21,8 +23,11 @@ public class MakeAccountController {
 
     private final MemberService memberService;
 
-    public MakeAccountController(MemberService memberService){
+    private final JwtService jwtService;
+
+    public MakeAccountController(MemberService memberService, JwtService jwtService){
         this.memberService = memberService;
+        this.jwtService = jwtService;
     }
 
     @RequestMapping(value="/checkduplicateid", method= RequestMethod.GET)
@@ -85,4 +90,34 @@ public class MakeAccountController {
         message=new SendMessage<>(memberVO,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
+
+    @RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
+    public ResponseEntity<SendMessage<MemberVO>> UpdateAccount(HttpServletRequest request ,MemberVO memberVO){
+        SendMessage<MemberVO> message = null;
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> auth;
+        try{
+            auth=jwtService.requestAuthorization(request);
+            memberVO.CheckValidate();
+            memberService.UpdateAccount(memberVO);
+        }catch(IllegalAccessException e){
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
+        }catch(NullPointerException e){
+            message=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        message = new SendMessage<>(memberVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
+
+    }
+
+    /*@RequestMapping(value="/deleteaccount", method=RequestMethod.PUT)
+    public ResponseEntity<SendMessage<Boolean>> DeleteAccount(HttpServletRequest request){
+
+    }*/
 }

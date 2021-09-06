@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.dto.UpdateNoticeCountRequest;
-import com.example.demo.dto.UpdateNoticeViewCountRequest;
+import com.example.demo.dto.Notice.UpdateNoticeCountRequest;
 import com.example.demo.vo.notice.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,14 @@ public class NoticeService {
             noticeRepository.UpdateNotoiceView(updateNoticeCountRequest);
         }catch(Exception e){
             throw new Exception ("INTERNAL SERVER ERROR");
+        }
+    }
+
+    public void DeleteNotice(Long notice_idx) throws Exception{
+        try{
+            noticeRepository.DeleteNotice(notice_idx);
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
         }
     }
 }

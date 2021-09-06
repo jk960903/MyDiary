@@ -2,13 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeDetailService;
-import com.example.demo.dto.DeleteNoticeDetailRequest;
-import com.example.demo.dto.UpdateNoticeDetailRequest;
+import com.example.demo.dao.NoticeService;
+import com.example.demo.dto.Notice.DeleteNoticeDetailRequest;
+import com.example.demo.dto.Notice.UpdateNoticeDetailRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeDetailVO;
 
-import com.example.demo.vo.notice.NoticeReviewVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,9 +30,12 @@ public class NoticeDetailController {
 
     private final JwtService jwtService;
 
-    public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService) {
+    private final NoticeService noticeService;
+
+    public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService, NoticeService noticeService) {
         this.noticeDetailService = noticeDetailService;
         this.jwtService = jwtService;
+        this.noticeService = noticeService;
     }
 
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
@@ -113,6 +115,7 @@ public class NoticeDetailController {
         try{
             deleteNoticeDetailRequest.CheckValidate();
             noticeDetailVO=noticeDetailService.GetNoticeDetail(deleteNoticeDetailRequest.getIdx());
+            noticeService.DeleteNotice(noticeDetailVO.getNoticeidx());
             noticeDetailService.DeleteNoticeDetail(noticeDetailVO);
         }catch(NullPointerException e){
             sendMessage = new SendMessage<>(0,StatusEnum.BAD_REQUEST,e.getMessage());
