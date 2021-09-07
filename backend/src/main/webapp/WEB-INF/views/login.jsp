@@ -8,7 +8,7 @@
 <title>로그인</title>
 </head>
 <body>
-	<Form action = "Login/Login" method ="get">
+	<Form action = "/Login/LoginAction" method ="get">
 		ID : <input type ="text" name = "userID"><br>
 		PASSWORD : <input type ="text" name = "password"><br>
 		<input type ="checkbox" name = "autologin" value="1">자동로그인<br>

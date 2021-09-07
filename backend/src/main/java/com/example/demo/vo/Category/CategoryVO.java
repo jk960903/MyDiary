@@ -1,4 +1,4 @@
-package com.example.demo.vo;
+package com.example.demo.vo.Category;
 
 import lombok.*;
 
@@ -23,8 +23,11 @@ public class CategoryVO {
     @Column(name="category")
     private Byte category;
 
-    @Column(name="regdate")
-    private Date regdate;
+    @Column(name="categoryname")
+    private String categoryname;
+
+    @Column(name="legdate")
+    private Date legdate;
 
     @Column(name="isdeleted")
     private Byte isdeleted;

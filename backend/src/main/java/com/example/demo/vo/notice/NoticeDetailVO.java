@@ -24,4 +24,9 @@ public class NoticeDetailVO {
 	
 	@Column(name ="imageurl")
 	private String imageurl;
+
+	public boolean IsValidate() throws NullPointerException{
+		if(content.equals("") || content==null|| noticeidx==null||noticeidx<=0) throw new NullPointerException("BAD REQUEST");
+		return true;
+	}
 }	
