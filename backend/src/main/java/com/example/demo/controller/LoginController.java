@@ -10,6 +10,7 @@ import java.util.Map;
 import com.example.demo.vo.Member.MemberVO;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Login.LoginRequestVO;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -74,23 +75,10 @@ public class LoginController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         String token = null;
         Cookie cookie= null;
-        if(loginRequestVO.getUserID()==null || loginRequestVO.getPassword()==null || loginRequestVO.getAutologin() ==null){
-            message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,"parameter error");
-            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
-        }
-        if(!jwt.equals("")){//토큰이있음
-            Map<String,Object> map = jwtService.getUserID(jwt);
-            if(map==null){
-                message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃"); //토큰이 만료되었을때 다시 재발급하는 거에대해서 고민해보기
-                cookie = new Cookie("jwttoken","");
-                cookie.setPath("/");
-                response.addCookie(cookie);
-                return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
-            }
-
-
-        }else{
-            try{
+        try{
+            if(!jwt.equals("")){
+                Map<String,Object> map = jwtService.getUserID(jwt);
+            }else{
                 memberVO= memberService.Login(loginRequestVO.getUserID(),loginRequestVO.getPassword()).get(0);
                 if(memberVO !=null){
                     if(loginRequestVO.getAutologin()==null){
@@ -104,14 +92,20 @@ public class LoginController {
                     }
 
                 }
-            }catch(Exception e){
-                message = new SendMessage<>(null, StatusEnum.INTERNAL_SERVER_ERROOR,"로그인 에러");
-                return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
             }
+        }catch(ExpiredJwtException e){
+            message = new SendMessage<>("",StatusEnum.UNAUTHORIZED,"토큰 만료로 인해 로그아웃"); //토큰이 만료되었을때 다시 재발급하는 거에대해서 고민해보기
+            cookie = new Cookie("jwttoken","");
+            cookie.setPath("/");
 
-
-
-
+            response.addCookie(cookie);
+            return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
+        }catch(NullPointerException e){
+            message=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            message= new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         cookie.setPath("/");
         response.addCookie(cookie);
