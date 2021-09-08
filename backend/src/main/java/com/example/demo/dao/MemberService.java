@@ -1,7 +1,9 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.Member.FindMemberEmailRequest;
 import com.example.demo.vo.Member.MemberVO;
 
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +16,21 @@ public class MemberService  {
     public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
-    public List<MemberVO> findByID(String id) {
+    public List<MemberVO> findByID(String id) throws NullPointerException{
+        if(id==null || id.equals("")) throw new NullPointerException("BAD REQUEST");
         return memberRepository.findByID(id);
     }
 
-    public List<MemberVO> findByEmail(String Email) {
-        return memberRepository.findByEmail(Email);
+    public MemberVO findByEmail(FindMemberEmailRequest email) throws IndexOutOfBoundsException {
+        MemberVO member=new MemberVO();
+        try{
+            member=memberRepository.findByEmail(email.getEmail()).get(0);
+        }catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("NO DATA");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return member;
     }
 
 

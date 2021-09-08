@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
+import com.example.demo.dto.Member.FindMemberEmailRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 
@@ -33,34 +34,38 @@ public class LoginController {
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value="/")
-    public String Test() {
-        return "Test Page";
-    }
-
     @RequestMapping(value ="/findbyid" ,method = RequestMethod.GET)
-    public MemberVO FindByID(@RequestParam String ID) {
+    public ResponseEntity<SendMessage<MemberVO>> FindByID(@RequestParam String ID) {
         MemberVO result;
+        SendMessage<MemberVO> message =null;
         try {
             result = memberService.findByID(ID).get(0);
-            return result;
-        }catch(Exception e) {
+
+        }catch(IndexOutOfBoundsException e){
+            message = new SendMessage<>(null,StatusEnum.NOT_FOUND,e.getMessage());
+
+        }
+        catch(Exception e) {
 
         }
         return null;
     }
 
     @RequestMapping(value ="/findbyemail", method = RequestMethod.GET)
-    public MemberVO FindByEmail(@RequestParam String email) {
+    public ResponseEntity<SendMessage<MemberVO>> FindByEmail(FindMemberEmailRequest email) {
         MemberVO result;
+        SendMessage<MemberVO> message = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
-            result = memberService.findByEmail(email).get(0);
+            result = memberService.findByEmail(email);
 
             //null이 아니라면 메일 보내기
-        }catch(Exception e) {
-            result = null;
+        } catch (IndexOutOfBoundsException e) {
+            message = new SendMessage<>(null, StatusEnum.NOT_FOUND, e.getMessage());
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
-        return result;
+        return null;
     }
 
 
