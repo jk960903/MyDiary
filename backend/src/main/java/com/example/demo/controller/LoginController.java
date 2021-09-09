@@ -58,14 +58,21 @@ public class LoginController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
-            result = memberService.findByEmail(email);
-
-            //null이 아니라면 메일 보내기
+            if(email.IsValidateEmail()){
+                result = memberService.findByEmail(email);
+            }else{
+                message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,"정상적인 이메일 형식이 아닙니다.");
+                return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+            }
         } catch (IndexOutOfBoundsException e) {
             message = new SendMessage<>(null, StatusEnum.NOT_FOUND, e.getMessage());
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            message= new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
+        message=new SendMessage<>(result,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
 
