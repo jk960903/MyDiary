@@ -17,7 +17,7 @@ public class FindMemberEmailRequest {
 
         Pattern pattern = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
         Matcher matcher = pattern.matcher(this.email);
-        if(matcher.find()){
+        if(!matcher.find()){
             return false;
         }
         return true;

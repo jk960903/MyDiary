@@ -19,7 +19,7 @@ public class DeleteNoticeReviewRequest {
         return true;
     }
     public boolean CheckLoginValidate(Long member_idx) throws IllegalAccessException{
-        if(this.member_idx == member_idx) return true;
+        if(this.member_idx.equals(member_idx)) return true;
         else throw new IllegalAccessException("No Token Or Token is Expired");
     }
 }
