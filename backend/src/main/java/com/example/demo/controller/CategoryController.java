@@ -57,9 +57,6 @@ public class CategoryController {
         }
         sendMessage=new SendMessage<>(categoryVOList,StatusEnum.OK,"OK");
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
-
-
-
     }
     @RequestMapping(value ="/addcategory", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<CategoryVO>> AddCategory(HttpServletRequest request, int value , AddCategoryRequest addcategory){

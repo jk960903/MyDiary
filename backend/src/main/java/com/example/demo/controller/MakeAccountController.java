@@ -4,6 +4,7 @@ import com.example.demo.JWT.JwtService;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
+import com.example.demo.vo.Member.CheckDuplicateEmailRequest;
 import com.example.demo.vo.Member.MemberVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,13 +54,13 @@ public class MakeAccountController {
 
 
     @RequestMapping(value="/checkduplicatedemail",method = RequestMethod.GET)
-    public ResponseEntity<SendMessage<Boolean>> CheckDuplicateEmail(String email){
+    public ResponseEntity<SendMessage<Boolean>> CheckDuplicateEmail(CheckDuplicateEmailRequest email){
         SendMessage<Boolean> message = null;
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
 
         try{
-            if(!memberService.isDuplicatedEmail(email)){
+            if(!memberService.isDuplicatedEmail(email.getEmail())){
                 message= new SendMessage<>(false,StatusEnum.OK,"중복된 ID입니다. 다른 ID를 사용해주세요");
             }else{
                 message = new SendMessage<>(true,StatusEnum.OK,"OK");
