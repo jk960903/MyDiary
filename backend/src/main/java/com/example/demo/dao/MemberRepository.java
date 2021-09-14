@@ -14,7 +14,7 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
     @Query(value="select * from Members where Members.ID = :ID" , nativeQuery = true)
     public List<MemberVO> findByID(String ID);
 
-    @Query(value ="select * from Members where Members.Email = :email", nativeQuery=true)
+    @Query
     public List<MemberVO> findByEmail(String email);
 
 
@@ -27,6 +27,9 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
 
     @Query(value = "select * from members where members.ID = :ID and members.pwd = :password" ,nativeQuery= true)
     public List<MemberVO> Login(String ID,String password);
+
+    @Query()
+    public List<MemberVO> findByIDandEmail(String ID,String password);
 
     @Query(value="select * from members where members.id=:ID" ,nativeQuery = true)
     public List<MemberVO> DuplicateID(String ID);

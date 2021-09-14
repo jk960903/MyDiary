@@ -21,6 +21,7 @@ public class JwtReqeustFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         /*//헤더에서 jwt를 받아오고
         String token  = jwtService.resolveToken((HttpServletRequest) request);
         //토큰의 유효 확인
