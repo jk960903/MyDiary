@@ -2,6 +2,9 @@ package com.example.demo.dto.Member;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +14,8 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 @Builder
 public class FindMemberEmailRequest {
+
+    @Id
     private String email;
 
     public boolean IsValidateEmail(){

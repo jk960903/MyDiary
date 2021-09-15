@@ -18,11 +18,11 @@ public class NoticeService {
         this.noticeRepository=noticeRepository;
     }
     public List<NoticeVO> GetNoticeList(){
-        return noticeRepository.GetNoticeList();
+        return noticeRepository.findAll();
     }
 
     public List<NoticeVO> GetSearchNoticeList(String search){
-        return noticeRepository.GetSearchNoticeList(search);
+        return noticeRepository.findByTitleLikeAndIsDeleted(search,1);
     }
 
     public void AddNotice(NoticeVO notice) {

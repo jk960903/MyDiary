@@ -1,10 +1,12 @@
 package com.example.demo.dao;
 
 import com.example.demo.dto.Member.FindMemberEmailRequest;
+import com.example.demo.vo.Login.LoginRequestVO;
 import com.example.demo.vo.Member.MemberVO;
 
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -12,6 +14,7 @@ public class MemberService  {
 
 
     private MemberRepository memberRepository;
+
 
     public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
@@ -33,24 +36,32 @@ public class MemberService  {
         return member;
     }
 
+    public MemberVO Login(LoginRequestVO loginRequestVO) throws IndexOutOfBoundsException,Exception{
+        MemberVO member=null;
+        try{
+            member=memberRepository.findByIDAndPwd(loginRequestVO.getUserID(), loginRequestVO.getPassword()).get(0);
+        }catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("NO DATA");
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
+        }
+        return member;
+    }
 
     public Integer MakeAccount(MemberVO member) throws Exception {
         try{
-            memberRepository.MakeAccount(member);
+            memberRepository.save(member);
         }catch (Exception e){
             throw new Exception("INTERVAL SERVER ERROR");
         }
         return 1;
     }
 
-    public List<MemberVO> Login(String ID, String password) {
-        return memberRepository.Login(ID, password);
-    }
 
     public boolean isDuplicated(String ID) throws Exception{
         MemberVO memberVO;
         try{
-            memberVO=memberRepository.DuplicateID(ID).get(0);
+            memberVO=memberRepository.findByID(ID).get(0);
         }catch(IndexOutOfBoundsException e){
             //검색 결과가 나오지 않는다면 indexoutofbounds 가 발생한다. 즉 중복되지 않았다
             return true;
@@ -64,7 +75,7 @@ public class MemberService  {
     public boolean isDuplicatedEmail(String email) throws Exception{
         MemberVO memberVO;
         try{
-            memberVO = memberRepository.DuplicateEmail(email).get(0);
+            memberVO = memberRepository.findByEmail(email).get(0);
         }catch(IndexOutOfBoundsException e){
             return true;
         }catch(Exception e){
@@ -72,14 +83,21 @@ public class MemberService  {
         }
         return false;
     }
+
+    @Transactional
+    @Modifying
     public void UpdateAccount(MemberVO member) throws Exception{
         try{
-            memberRepository.UpdateAccount(member);
+            memberRepository.save(member);
 
         }catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }
 
     }
+
+
+
+
 
 }

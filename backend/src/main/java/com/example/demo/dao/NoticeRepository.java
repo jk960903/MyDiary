@@ -13,17 +13,13 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
 
-    @Query(value = "select * from notice", nativeQuery = true)
-    public List<NoticeVO> GetNoticeList();
+    public List<NoticeVO> findAll();
+
+    public List<NoticeVO> findByTitleLikeAndIsDeleted(String title,Integer isDeleted);
 
     @Query(value = "select * from notice where notice.title = :search and notice.isdeleted=0" ,nativeQuery = true)
     public List<NoticeVO> GetSearchNoticeList(String search);
-
-    @Modifying
-    @Query(value = "insert into notice(title,writer,regdate,viewcount)"
-            +"value(:#{#notice.title},:#{#notice.writer},now(),0)", nativeQuery = true)
-    @Transactional
-    public void AddNotice(NoticeVO notice);
+    
 
 
     @Query(value = "select notice.viewcount from notice where notice.idx=:idx",nativeQuery = true)

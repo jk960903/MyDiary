@@ -36,15 +36,23 @@ public class NoticeController {
 
 
     @RequestMapping(value="/noticeget", method = RequestMethod.GET)
-    public List<NoticeVO> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
-        List<NoticeVO> list;
-        if(request.getSearch()==null||request.getSearch().equals("")) {
-            list=noticeService.GetNoticeList();
-        }else {
-            list=noticeService.GetSearchNoticeList(request.getSearch());
+    public ResponseEntity<SendMessage<List<NoticeVO>>> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
+        SendMessage<List<NoticeVO>> sendMessage;
+        List<NoticeVO> list=null;
+        HttpHeaders headers=new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try{
+            if(request.getSearch()==null||request.getSearch().equals("")) {
+                list=noticeService.GetNoticeList();
+            }else {
+                list=noticeService.GetSearchNoticeList(request.getSearch());
+            }
+        }catch(Exception e){
+            sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"INTERNAL SERVER ERROR");
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return list;
+        sendMessage=new SendMessage<>(list,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
     /*

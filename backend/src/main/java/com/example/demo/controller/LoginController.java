@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -90,8 +91,10 @@ public class LoginController {
         try{
             if(!jwt.equals("")){
                 Map<String,Object> map = jwtService.getUserID(jwt);
+                message=new SendMessage<>(token,StatusEnum.OK,"OK");
+                return new ResponseEntity<>(message,headers,HttpStatus.OK);
             }else{
-                memberVO= memberService.Login(loginRequestVO.getUserID(),loginRequestVO.getPassword()).get(0);
+                memberVO= memberService.Login(loginRequestVO);
                 if(memberVO !=null){
                     if(loginRequestVO.getAutologin()==null){
                         token =jwtService.createLoginToken(memberVO,1);

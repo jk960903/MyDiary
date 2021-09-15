@@ -61,12 +61,16 @@ public class MakeAccountController {
 
         try{
             email.IsValidateEmail();
+
             if(!memberService.isDuplicatedEmail(email.getEmail())){
                 message= new SendMessage<>(false,StatusEnum.OK,"중복된 ID입니다. 다른 ID를 사용해주세요");
             }else{
                 message = new SendMessage<>(true,StatusEnum.OK,"OK");
             }
-        }catch(Exception e){
+        }catch(NullPointerException e){
+            message = new SendMessage<>(false,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+        } catch(Exception e){
             message= new SendMessage<>(false, StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(message,headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -80,7 +84,7 @@ public class MakeAccountController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try{
             memberVO.CheckValidate();
-            memberVO.setIsdeleted(Byte.parseByte("1"));
+            memberVO.setIsdeleted(1);
             memberService.MakeAccount(memberVO);
         }catch(NullPointerException e){
             message= new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
@@ -122,4 +126,5 @@ public class MakeAccountController {
     public ResponseEntity<SendMessage<Boolean>> DeleteAccount(HttpServletRequest request){
 
     }*/
+
 }

@@ -30,6 +30,8 @@ public class NoticeVO {
 	@Column(name="viewcount")
 	private Integer viewcount;
 
+	@Column(name="isDeleted")
+	private Integer isDeleted;
 	public boolean CheckValidate(){
 		if(writer==null || writer.equals("") || viewcount<0) throw new NullPointerException("BAD REQEUST");
 		return true;
