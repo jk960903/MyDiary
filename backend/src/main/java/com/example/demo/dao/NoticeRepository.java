@@ -17,10 +17,7 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
 
     public List<NoticeVO> findByTitleLikeAndIsDeleted(String title,Integer isDeleted);
 
-    @Query(value = "select * from notice where notice.title = :search and notice.isdeleted=0" ,nativeQuery = true)
-    public List<NoticeVO> GetSearchNoticeList(String search);
-    
-
+    public List<NoticeVO> findByIdx(Long idx);
 
     @Query(value = "select notice.viewcount from notice where notice.idx=:idx",nativeQuery = true)
     public List<NoticeVO> GetNoticeViewCount(Long idx);

@@ -122,9 +122,4 @@ public class MakeAccountController {
 
     }
 
-    /*@RequestMapping(value="/deleteaccount", method=RequestMethod.PUT)
-    public ResponseEntity<SendMessage<Boolean>> DeleteAccount(HttpServletRequest request){
-
-    }*/
-
 }
