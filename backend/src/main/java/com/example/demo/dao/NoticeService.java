@@ -25,13 +25,15 @@ public class NoticeService {
         return noticeRepository.findByTitleLikeAndIsDeleted(search,1);
     }
 
-    public void AddNotice(NoticeVO notice) throws Exception{
+    public NoticeVO AddNotice(NoticeVO notice) throws Exception{
+        NoticeVO noticeVO=null;
         try{
-            noticeRepository.save(notice);
+            noticeVO=noticeRepository.save(notice);
+
         }catch(Exception e){
             throw new Exception ("INTERNAL SERVER ERROR");
         }
-
+        return noticeVO;
     }
 
     public NoticeVO GetNoticeViewCount(Long idx)throws IndexOutOfBoundsException,Exception{
@@ -46,19 +48,25 @@ public class NoticeService {
         return noticeVO;
     }
 
-    public void UpdateNotoiceView(UpdateNoticeCountRequest updateNoticeCountRequest) throws Exception {
+    public void UpdateNotoiceView(UpdateNoticeCountRequest updateNoticeCountRequest) throws IndexOutOfBoundsException , Exception {
         NoticeVO noticeVO = null;
         try{
             noticeVO = noticeRepository.findByIdx(updateNoticeCountRequest.getIdx()).get(0);
-            noticeRepository.UpdateNotoiceView(updateNoticeCountRequest);
-        }catch(Exception e){
+            noticeVO.setViewcount(noticeVO.getViewcount()+1);
+            noticeRepository.save(noticeVO);
+        }catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("NO DATA");
+        } catch(Exception e){
             throw new Exception ("INTERNAL SERVER ERROR");
         }
     }
 
     public void DeleteNotice(Long notice_idx) throws Exception{
+        NoticeVO noticeVO = null;
         try{
-            noticeRepository.DeleteNotice(notice_idx);
+            noticeVO = noticeRepository.findByIdx(notice_idx).get(0);
+            noticeVO.setIsDeleted(9);
+            noticeRepository.save(noticeVO);
         }catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }

@@ -25,7 +25,7 @@ public class NoticeDetailVO {
 	@Column(name ="imageurl")
 	private String imageurl;
 
-	@Column(name="isDeleted")
+	@Column(name="isdeleted")
 	private Integer isdeleted;
 
 	public boolean IsValidate() throws NullPointerException{

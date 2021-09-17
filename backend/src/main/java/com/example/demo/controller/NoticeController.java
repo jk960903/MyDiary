@@ -1,11 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.JWT.JwtService;
+import com.example.demo.dao.NoticeDetailService;
+import com.example.demo.dao.NoticeReviewReviewService;
+import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
 import com.example.demo.dto.Notice.UpdateNoticeCountRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.NoticeRequest;
 import com.example.demo.SendMessage.SendMessage;
+import com.example.demo.vo.notice.NoticeDetailVO;
 import com.example.demo.vo.notice.NoticeVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +32,18 @@ import java.util.Map;
 public class NoticeController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired(required=true)
-    NoticeService noticeService;
+    private final NoticeService noticeService;
 
-    @Autowired(required = true)
-    JwtService jwtService;
+    private final JwtService jwtService;
 
+    private final NoticeDetailService noticeDetailService;
+
+    public NoticeController(NoticeService noticeService, JwtService jwtService , NoticeDetailService noticeDetailService,
+                            NoticeReviewService noticeReviewService, NoticeReviewReviewService noticeReviewReviewService){
+        this.noticeService = noticeService;
+        this.jwtService=jwtService;
+        this.noticeDetailService =noticeDetailService;
+    }
 
     @RequestMapping(value="/noticeget", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<List<NoticeVO>>> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
@@ -60,15 +70,19 @@ public class NoticeController {
 
      */
     @RequestMapping(value="/addnotice",method=RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeVO>> AddNotice(NoticeVO noticeVO,HttpServletRequest request){
+    public ResponseEntity<SendMessage<NoticeVO>> AddNotice(NoticeVO noticeVO,HttpServletRequest request,String Content){
         Map<String,Object> auth;
         SendMessage<NoticeVO> message;
         HttpHeaders headers = new HttpHeaders();
+        NoticeVO noticeResult=null;
+        NoticeDetailVO noticeDetailVO =null;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try{
-            auth=jwtService.requestAuthorization(request);
             noticeVO.CheckValidate();
-            noticeService.AddNotice(noticeVO);
+            noticeVO.setRegdate(noticeVO.SetToday());
+            noticeResult =noticeService.AddNotice(noticeVO);
+            noticeDetailVO = noticeDetailVO.builder().noticeidx(noticeResult.getIdx()).content(Content).isdeleted(1).imageurl("").build();
+            noticeDetailService.AddNoticeDetail(noticeDetailVO);
         } catch (IllegalAccessException e) {
             message= new SendMessage<>(null, StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(message,headers, HttpStatus.UNAUTHORIZED);

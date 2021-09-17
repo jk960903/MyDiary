@@ -65,25 +65,6 @@ public class NoticeDetailController {
 
 
     }
-    @RequestMapping(value = "/addnoticedetail", method=RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeDetailVO>> AddNoticeDetail(HttpServletRequest request, NoticeDetailVO noticeDetailVO){
-        SendMessage<NoticeDetailVO> sendMessage;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        //Map<String,Object> auth = jwtService.requestAuthorization(request); // 관리자용 로그인을 위해 새로 만들거나 혹은 로그인 테이블에 칼럼을 추가해야할듯
-        try{
-            noticeDetailVO.IsValidate();
-            noticeDetailService.AddNoticeDetail(noticeDetailVO);
-        }catch(NullPointerException e){
-            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
-            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
-        }catch(Exception e){
-            sendMessage= new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
-            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        sendMessage=new SendMessage<>(noticeDetailVO,StatusEnum.OK,"OK");
-        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
-    }
 
     @RequestMapping(value="/updatenoticedetail",method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<NoticeDetailVO>> UpdateNoticeDetail(HttpServletRequest request, UpdateNoticeDetailRequest noticeDetailRequest){

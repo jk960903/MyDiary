@@ -19,16 +19,5 @@ public interface NoticeRepository extends JpaRepository<NoticeVO,Long>{
 
     public List<NoticeVO> findByIdx(Long idx);
 
-    @Query(value = "select notice.viewcount from notice where notice.idx=:idx",nativeQuery = true)
-    public List<NoticeVO> GetNoticeViewCount(Long idx);
 
-    @Query(value= "update notice set notice.viewcount = :#{#updateNoticeCountRequest.viewCount} where notice.idx = :#{#updateNoticeCountRequest.idx}",nativeQuery = true)
-    @Modifying
-    @Transactional
-    public void UpdateNotoiceView(UpdateNoticeCountRequest updateNoticeCountRequest);
-
-    @Query(value="update notice set notice.isdeleted =1 where notice.idx=:notice_idx",nativeQuery = true)
-    @Modifying
-    @Transactional
-    public void DeleteNotice(Long notice_idx);
 }
