@@ -12,6 +12,5 @@ import java.util.List;
 public class NoticeResultVO {
     NoticeVO noticeVO;
     NoticeDetailVO noticeDetailVO;
-    List<NoticeReviewVO> noticeReviewVO;
-    List<NoticeReviewReviewVO> noticeReviewReviewVO;
+    List<NoticeReviewResult> noticeReviewVO;
 }

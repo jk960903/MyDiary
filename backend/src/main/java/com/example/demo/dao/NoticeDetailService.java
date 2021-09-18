@@ -36,8 +36,8 @@ public class NoticeDetailService {
         NoticeDetailVO noticeDetailVO = null;
         try{
             noticeDetailVO = noticeDetailRepository.findByIdx(noticeDetail.getIdx()).get(0);
-            noticeDetail.setIsdeleted(9);
-            noticeDetailRepository.save(noticeDetail);
+            noticeDetailVO.setIsdeleted(9);
+            noticeDetailRepository.save(noticeDetailVO);
         }catch(IndexOutOfBoundsException e){
             throw new Exception("찾으시는 데이터가 없습니다.");
         }

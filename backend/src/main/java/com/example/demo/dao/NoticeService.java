@@ -25,6 +25,10 @@ public class NoticeService {
         return noticeRepository.findByTitleLikeAndIsDeleted(search,1);
     }
 
+    public NoticeVO GetNoticeData(Long notice_idx){
+        return noticeRepository.findByIdx(notice_idx).get(0);
+    }
+
     public NoticeVO AddNotice(NoticeVO notice) throws Exception{
         NoticeVO noticeVO=null;
         try{
