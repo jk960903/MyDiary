@@ -9,13 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DeleteNoticeReviewRequest {
-    private Long notice_idx;
+    private Long idx;
     private Long member_idx;
-    private Long review_idx;
-    private String content;
 
     public boolean CheckValidate(){
-        if(content==null || content.equals("") || this.notice_idx <=0 || this.member_idx <=0||review_idx<=0) throw new NullPointerException("BAD REQEUST");
+        if(this.member_idx <=0||idx<=0) throw new NullPointerException("BAD REQEUST");
         return true;
     }
     public boolean CheckLoginValidate(Long member_idx) throws IllegalAccessException{

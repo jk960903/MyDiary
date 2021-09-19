@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChangeNoticeReviewRequest {
+public class UpdateNoticeReviewRequest {
+    private Long idx;
     private Long notice_idx;
     private Long member_idx;
     private Long review_idx;

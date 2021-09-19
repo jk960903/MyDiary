@@ -11,6 +11,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="category")
 public class CategoryVO {
 
     @Id
@@ -21,7 +22,7 @@ public class CategoryVO {
     private Long memberidx;
 
     @Column(name="category")
-    private Byte category;
+    private Integer category;
 
     @Column(name="categoryname")
     private String categoryname;
@@ -30,6 +31,6 @@ public class CategoryVO {
     private Date legdate;
 
     @Column(name="isdeleted")
-    private Byte isdeleted;
+    private Integer isdeleted;
 
 }

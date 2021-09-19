@@ -33,7 +33,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping(value="/getcategoryaction")
+    /*@RequestMapping(value="/getcategoryaction")
     public ResponseEntity<SendMessage<List<CategoryVO>>> GetCategoryList(HttpServletRequest request){
         //로그인 되어있는지 확인
         Map<String,Object> auth;
@@ -112,7 +112,7 @@ public class CategoryController {
         sendMessage = new SendMessage<>(true,StatusEnum.OK,"OK");
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
 
-    }
+    }*/
 
 
 

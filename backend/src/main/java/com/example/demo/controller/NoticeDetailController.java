@@ -6,6 +6,7 @@ import com.example.demo.dao.NoticeReviewReviewService;
 import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
 import com.example.demo.dto.Notice.DeleteNoticeDetailRequest;
+import com.example.demo.dto.Notice.GetNoticeReviewRequest;
 import com.example.demo.dto.Notice.UpdateNoticeDetailRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
@@ -50,7 +51,7 @@ public class NoticeDetailController {
     }
 
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
-    public ResponseEntity<SendMessage<NoticeResultVO>> GetNoticeDetail(HttpServletRequest request , Long notice_idx){
+    public ResponseEntity<SendMessage<NoticeResultVO>> GetNoticeDetail(HttpServletRequest request , GetNoticeReviewRequest getNoticeReviewRequest){
         SendMessage<NoticeResultVO> sendMessage = null;
         NoticeDetailVO noticeDetailVO = null;
         HttpHeaders headers = new HttpHeaders();
@@ -60,9 +61,9 @@ public class NoticeDetailController {
         List<NoticeReviewVO> noticeReviewVO;
         List<NoticeReviewResult> noticeReviewResults = new ArrayList<>();
         try{
-            noticeVO = noticeService.GetNoticeData(notice_idx);
-            noticeDetailVO = noticeDetailService.GetNoticeDetail(notice_idx);
-            noticeReviewVO = noticeReviewService.getNoticeReviewList(notice_idx);
+            noticeVO = noticeService.GetNoticeData(getNoticeReviewRequest.getNoticeIdx());
+            noticeDetailVO = noticeDetailService.GetNoticeDetail(getNoticeReviewRequest.getNoticeIdx());
+            noticeReviewVO = noticeReviewService.GetNoticeReviewList(getNoticeReviewRequest);
             for(int i = 0 ; i<noticeReviewVO.size(); i++){
                 List<NoticeReviewReviewVO> noticeReviewReviewVOList = noticeReviewReviewService.GetNoticeReviewReviewList(noticeReviewVO.get(i).getIdx());
                 noticeReviewResults.add(new NoticeReviewResult(noticeReviewVO.get(i),noticeReviewReviewVOList));

@@ -26,7 +26,7 @@ public class NoticeReviewVO {
     private Date regDate;
 
     @Column(name="isdeleted")
-    private Byte isDeleted;
+    private Integer isDeleted;
 
     @Column(name="memberidx")
     private Long memberidx;
