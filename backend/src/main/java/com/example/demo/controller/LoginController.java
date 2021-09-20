@@ -34,7 +34,7 @@ public class LoginController {
         this.memberService = memberService;
         this.jwtService = jwtService;
     }
-
+    //테스트완
     @RequestMapping(value ="/findbyid" ,method = RequestMethod.GET)
     public ResponseEntity<SendMessage<MemberVO>> FindByID(@RequestParam String ID) {
         MemberVO result;
@@ -51,7 +51,7 @@ public class LoginController {
         }
         return null;
     }
-
+    //테스트 완
     @RequestMapping(value ="/findbyemail", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<MemberVO>> FindByEmail(FindMemberEmailRequest email) {
         MemberVO result;
@@ -76,7 +76,7 @@ public class LoginController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-
+    //테스트 완 쿠키 까지 테스트완
     @RequestMapping(value = "/loginaction", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,
                                                                         LoginRequestVO loginRequestVO,

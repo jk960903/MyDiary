@@ -30,7 +30,7 @@ public class MakeAccountController {
         this.memberService = memberService;
         this.jwtService = jwtService;
     }
-
+    //테스트완
     @RequestMapping(value="/checkduplicateid", method= RequestMethod.GET)
     public ResponseEntity<SendMessage<Boolean>> CheckDuplicateID(String ID){
         SendMessage<Boolean> message = null;
@@ -38,6 +38,10 @@ public class MakeAccountController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
 
         try{
+            if(ID==null) {
+                message = new SendMessage<>(false,StatusEnum.BAD_REQUEST,"BAD REQUEST");
+                return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
+            }
             if(!memberService.isDuplicated(ID)){
                 message= new SendMessage<>(false,StatusEnum.OK,"중복된 ID입니다. 다른 ID를 사용해주세요");
             }else{
@@ -52,7 +56,7 @@ public class MakeAccountController {
 
     }
 
-
+    //테스트 완
     @RequestMapping(value="/checkduplicatedemail",method = RequestMethod.GET)
     public ResponseEntity<SendMessage<Boolean>> CheckDuplicateEmail(CheckDuplicateEmailRequest email){
         SendMessage<Boolean> message = null;
@@ -76,7 +80,7 @@ public class MakeAccountController {
         }
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
-
+    //테스트완
     @RequestMapping(value ="/makeaccount", method = RequestMethod.POST)
     public ResponseEntity<SendMessage<MemberVO>> MakeAccount(MemberVO memberVO) {
         SendMessage<MemberVO> message = null;
@@ -97,16 +101,18 @@ public class MakeAccountController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
+    //테스트 완
     @RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<MemberVO>> UpdateAccount(HttpServletRequest request ,MemberVO memberVO){
         SendMessage<MemberVO> message = null;
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         Map<String,Object> auth;
+        MemberVO updated;
         try{
             auth=jwtService.requestAuthorization(request);
             memberVO.CheckValidate();
-            memberService.UpdateAccount(memberVO);
+            updated  = memberService.UpdateAccount(memberVO);
         }catch(IllegalAccessException e){
             message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
@@ -117,7 +123,7 @@ public class MakeAccountController {
             message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        message = new SendMessage<>(memberVO,StatusEnum.OK,"OK");
+        message = new SendMessage<>(updated,StatusEnum.OK,"OK");
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
 
     }

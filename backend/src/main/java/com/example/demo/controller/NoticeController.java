@@ -44,7 +44,7 @@ public class NoticeController {
         this.jwtService=jwtService;
         this.noticeDetailService =noticeDetailService;
     }
-
+    //테스트 완
     @RequestMapping(value="/noticeget", method = RequestMethod.GET)
     public ResponseEntity<SendMessage<List<NoticeVO>>> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
         SendMessage<List<NoticeVO>> sendMessage;

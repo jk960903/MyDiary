@@ -10,6 +10,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="notice_review")
 @Builder
 public class NoticeReviewVO {
     @Id

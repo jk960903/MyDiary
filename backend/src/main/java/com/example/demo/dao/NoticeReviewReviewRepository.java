@@ -35,6 +35,6 @@ public interface NoticeReviewReviewRepository extends JpaRepository<NoticeReview
     @Modifying
     public void DeleteNoticeReviewReview(Long idx);
 
-
+    public List<NoticeReviewReviewVO> findNoticeReviewReviewVOByReviewidxAndIsdeleted(Long ReviewIdx,Integer IsDeleted);
 }
 

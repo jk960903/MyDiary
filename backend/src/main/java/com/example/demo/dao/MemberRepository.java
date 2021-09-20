@@ -24,4 +24,6 @@ public interface MemberRepository extends JpaRepository<MemberVO, Long>{
     public List<MemberVO> findByID(String ID);
 
 
+
+
 }

@@ -86,14 +86,18 @@ public class MemberService  {
 
     @Transactional
     @Modifying
-    public void UpdateAccount(MemberVO member) throws Exception{
+    public MemberVO UpdateAccount(MemberVO member) throws Exception{
+        MemberVO findmember = null;
         try{
-            memberRepository.save(member);
+            findmember = memberRepository.findByID(member.getID()).get(0);
+            findmember.setPhone(member.getPhone());
+            findmember.setEmail(member.getEmail());
+            member= memberRepository.save(findmember);
 
         }catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }
-
+        return member;
     }
 
 

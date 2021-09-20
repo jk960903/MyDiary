@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetNoticeReviewRequest {
+public class GetNoticeDetailRequest {
     private Long noticeIdx;
 }

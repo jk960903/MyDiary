@@ -6,7 +6,7 @@ import com.example.demo.dao.NoticeReviewReviewService;
 import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
 import com.example.demo.dto.Notice.DeleteNoticeDetailRequest;
-import com.example.demo.dto.Notice.GetNoticeReviewRequest;
+import com.example.demo.dto.Notice.GetNoticeDetailRequest;
 import com.example.demo.dto.Notice.UpdateNoticeDetailRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
@@ -49,9 +49,9 @@ public class NoticeDetailController {
         this.noticeReviewService = noticeReviewService;
         this.noticeReviewReviewService = noticeReviewReviewService;
     }
-
+    //테스트완
     @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
-    public ResponseEntity<SendMessage<NoticeResultVO>> GetNoticeDetail(HttpServletRequest request , GetNoticeReviewRequest getNoticeReviewRequest){
+    public ResponseEntity<SendMessage<NoticeResultVO>> GetNoticeDetail(HttpServletRequest request , GetNoticeDetailRequest getNoticeReviewRequest){
         SendMessage<NoticeResultVO> sendMessage = null;
         NoticeDetailVO noticeDetailVO = null;
         HttpHeaders headers = new HttpHeaders();
@@ -61,10 +61,10 @@ public class NoticeDetailController {
         List<NoticeReviewVO> noticeReviewVO;
         List<NoticeReviewResult> noticeReviewResults = new ArrayList<>();
         try{
-            noticeVO = noticeService.GetNoticeData(getNoticeReviewRequest.getNoticeIdx());
-            noticeDetailVO = noticeDetailService.GetNoticeDetail(getNoticeReviewRequest.getNoticeIdx());
-            noticeReviewVO = noticeReviewService.GetNoticeReviewList(getNoticeReviewRequest);
-            for(int i = 0 ; i<noticeReviewVO.size(); i++){
+            noticeVO = noticeService.GetNoticeData(getNoticeReviewRequest.getNoticeIdx()); //공지사항 정보
+            noticeDetailVO = noticeDetailService.GetNoticeDetail(getNoticeReviewRequest.getNoticeIdx());//공지사항 상세정보
+            noticeReviewVO = noticeReviewService.GetNoticeReviewList(getNoticeReviewRequest);//공지사항 댓글 리스트
+            for(int i = 0 ; i<noticeReviewVO.size(); i++){//공지사항 댓글리스트의 idx review_review table 의 review_idx 를 토대로 대댓글 리스트 불러오기
                 List<NoticeReviewReviewVO> noticeReviewReviewVOList = noticeReviewReviewService.GetNoticeReviewReviewList(noticeReviewVO.get(i).getIdx());
                 noticeReviewResults.add(new NoticeReviewResult(noticeReviewVO.get(i),noticeReviewReviewVOList));
             }
@@ -85,6 +85,7 @@ public class NoticeDetailController {
 
     }
 
+    //테스트 완
     @RequestMapping(value="/updatenoticedetail",method=RequestMethod.PATCH)
     public ResponseEntity<SendMessage<NoticeDetailVO>> UpdateNoticeDetail(HttpServletRequest request, UpdateNoticeDetailRequest noticeDetailRequest){
         Map<String,Object> auth;
@@ -94,7 +95,7 @@ public class NoticeDetailController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try{
             noticeDetailRequest.CheckValidate();
-            noticeDetailService.UpdateNoticeDetail(noticeDetailRequest);
+            noticeDetailVO=noticeDetailService.UpdateNoticeDetail(noticeDetailRequest);
         }catch(NullPointerException e){
             sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
@@ -106,6 +107,7 @@ public class NoticeDetailController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
+    
     @RequestMapping(value="/deletenotice")
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeDetail(HttpServletRequest request, DeleteNoticeDetailRequest deleteNoticeDetailRequest){
         Map<String,Object> auth;

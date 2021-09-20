@@ -11,6 +11,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="notice_review_review")
 public class NoticeReviewReviewVO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +30,7 @@ public class NoticeReviewReviewVO {
     private Date regdate;
 
     @Column(name="isdeleted")
-    private Byte isdeleted;
+    private Integer isdeleted;
 
     public boolean CheckValidate(){
         if(content==null || content.equals("") || this.reviewidx <=0 || this.memberidx <=0) throw new NullPointerException("BAD REQEUST");

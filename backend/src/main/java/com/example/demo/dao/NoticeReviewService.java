@@ -1,14 +1,12 @@
 package com.example.demo.dao;
 
 import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
-import com.example.demo.dto.Notice.GetNoticeReviewRequest;
+import com.example.demo.dto.Notice.GetNoticeDetailRequest;
 import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
 import com.example.demo.vo.notice.NoticeReviewVO;
-import jdk.jshell.spi.ExecutionControlProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +27,7 @@ public class NoticeReviewService {
         }
         return 1;
     }
-    public List<NoticeReviewVO> GetNoticeReviewList(GetNoticeReviewRequest noticeReviewRequest) throws Exception{
+    public List<NoticeReviewVO> GetNoticeReviewList(GetNoticeDetailRequest noticeReviewRequest) throws Exception{
         List<NoticeReviewVO> noticeReviewVOList=null;
         try{
             noticeReviewVOList=noticeReviewRepository.findNoticeReviewVOByNoticeidxAndIsDeleted(noticeReviewRequest.getNoticeIdx(),1);

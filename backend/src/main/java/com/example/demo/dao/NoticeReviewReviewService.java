@@ -20,7 +20,7 @@ public class NoticeReviewReviewService {
     public List<NoticeReviewReviewVO> GetNoticeReviewReviewList(Long notice_reviewidx){
         List<NoticeReviewReviewVO> list= new ArrayList<>();
         try{
-            list=noticeReviewReviewRepository.GetNoticeReviewReview(notice_reviewidx);
+            list=noticeReviewReviewRepository.findNoticeReviewReviewVOByReviewidxAndIsdeleted(notice_reviewidx,1);
             if(list.size() <=0){
                 list = new ArrayList<>();
             }

@@ -20,10 +20,10 @@ public class NoticeDetailService {
 
 
 
-    public NoticeDetailVO GetNoticeDetail(Long idx) throws IndexOutOfBoundsException,Exception{
+    public NoticeDetailVO GetNoticeDetail(Long notice_idx) throws IndexOutOfBoundsException,Exception{
         NoticeDetailVO noticeDetailVO =null;
         try{
-            noticeDetailVO = noticeDetailRepository.findByIdx(idx).get(0);
+            noticeDetailVO = noticeDetailRepository.findNoticeDetailVOByNoticeidxAndIsdeleted(notice_idx,1).get(0);
         }catch(IndexOutOfBoundsException e){
             throw new NullPointerException("NO DATA");
         }catch(Exception e){
@@ -47,18 +47,18 @@ public class NoticeDetailService {
 
     }
 
-    public void UpdateNoticeDetail(UpdateNoticeDetailRequest noticeDetail) throws IndexOutOfBoundsException,Exception{
+    public NoticeDetailVO UpdateNoticeDetail(UpdateNoticeDetailRequest noticeDetail) throws IndexOutOfBoundsException,Exception{
         NoticeDetailVO noticeDetailVO = null;
         try{
-            noticeDetailVO = noticeDetailRepository.findByIdx(noticeDetail.getIdx()).get(0);
+            noticeDetailVO = noticeDetailRepository.findNoticeDetailVOByNoticeidxAndIsdeleted(noticeDetail.getIdx(),1).get(0);
             noticeDetailVO.setContent(noticeDetail.getContent());
-            noticeDetailRepository.save(noticeDetailVO);
+            noticeDetailVO=noticeDetailRepository.save(noticeDetailVO);
         }catch(IndexOutOfBoundsException e){
             throw new IndexOutOfBoundsException("찾으시는 데이터가 없습니다.");
         }catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }
-        return;
+        return noticeDetailVO;
     }
 
     public void AddNoticeDetail(NoticeDetailVO noticeDetail) throws Exception{
