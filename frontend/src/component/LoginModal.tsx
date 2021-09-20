@@ -28,12 +28,12 @@ export default function LoginModal(props: any) {
     }
 
     function idChange(e: any) {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setId(e.target.value);
     }
 
     function pwChange(e: any) {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setPw(e.target.value);
     }
 
