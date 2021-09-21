@@ -58,14 +58,14 @@ public class NoticeDetailController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         NoticeResultVO noticeResultVO = null;
         NoticeVO noticeVO = null;
-        List<NoticeReviewVO> noticeReviewVO;
+        List<ReadNoticeReviewVO> noticeReviewVO;
         List<NoticeReviewResult> noticeReviewResults = new ArrayList<>();
         try{
             noticeVO = noticeService.GetNoticeData(getNoticeReviewRequest.getNoticeIdx()); //공지사항 정보
             noticeDetailVO = noticeDetailService.GetNoticeDetail(getNoticeReviewRequest.getNoticeIdx());//공지사항 상세정보
             noticeReviewVO = noticeReviewService.GetNoticeReviewList(getNoticeReviewRequest);//공지사항 댓글 리스트
             for(int i = 0 ; i<noticeReviewVO.size(); i++){//공지사항 댓글리스트의 idx review_review table 의 review_idx 를 토대로 대댓글 리스트 불러오기
-                List<NoticeReviewReviewVO> noticeReviewReviewVOList = noticeReviewReviewService.GetNoticeReviewReviewList(noticeReviewVO.get(i).getIdx());
+                List<ReadNoticeReviewReviewVO> noticeReviewReviewVOList = noticeReviewReviewService.GetNoticeReviewReviewList(noticeReviewVO.get(i).getIdx());
                 noticeReviewResults.add(new NoticeReviewResult(noticeReviewVO.get(i),noticeReviewReviewVOList));
             }
         }catch(IndexOutOfBoundsException e ){
@@ -107,7 +107,7 @@ public class NoticeDetailController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
-    
+
     @RequestMapping(value="/deletenotice")
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeDetail(HttpServletRequest request, DeleteNoticeDetailRequest deleteNoticeDetailRequest){
         Map<String,Object> auth;

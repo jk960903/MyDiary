@@ -8,7 +8,7 @@ import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
 import com.example.demo.dto.Notice.AddNoticeReviewRequest;
 import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
-import com.example.demo.vo.notice.NoticeReviewVO;
+import com.example.demo.vo.notice.ReadNoticeReviewVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,18 +37,18 @@ public class NoticeReviewController {
     }
 
     @RequestMapping(value = "/addnotice-review", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewRequest model){
+    public ResponseEntity<SendMessage<ReadNoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewRequest model){
         Map<String,Object> auth;
-        SendMessage<NoticeReviewVO> sendMessage=null;
+        SendMessage<ReadNoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         int result=0;
         try{
             auth= jwtService.requestAuthorization(request);
             model.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
             model.CheckValidate();
-            noticeReviewVO = NoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
+            noticeReviewVO = ReadNoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
                     .memberidx(model.getMember_idx()).isDeleted(1).build();
             result= noticeReviewService.AddNoticeReview(noticeReviewVO);
         } catch (IllegalAccessException e) {
@@ -67,11 +67,11 @@ public class NoticeReviewController {
 
 
     @RequestMapping(value = "/updatenotice-review", method = RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , UpdateNoticeReviewRequest changeNoticeReviewVO){
+    public ResponseEntity<SendMessage<ReadNoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , UpdateNoticeReviewRequest changeNoticeReviewVO){
         Map<String,Object> auth;
-        SendMessage<NoticeReviewVO> sendMessage=null;
+        SendMessage<ReadNoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
 
         try {
@@ -100,7 +100,7 @@ public class NoticeReviewController {
         Map<String,Object> auth;
         SendMessage<Integer> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
         int result=0;
         try{

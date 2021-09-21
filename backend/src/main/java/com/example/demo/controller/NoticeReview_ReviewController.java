@@ -34,28 +34,6 @@ public class NoticeReview_ReviewController {
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value ="/getnotice-reivew-review-list")
-    public ResponseEntity<SendMessage<List<NoticeReviewReviewVO>>> getNoticeReviewReviewList(Long notice_review_idx){
-        List<NoticeReviewReviewVO> noticeReviewReviewVOList= noticeReviewReviewService.GetNoticeReviewReviewList(notice_review_idx);
-        SendMessage<List<NoticeReviewReviewVO>> message;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        if(notice_review_idx < 0 || notice_review_idx ==null) {
-            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST, "BAD REQUEST");
-            return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
-        }
-        if(noticeReviewReviewVOList ==null){
-            message = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"INTERVAL SERVER ERROR");
-            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        else if(noticeReviewReviewVOList.size() ==0) {
-            message = new SendMessage<>(noticeReviewReviewVOList, StatusEnum.OK, "NO DATA");
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-        message = new SendMessage<>(noticeReviewReviewVOList,StatusEnum.OK,"OK");
-        return new ResponseEntity<>(message,headers,HttpStatus.OK);
-    }
-
     @RequestMapping(value="/addnotice_review_review")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> AddNoticeReviewReview(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
         Map<String,Object> auth;

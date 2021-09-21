@@ -21,4 +21,6 @@ public interface NoticeDetailRepository extends JpaRepository<NoticeDetailVO,Lon
     public List<NoticeDetailVO> findNoticeDetailVOByNoticeidxAndIsdeleted(Long NoticeIdx,Integer IsDeleted);
 
 
+
+
 }

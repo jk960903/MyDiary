@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
+import com.example.demo.vo.notice.ReadNoticeReviewReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class NoticeReviewReviewService {
     public NoticeReviewReviewService(NoticeReviewReviewRepository noticeReviewReviewRepository){
         this.noticeReviewReviewRepository = noticeReviewReviewRepository;
     }
-    public List<NoticeReviewReviewVO> GetNoticeReviewReviewList(Long notice_reviewidx){
-        List<NoticeReviewReviewVO> list= new ArrayList<>();
+    public List<ReadNoticeReviewReviewVO> GetNoticeReviewReviewList(Long notice_reviewidx){
+        List<ReadNoticeReviewReviewVO> list= new ArrayList<>();
         try{
             list=noticeReviewReviewRepository.findNoticeReviewReviewVOByReviewidxAndIsdeleted(notice_reviewidx,1);
             if(list.size() <=0){

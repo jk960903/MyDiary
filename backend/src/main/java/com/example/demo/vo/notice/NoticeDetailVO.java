@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/*
+* 공지사항 상세 Entity
+*
+*/
 @Getter
 @Setter
 @NoArgsConstructor

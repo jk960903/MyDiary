@@ -1,18 +1,20 @@
 package com.example.demo.vo.notice;
 
+import com.example.demo.vo.Member.MemberVO;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
-@Entity
 @Getter
 @Setter
-@Table(name="notice_review")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name="notice_review")
 @Builder
-public class NoticeReviewVO {
+public class ReadNoticeReviewVO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idx;
@@ -32,6 +34,9 @@ public class NoticeReviewVO {
     @Column(name="memberidx")
     private Long memberidx;
 
+    @OneToOne
+    @JoinColumn(name="memberidx" ,referencedColumnName = "idx",insertable = false,updatable = false)
+    private ReviewWriterVO reviewWriterVO;
 
     public boolean CheckValidate() throws NullPointerException{
         if(this.idx==null ||this.idx<=0|| this.noticeidx <=0 || this.memberidx<=0 || this.content == null) throw new NullPointerException("BAD REQUEST");
@@ -42,4 +47,7 @@ public class NoticeReviewVO {
         if(this.memberidx == memberidx) return true;
         else throw new IllegalAccessException("No Token Or Token is Expired");
     }
+
+
+
 }

@@ -3,7 +3,7 @@ package com.example.demo.dao;
 import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
 import com.example.demo.dto.Notice.GetNoticeDetailRequest;
 import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
-import com.example.demo.vo.notice.NoticeReviewVO;
+import com.example.demo.vo.notice.ReadNoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class NoticeReviewService {
         this.noticeReviewRepository=noticeReviewRepository;
     }
 
-    public int AddNoticeReview(NoticeReviewVO noticeReviewVO) throws Exception{
+    public int AddNoticeReview(ReadNoticeReviewVO noticeReviewVO) throws Exception{
         try{
             noticeReviewRepository.save(noticeReviewVO);
         }catch(Exception e){
@@ -27,8 +27,8 @@ public class NoticeReviewService {
         }
         return 1;
     }
-    public List<NoticeReviewVO> GetNoticeReviewList(GetNoticeDetailRequest noticeReviewRequest) throws Exception{
-        List<NoticeReviewVO> noticeReviewVOList=null;
+    public List<ReadNoticeReviewVO> GetNoticeReviewList(GetNoticeDetailRequest noticeReviewRequest) throws Exception{
+        List<ReadNoticeReviewVO> noticeReviewVOList=null;
         try{
             noticeReviewVOList=noticeReviewRepository.findNoticeReviewVOByNoticeidxAndIsDeleted(noticeReviewRequest.getNoticeIdx(),1);
         }catch(Exception e){
@@ -39,8 +39,8 @@ public class NoticeReviewService {
 
 
 
-    public NoticeReviewVO UpdateNoticeReview(UpdateNoticeReviewRequest updateNoticeReviewRequest) throws IllegalAccessException,IndexOutOfBoundsException,Exception{
-        NoticeReviewVO noticeReviewVO;
+    public ReadNoticeReviewVO UpdateNoticeReview(UpdateNoticeReviewRequest updateNoticeReviewRequest) throws IllegalAccessException,IndexOutOfBoundsException,Exception{
+        ReadNoticeReviewVO noticeReviewVO;
         try{
             noticeReviewVO = noticeReviewRepository.findByIdxAndIsDeleted(updateNoticeReviewRequest.getIdx(),1).get(0);
             noticeReviewVO.checkLoginValidate(updateNoticeReviewRequest.getIdx());
@@ -56,7 +56,7 @@ public class NoticeReviewService {
         return noticeReviewVO;
     }
     public int DeleteNoticeReview(DeleteNoticeReviewRequest deleteNoticeReviewRequest) throws IndexOutOfBoundsException, IllegalAccessException ,Exception{
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         //delete 시도
         try{
             noticeReviewVO = noticeReviewRepository.findByIdxAndIsDeleted(deleteNoticeReviewRequest.getIdx(),1).get(0);
