@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.NoticeReviewReviewService;
 import com.example.demo.dto.Notice.DeleteNoticeReviewReviewRequest;
+import com.example.demo.dto.Notice.UpdateNoticeReviewReviewRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
@@ -47,10 +48,10 @@ public class NoticeReview_ReviewController {
             noticeReviewReviewVO.CheckValidate();
             noticeReviewReviewService.AddNoticeReviewReview(noticeReviewReviewVO);
         }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
-            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
         }catch(NullPointerException e){// 파라미터 값 이상
-            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,"BADREQUEST");
+            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
         }catch(Exception e) {
             message = new SendMessage<>(null, StatusEnum.INTERNAL_SERVER_ERROOR, e.getMessage());
@@ -61,30 +62,29 @@ public class NoticeReview_ReviewController {
     }
 
     @RequestMapping(value="/updatenotice-review-reivew")
-    public ResponseEntity<SendMessage<NoticeReviewReviewVO>> UpdateNoticeReviewReviewVO(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
+    public ResponseEntity<SendMessage<NoticeReviewReviewVO>> UpdateNoticeReviewReviewVO(HttpServletRequest request, UpdateNoticeReviewReviewRequest updateRequest){
         Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
-        NoticeReviewReviewVO findnoticeReviewReviewVO;
+        NoticeReviewReviewVO noticeReviewReviewVO;
         try{
             auth = jwtService.requestAuthorization(request);
-            noticeReviewReviewVO.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
-            noticeReviewReviewVO.CheckValidate();
-            findnoticeReviewReviewVO=noticeReviewReviewService.GetNoticeReviewReview(noticeReviewReviewVO.getIdx());
-            findnoticeReviewReviewVO.setContent(noticeReviewReviewVO.getContent());
-            noticeReviewReviewService.UpdateNoticeReviewReview(findnoticeReviewReviewVO);
+            updateRequest.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
+            updateRequest.CheckValidate();
+            noticeReviewReviewVO=noticeReviewReviewService.UpdateNoticeReviewReview(updateRequest);
         }catch(IllegalAccessException e){//토큰 만료 및 로그인 안되어있을때
-            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,"UNAUTHORZED");
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
         }catch(NullPointerException e){// 파라미터 값 이상
-            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,"BADREQUEST");
+            message = new SendMessage<>(null, StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(message,headers,HttpStatus.BAD_REQUEST);
         }catch(Exception e) {
             message = new SendMessage<>(null, StatusEnum.INTERNAL_SERVER_ERROOR, e.getMessage());
             return new ResponseEntity<>(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
+        message= new SendMessage<>(noticeReviewReviewVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
     @RequestMapping(value="/deletenotice-review-review")
@@ -94,12 +94,19 @@ public class NoticeReview_ReviewController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
         NoticeReviewReviewVO findnoticeReviewReviewVO;
-        /*try{
+        try{
             auth = jwtService.requestAuthorization(request);
-            findnoticeReviewReviewVO = noticeReviewReviewService.GetNoticeReviewReview(deleteNoticeReviewReviewRequest.getIdx());
-            noticeReviewReviewService.DeleteNoticeReviewReview(findnoticeReviewReviewVO.getIdx());
+            noticeReviewReviewService.DeleteNoticeReviewReview(deleteNoticeReviewReviewRequest.getIdx());
 
-        }*/
+        }catch(IllegalAccessException e){
+            message = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.UNAUTHORIZED);
+        }catch(IndexOutOfBoundsException e){
+
+        }catch(Exception e){
+
+        }
+
         return null;
     }
 }
