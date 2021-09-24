@@ -12,6 +12,7 @@ import java.sql.Date;
 @Builder
 @Entity
 @Table(name="notice_review_review")
+//읽기 전용 VO
 public class ReadNoticeReviewReviewVO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

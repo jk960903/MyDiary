@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name="notice_review")
 @Builder
+//읽기 전용 vo
 public class ReadNoticeReviewVO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

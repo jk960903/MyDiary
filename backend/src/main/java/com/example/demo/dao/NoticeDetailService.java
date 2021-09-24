@@ -24,6 +24,7 @@ public class NoticeDetailService {
         NoticeDetailVO noticeDetailVO =null;
         try{
             noticeDetailVO = noticeDetailRepository.findNoticeDetailVOByNoticeidxAndIsdeleted(notice_idx,1).get(0);
+
         }catch(IndexOutOfBoundsException e){
             throw new NullPointerException("NO DATA");
         }catch(Exception e){

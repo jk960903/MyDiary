@@ -18,9 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -45,7 +43,7 @@ public class NoticeController {
         this.noticeDetailService =noticeDetailService;
     }
     //테스트 완
-    @RequestMapping(value="/noticeget", method = RequestMethod.GET)
+    @GetMapping(value="/noticeget")
     public ResponseEntity<SendMessage<List<NoticeVO>>> NoticeGet(NoticeRequest request, HttpServletRequest servletRequest){
         SendMessage<List<NoticeVO>> sendMessage;
         List<NoticeVO> list=null;
@@ -69,7 +67,7 @@ public class NoticeController {
     공지사항 추가 api
 
      */
-    @RequestMapping(value="/addnotice",method=RequestMethod.POST)
+    @PostMapping(value="/addnotice")
     public ResponseEntity<SendMessage<NoticeVO>> AddNotice(NoticeVO noticeVO,HttpServletRequest request,String Content){
         Map<String,Object> auth;
         SendMessage<NoticeVO> message;
@@ -100,7 +98,7 @@ public class NoticeController {
 
     }
 
-    @RequestMapping(value="/updatenoticeview" ,method=RequestMethod.PATCH)
+    @PatchMapping(value="/updatenoticeview")
     public ResponseEntity<SendMessage<Integer>> UpdateNoticeCountView( UpdateNoticeCountRequest updateNoticeCountRequest){
         SendMessage<Integer> message;
         HttpHeaders headers = new HttpHeaders();

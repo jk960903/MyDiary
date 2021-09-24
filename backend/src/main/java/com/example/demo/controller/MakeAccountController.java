@@ -10,9 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -31,7 +29,7 @@ public class MakeAccountController {
         this.jwtService = jwtService;
     }
     //테스트완
-    @RequestMapping(value="/checkduplicateid", method= RequestMethod.GET)
+    @GetMapping(value="/checkduplicateid")
     public ResponseEntity<SendMessage<Boolean>> CheckDuplicateID(String ID){
         SendMessage<Boolean> message = null;
         HttpHeaders headers= new HttpHeaders();
@@ -57,7 +55,7 @@ public class MakeAccountController {
     }
 
     //테스트 완
-    @RequestMapping(value="/checkduplicatedemail",method = RequestMethod.GET)
+    @GetMapping(value="/checkduplicatedemail")
     public ResponseEntity<SendMessage<Boolean>> CheckDuplicateEmail(CheckDuplicateEmailRequest email){
         SendMessage<Boolean> message = null;
         HttpHeaders headers= new HttpHeaders();
@@ -81,7 +79,7 @@ public class MakeAccountController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
     //테스트완
-    @RequestMapping(value ="/makeaccount", method = RequestMethod.POST)
+    @PostMapping(value ="/makeaccount")
     public ResponseEntity<SendMessage<MemberVO>> MakeAccount(MemberVO memberVO) {
         SendMessage<MemberVO> message = null;
         HttpHeaders headers= new HttpHeaders();
@@ -102,7 +100,7 @@ public class MakeAccountController {
     }
 
     //테스트 완
-    @RequestMapping(value="/updateaccount",method=RequestMethod.PATCH)
+    @PatchMapping(value="/updateaccount")
     public ResponseEntity<SendMessage<MemberVO>> UpdateAccount(HttpServletRequest request ,MemberVO memberVO){
         SendMessage<MemberVO> message = null;
         HttpHeaders headers= new HttpHeaders();

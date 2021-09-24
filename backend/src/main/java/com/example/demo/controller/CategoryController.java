@@ -23,9 +23,9 @@ import java.util.Map;
 @RestController
 @RequestMapping(value="/api/category")
 public class CategoryController {
+
     private final JwtService jwtService;
 
-    @Autowired(required = true)
     private final CategoryService categoryService;
 
     public CategoryController(JwtService jwtService, CategoryService categoryService) {

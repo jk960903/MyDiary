@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +37,7 @@ public class NoticeReview_ReviewController {
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value="/addnotice_review_review")
+    @PostMapping(value="/addnotice_review_review")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> AddNoticeReviewReview(HttpServletRequest request,NoticeReviewReviewVO noticeReviewReviewVO){
         Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;
@@ -61,7 +63,7 @@ public class NoticeReview_ReviewController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/updatenotice-review-reivew")
+    @PatchMapping(value="/updatenotice-review-reivew")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> UpdateNoticeReviewReviewVO(HttpServletRequest request, UpdateNoticeReviewReviewRequest updateRequest){
         Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;
@@ -87,7 +89,7 @@ public class NoticeReview_ReviewController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/deletenotice-review-review")
+    @PatchMapping(value="/deletenotice-review-review")
     public ResponseEntity<SendMessage<NoticeReviewReviewVO>> DeleteNoticeReviewReviewVO(HttpServletRequest request, DeleteNoticeReviewReviewRequest deleteNoticeReviewReviewRequest){
         Map<String,Object> auth;
         SendMessage<NoticeReviewReviewVO> message;

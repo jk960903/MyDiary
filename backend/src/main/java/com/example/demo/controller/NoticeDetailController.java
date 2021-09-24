@@ -16,9 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -50,7 +48,7 @@ public class NoticeDetailController {
         this.noticeReviewReviewService = noticeReviewReviewService;
     }
     //테스트완
-    @RequestMapping(value = "/getnoticedetail", method = RequestMethod.GET )
+    @GetMapping(value = "/getnoticedetail")
     public ResponseEntity<SendMessage<NoticeResultVO>> GetNoticeDetail(HttpServletRequest request , GetNoticeDetailRequest getNoticeReviewRequest){
         SendMessage<NoticeResultVO> sendMessage = null;
         NoticeDetailVO noticeDetailVO = null;
@@ -86,7 +84,7 @@ public class NoticeDetailController {
     }
 
     //테스트 완
-    @RequestMapping(value="/updatenoticedetail",method=RequestMethod.PATCH)
+    @PatchMapping(value="/updatenoticedetail")
     public ResponseEntity<SendMessage<NoticeDetailVO>> UpdateNoticeDetail(HttpServletRequest request, UpdateNoticeDetailRequest noticeDetailRequest){
         Map<String,Object> auth;
         SendMessage<NoticeDetailVO> sendMessage=null;
@@ -108,7 +106,7 @@ public class NoticeDetailController {
     }
 
 
-    @RequestMapping(value="/deletenotice")
+    @PatchMapping(value="/deletenotice")
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeDetail(HttpServletRequest request, DeleteNoticeDetailRequest deleteNoticeDetailRequest){
         Map<String,Object> auth;
         SendMessage<Integer> sendMessage=null;
