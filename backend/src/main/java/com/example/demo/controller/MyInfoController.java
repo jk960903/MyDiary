@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.JWT.JwtService;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.dao.MemberService;
+import com.example.demo.dao.VisitService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.MyInfo.MyInfoVO;
 import org.springframework.http.HttpHeaders;
@@ -26,10 +27,15 @@ public class MyInfoController {
 
     private final MemberService memberService;
 
+    private final VisitService visitService;
 
-    public MyInfoController(JwtService jwtService, MemberService memberService) {
+    //친구 관계수 팔로워 팔로잉으로 하는건 어떨지
+
+
+    public MyInfoController(JwtService jwtService, MemberService memberService, VisitService visitService) {
         this.jwtService = jwtService;
         this.memberService = memberService;
+        this.visitService = visitService;
     }
     
     //아직 미완성

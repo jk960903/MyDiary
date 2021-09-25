@@ -11,4 +11,5 @@
 	<button id="noticebutton" onclick="location.href='Notice/Notice'">공지사항</button>
 	<button id="myinfo" onclick="location.href = 'info.jsp'">내정보</button>	
 </body>
+
 </html>
