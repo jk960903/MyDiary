@@ -13,5 +13,4 @@ import java.util.List;
 @Builder
 public class NoticeReviewResult {
     private ReadNoticeReviewVO noticeReviewVO;
-    private List<ReadNoticeReviewReviewVO> noticeReviewReviewVOList;
 }

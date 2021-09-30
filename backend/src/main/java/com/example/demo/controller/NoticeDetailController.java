@@ -64,7 +64,7 @@ public class NoticeDetailController {
             noticeReviewVO = noticeReviewService.GetNoticeReviewList(getNoticeReviewRequest);//공지사항 댓글 리스트
             for(int i = 0 ; i<noticeReviewVO.size(); i++){//공지사항 댓글리스트의 idx review_review table 의 review_idx 를 토대로 대댓글 리스트 불러오기
                 List<ReadNoticeReviewReviewVO> noticeReviewReviewVOList = noticeReviewReviewService.GetNoticeReviewReviewList(noticeReviewVO.get(i).getIdx());
-                noticeReviewResults.add(new NoticeReviewResult(noticeReviewVO.get(i),noticeReviewReviewVOList));
+                noticeReviewResults.add(new NoticeReviewResult(noticeReviewVO.get(i)));
             }
         }catch(IndexOutOfBoundsException e ){
             sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());

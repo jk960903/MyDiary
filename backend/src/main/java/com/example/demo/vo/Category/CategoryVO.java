@@ -24,13 +24,14 @@ public class CategoryVO {
     @Column(name="category")
     private Integer category;
 
-    @Column(name="categoryname")
-    private String categoryname;
-
     @Column(name="legdate")
     private Date legdate;
 
     @Column(name="isdeleted")
     private Integer isdeleted;
+
+    @OneToOne
+    @JoinColumn(name="category",referencedColumnName = "idx" , insertable = false,updatable = false)
+    private CategoryDetailVO categoryDetailVO;
 
 }

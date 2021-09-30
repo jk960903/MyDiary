@@ -17,9 +17,9 @@ public class CategoryService {
         this.categoryRepository=categoryRepository;
     }
 
-    /*public void AddCategory(CategoryVO categoryVO) throws Exception{
+    public void AddCategory(CategoryVO categoryVO) throws Exception{
         try{
-            categoryRepository.AddCategory(categoryVO);
+            categoryRepository.save(categoryVO);
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("INTERVAL SERVER ERROR");
@@ -50,7 +50,7 @@ public class CategoryService {
         CategoryVO categoryVO = null;
         try{
             categoryVO = categoryRepository.findCategoryByIdx(cateogryIdx).get(0);
-            categoryRepository.UpdateCategory(categorynum,cateogryIdx);
+            categoryRepository.save(categoryVO);
         }catch(IndexOutOfBoundsException e){
             throw new IndexOutOfBoundsException("NO DATE");
         }
@@ -63,11 +63,11 @@ public class CategoryService {
     public List<CategoryVO> getCategoryList(Long memberIdx) throws Exception{
         List<CategoryVO> list;
         try{
-            list=categoryRepository.findCategoryByMemberidxAndIsdeleted(memberIdx,1);
+            list=categoryRepository.findByMemberidxAndIsdeleted(memberIdx,1);
         }catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }
         return list;
-    }*/
+    }
 
 }
