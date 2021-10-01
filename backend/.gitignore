@@ -1,3 +1,10 @@
 *.imi
 /target/
+
+application.properties
 key.properties
+
+logs
+.idea
+
+test/

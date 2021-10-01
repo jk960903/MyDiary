@@ -6,15 +6,20 @@ import com.example.demo.controller.LoginController;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.Member.MemberVO;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = LoginController.class)
 public class LogintControllerTest {
 
@@ -23,6 +28,8 @@ public class LogintControllerTest {
     private final MemberService memberService;
 
     private final TestRestTemplate restTemplate;
+
+
 
     private final JwtService jwtService;
     public LogintControllerTest(MockMvc mvc, MemberService memberService, TestRestTemplate restTemplate, JwtService jwtService){
@@ -33,8 +40,9 @@ public class LogintControllerTest {
 
     }
 
+
     @Test
-    public void FindByIDTest(){
+    public void FindByIDTest() throws Exception{
         String ID = "1234";
         String Email = "1234";
         MemberVO memberVO = MemberVO.builder().ID(ID).name("1234")
@@ -45,8 +53,6 @@ public class LogintControllerTest {
 
         ResponseEntity<SendMessage<MemberVO>> responseEntity;
         //responseEntity = restTemplate.getFo;
-
-
     }
 }
 /*
