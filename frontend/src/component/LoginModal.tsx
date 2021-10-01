@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, FormGroup} from 'reactstrap';
 import {InputGroup, InputGroupText, InputGroupAddon, Input} from 'reactstrap';
 import LoginApi from "../apis/LoginApi";
 
@@ -43,18 +43,8 @@ export default function LoginModal(props: any) {
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Login</ModalHeader>
                 <ModalBody>
-                    <InputGroup className="row">
-                        <InputGroupAddon addonType="prepend" className="col-2">
-                            <InputGroupText className="bg-white border-white">ID</InputGroupText>
-                        </InputGroupAddon>
-                        <Input value={id} onChange={idChange}/>
-                    </InputGroup>
-                    <InputGroup className="row mt-2">
-                        <InputGroupAddon addonType="prepend" className="col-2">
-                            <InputGroupText className="bg-white border-white">PW</InputGroupText>
-                        </InputGroupAddon>
-                        <Input value={pw} onChange={pwChange} type="password"/>
-                    </InputGroup>
+                    <Input placeholder="ID" value={id} id="id_input" className="mb-2" onChange={idChange}/>
+                    <Input placeholder="Password" value={pw}  id="pw_input" onChange={pwChange} type="password"/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={login}>Login</Button>{' '}
