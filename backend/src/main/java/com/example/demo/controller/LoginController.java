@@ -12,6 +12,7 @@ import com.example.demo.vo.Member.MemberVO;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Login.LoginRequestVO;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,18 +28,30 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value="/api/login")
 public class LoginController {
 
-    private final MemberService memberService;
-    private final JwtService jwtService;
+    @Autowired
+    private MemberService memberService;
 
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
     public LoginController(MemberService memberService, JwtService jwtService) {
         this.memberService = memberService;
         this.jwtService = jwtService;
     }
+
+    public LoginController(){
+        memberService=new MemberService();
+    }
+
+
     //테스트완
     @GetMapping(value ="/findbyid")
     public ResponseEntity<SendMessage<MemberVO>> FindByID(@RequestParam String ID) {
-        MemberVO result;
+        MemberVO result=null;
         SendMessage<MemberVO> message =null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
             result = memberService.findByID(ID).get(0);
 
@@ -47,9 +60,11 @@ public class LoginController {
 
         }
         catch(Exception e) {
-
+            message=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(message,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
+        message=new SendMessage<>(result,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
     //테스트 완
     @GetMapping(value ="/findbyemail")

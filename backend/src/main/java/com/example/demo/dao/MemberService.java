@@ -4,6 +4,7 @@ import com.example.demo.dto.Member.FindMemberEmailRequest;
 import com.example.demo.vo.Login.LoginRequestVO;
 import com.example.demo.vo.Member.MemberVO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,17 +13,21 @@ import java.util.List;
 @Service
 public class MemberService  {
 
-
     private MemberRepository memberRepository;
 
-
+    @Autowired
     public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
+
+    public MemberService(){}
     public List<MemberVO> findByID(String id) throws NullPointerException{
-        if(id==null || id.equals("")) throw new NullPointerException("BAD REQUEST");
+        if(id==null || id.equals("")){
+            throw new NullPointerException("BAD REQUEST");
+        }
         return memberRepository.findByID(id);
     }
+
 
     public MemberVO findByEmail(FindMemberEmailRequest email) throws IndexOutOfBoundsException {
         MemberVO member=new MemberVO();
