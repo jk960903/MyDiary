@@ -12,6 +12,7 @@ import com.example.demo.vo.Member.MemberVO;
 import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Login.LoginRequestVO;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,10 +40,11 @@ public class LoginController {
         this.memberService = memberService;
         this.jwtService = jwtService;
     }
+    public LoginController(MemberService memberService){
+        this.memberService = memberService;
 
-    public LoginController(){
-        memberService=new MemberService();
     }
+
 
 
     //테스트완

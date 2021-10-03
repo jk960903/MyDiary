@@ -24,13 +24,19 @@ import java.util.Map;
 @RequestMapping(value="/api/category")
 public class CategoryController {
 
-    private final JwtService jwtService;
 
-    private final CategoryService categoryService;
+    private  JwtService jwtService;
 
+    private  CategoryService categoryService;
+
+    @Autowired
     public CategoryController(JwtService jwtService, CategoryService categoryService) {
         this.jwtService = jwtService;
         this.categoryService = categoryService;
+    }
+
+    public CategoryController(){
+
     }
 
     /*@RequestMapping(value="/getcategoryaction")

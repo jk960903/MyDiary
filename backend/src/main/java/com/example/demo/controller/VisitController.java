@@ -4,21 +4,23 @@ import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.MemberService;
 import com.example.demo.dao.VisitDetailService;
 import com.example.demo.dao.VisitService;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="/api/visit")
+@NoArgsConstructor
 public class VisitController {
-    private final VisitService visitService;
+    private  VisitService visitService;
 
-    private final MemberService memberService;
+    private  MemberService memberService;
 
-    private final VisitDetailService visitDetailService;
+    private  VisitDetailService visitDetailService;
 
     //게시글 댓글
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
 
     public VisitController(VisitService visitService, MemberService memberService, VisitDetailService visitDetailService, JwtService jwtService) {

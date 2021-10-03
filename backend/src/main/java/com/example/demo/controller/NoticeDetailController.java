@@ -12,6 +12,8 @@ import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.*;
 
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,20 +28,22 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value="api/noticedetail")
+@NoArgsConstructor
 public class NoticeDetailController {
 
-    private final NoticeDetailService noticeDetailService;
+    private  NoticeDetailService noticeDetailService;
 
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
-    private final NoticeService noticeService;
+    private  NoticeService noticeService;
 
-    private final NoticeReviewService noticeReviewService;
+    private  NoticeReviewService noticeReviewService;
 
-    private final NoticeReviewReviewService noticeReviewReviewService;
+    private  NoticeReviewReviewService noticeReviewReviewService;
 
 
+    @Autowired
     public NoticeDetailController(NoticeDetailService noticeDetailService, JwtService jwtService, NoticeService noticeService, NoticeReviewService noticeReviewService, NoticeReviewReviewService noticeReviewReviewService) {
         this.noticeDetailService = noticeDetailService;
         this.jwtService = jwtService;

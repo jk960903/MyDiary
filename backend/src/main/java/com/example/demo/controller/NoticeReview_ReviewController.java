@@ -8,6 +8,8 @@ import com.example.demo.dto.Notice.UpdateNoticeReviewReviewRequest;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeReviewReviewVO;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,14 +26,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "api/notice-review-review")
+@NoArgsConstructor
 public class NoticeReview_ReviewController {
 
 
-    private final NoticeReviewReviewService noticeReviewReviewService;
+    private  NoticeReviewReviewService noticeReviewReviewService;
 
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
+    @Autowired
     public NoticeReview_ReviewController(NoticeReviewReviewService noticeReviewReviewService, JwtService jwtService) {
         this.noticeReviewReviewService = noticeReviewReviewService;
         this.jwtService = jwtService;

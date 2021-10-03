@@ -6,6 +6,8 @@ import com.example.demo.dao.MemberService;
 import com.example.demo.dao.VisitService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.vo.MyInfo.MyInfoVO;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,17 +23,18 @@ import java.util.Map;
 ///MyPage
 @RestController
 @RequestMapping(value="/api/myinfo")
+@NoArgsConstructor
 public class MyInfoController {
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
-    private final MemberService memberService;
+    private  MemberService memberService;
 
-    private final VisitService visitService;
+    private  VisitService visitService;
 
     //친구 관계수 팔로워 팔로잉으로 하는건 어떨지
 
-
+    @Autowired
     public MyInfoController(JwtService jwtService, MemberService memberService, VisitService visitService) {
         this.jwtService = jwtService;
         this.memberService = memberService;

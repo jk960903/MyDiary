@@ -9,6 +9,8 @@ import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
 import com.example.demo.dto.Notice.AddNoticeReviewRequest;
 import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
 import com.example.demo.vo.notice.ReadNoticeReviewVO;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,13 +23,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/noticereview")
+@NoArgsConstructor
 public class NoticeReviewController {
-    private final NoticeService noticeService;
+    private  NoticeService noticeService;
 
-    private final NoticeReviewService noticeReviewService;
+    private  NoticeReviewService noticeReviewService;
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
+    @Autowired
     public NoticeReviewController(NoticeService noticeService, NoticeReviewService noticeReviewService, JwtService jwtService) {
         this.noticeService = noticeService;
         this.noticeReviewService = noticeReviewService;

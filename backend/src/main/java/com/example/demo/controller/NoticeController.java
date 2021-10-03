@@ -11,6 +11,7 @@ import com.example.demo.vo.NoticeRequest;
 import com.example.demo.SendMessage.SendMessage;
 import com.example.demo.vo.notice.NoticeDetailVO;
 import com.example.demo.vo.notice.NoticeVO;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value="api/notice")
+@NoArgsConstructor
 public class NoticeController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private  Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final NoticeService noticeService;
+    private  NoticeService noticeService;
 
-    private final JwtService jwtService;
+    private JwtService jwtService;
 
-    private final NoticeDetailService noticeDetailService;
+    private  NoticeDetailService noticeDetailService;
 
+    @Autowired
     public NoticeController(NoticeService noticeService, JwtService jwtService , NoticeDetailService noticeDetailService,
                             NoticeReviewService noticeReviewService, NoticeReviewReviewService noticeReviewReviewService){
         this.noticeService = noticeService;

@@ -6,6 +6,7 @@ import com.example.demo.dao.MemberService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.dto.Member.CheckDuplicateEmailRequest;
 import com.example.demo.vo.Member.MemberVO;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +19,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/makeaccount")
+@NoArgsConstructor
 public class MakeAccountController {
 
-    private final MemberService memberService;
+    private  MemberService memberService;
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
     public MakeAccountController(MemberService memberService, JwtService jwtService){
         this.memberService = memberService;
