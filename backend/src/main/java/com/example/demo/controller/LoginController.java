@@ -6,6 +6,7 @@ import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 
 import com.example.demo.vo.Member.MemberVO;
@@ -51,11 +52,13 @@ public class LoginController {
     @GetMapping(value ="/findbyid")
     public ResponseEntity<SendMessage<MemberVO>> FindByID(@RequestParam String ID) {
         MemberVO result=null;
+        List<MemberVO> list=null;
         SendMessage<MemberVO> message =null;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
-            result = memberService.findByID(ID).get(0);
+            list = memberService.findByID(ID);
+            System.out.println(list);
 
         }catch(IndexOutOfBoundsException e){
             message = new SendMessage<>(null,StatusEnum.NOT_FOUND,e.getMessage());

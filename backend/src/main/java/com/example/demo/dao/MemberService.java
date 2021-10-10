@@ -26,7 +26,7 @@ public class MemberService  {
         this.memberRepository = memberRepository;
     }
 
-    public List<MemberVO> findByID(String id) throws NullPointerException{
+    public List<MemberVO> findByID(String id) throws NullPointerException,Exception{
         if(id==null || id.equals("")){
             throw new NullPointerException("BAD REQUEST");
         }
