@@ -30,10 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value="/api/login")
 public class LoginController {
 
-    @Autowired
     private MemberService memberService;
 
-    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -41,6 +39,7 @@ public class LoginController {
         this.memberService = memberService;
         this.jwtService = jwtService;
     }
+
     public LoginController(MemberService memberService){
         this.memberService = memberService;
 
@@ -49,6 +48,9 @@ public class LoginController {
 
 
     //테스트완
+    /*
+    ID를 통해 계정 찾기
+     */
     @GetMapping(value ="/findbyid")
     public ResponseEntity<SendMessage<MemberVO>> FindByID(@RequestParam String ID) {
         MemberVO result=null;
@@ -72,6 +74,9 @@ public class LoginController {
         return new ResponseEntity<>(message,headers,HttpStatus.OK);
     }
     //테스트 완
+    /*
+    이메일을통한 계정 찾기
+     */
     @GetMapping(value ="/findbyemail")
     public ResponseEntity<SendMessage<MemberVO>> FindByEmail(FindMemberEmailRequest email) {
         MemberVO result;
@@ -97,6 +102,13 @@ public class LoginController {
     }
 
     //테스트 완 쿠키 까지 테스트완
+    /*
+    로그인
+    Params
+    String userID;
+    String password;
+    String autologin;
+     */
     @GetMapping(value = "/loginaction")
     public ResponseEntity<SendMessage<String>> LoginAction(@CookieValue(value="jwttoken",defaultValue = "",required = true) String jwt,
                                                                         LoginRequestVO loginRequestVO,
