@@ -8,10 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DeleteNoticeDetailRequest {
-    Long idx;
+    private Long idx;
 
     public boolean CheckValidate() throws NullPointerException{
-        if(idx==null || idx<=0) throw new NullPointerException("BAD REQEUST");
+        if(this.idx==null || this.idx<=0) throw new NullPointerException("BAD REQEUST");
         return true;
     }
 }

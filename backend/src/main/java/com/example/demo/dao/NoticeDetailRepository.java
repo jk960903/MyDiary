@@ -13,22 +13,14 @@ import java.util.List;
 @Repository
 public interface NoticeDetailRepository extends JpaRepository<NoticeDetailVO,Long>{
 
-    @Query(value="select * from notice_detail where notice_detail.noticeidx=:idx", nativeQuery=true)
-    public List<NoticeDetailVO> GetNoticeDetail(Long idx);
 
-    @Modifying
-    @Query(value ="delete from notice_detail where notice_detail.idx=:#{#notice.idx", nativeQuery=true)
-    public void DeleteNoticeDetail(NoticeDetailVO noticeDetail);
+    public List<NoticeDetailVO> findByIdx(Long idx);
 
-    @Modifying
-    @Query(value ="update notice_detail set notice_detail.content = :#{#noticeDetail.content}, notice_detail.imageurl= :#{#noticeDetail.imageurl}", nativeQuery=true)
-    public void UpdateNoticeDetail(NoticeDetailVO noticeDetail);
+    //public List<NoticeDetailVO> findByNoticeIdxAndIsDeleted(Long NoticeIdx,Integer IsDeleted);
 
-    @Modifying
-    @Query(value = "insert into notice_detail(content,noticeidx,imageurl)"
-            + " value(:#{#notice_detail.content}, :#{notice_detail.noticeidx , :#{#notice_detail.imageurl});",nativeQuery = true)
-    @Transactional
-    public void AddNoticeDetail(NoticeDetailVO notice_detail);
+    public List<NoticeDetailVO> findNoticeDetailVOByNoticeidxAndIsdeleted(Long NoticeIdx,Integer IsDeleted);
+
+
 
 
 }

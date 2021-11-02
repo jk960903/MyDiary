@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NoticeRequest {
+public class 	NoticeRequest {
 	private String search;
 }

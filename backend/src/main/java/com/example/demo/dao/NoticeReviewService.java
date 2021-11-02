@@ -1,11 +1,12 @@
 package com.example.demo.dao;
 
-import com.example.demo.vo.notice.NoticeReviewVO;
-import jdk.jshell.spi.ExecutionControlProvider;
+import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
+import com.example.demo.dto.Notice.GetNoticeDetailRequest;
+import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
+import com.example.demo.vo.notice.ReadNoticeReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,53 +19,57 @@ public class NoticeReviewService {
         this.noticeReviewRepository=noticeReviewRepository;
     }
 
-    public int AddNoticeReview(NoticeReviewVO noticeReviewVO) throws Exception{
+    public int AddNoticeReview(ReadNoticeReviewVO noticeReviewVO) throws Exception{
         try{
-            noticeReviewRepository.AddNoticeReview(noticeReviewVO);
+            noticeReviewRepository.save(noticeReviewVO);
         }catch(Exception e){
-            // 삽입 실패
-            System.out.println(e.getMessage());
             throw new Exception("INTERVAL SERVER ERROR");
         }
         return 1;
     }
-    public List<NoticeReviewVO> getNoticeReviewList(Long notice_seq) throws Exception{
-        List<NoticeReviewVO> list = new ArrayList<>();
+    public List<ReadNoticeReviewVO> GetNoticeReviewList(GetNoticeDetailRequest noticeReviewRequest) throws Exception{
+        List<ReadNoticeReviewVO> noticeReviewVOList=null;
         try{
-            list = noticeReviewRepository.getNoticeReviewList(notice_seq);
-        }catch (Exception e){
-            throw new Exception("THERE IS NO DATA");
+            noticeReviewVOList=noticeReviewRepository.findNoticeReviewVOByNoticeidxAndIsDeleted(noticeReviewRequest.getNoticeIdx(),1);
+        }catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
         }
-        return list;
+        return noticeReviewVOList;
     }
 
-    //수정하기 전 댓글이 있는지 확인
-    public NoticeReviewVO getNoticeReview(Long Seq) throws Exception{
-        NoticeReviewVO noticeReviewVO =null;
+
+
+    public ReadNoticeReviewVO UpdateNoticeReview(UpdateNoticeReviewRequest updateNoticeReviewRequest) throws IllegalAccessException,IndexOutOfBoundsException,Exception{
+        ReadNoticeReviewVO noticeReviewVO;
         try{
-            noticeReviewVO = noticeReviewRepository.getNoticeReview(Seq).get(0);
-        }catch(IndexOutOfBoundsException e){
-            throw new Exception("NO EXISTING REVIEW");
+            noticeReviewVO = noticeReviewRepository.findByIdxAndIsDeleted(updateNoticeReviewRequest.getIdx(),1).get(0);
+            noticeReviewVO.checkLoginValidate(updateNoticeReviewRequest.getIdx());
+            noticeReviewVO.setContent(updateNoticeReviewRequest.getContent());
+            noticeReviewRepository.save(noticeReviewVO);
+        }catch(IllegalAccessException e){
+            throw new IllegalAccessException("자신의 댓글만 수정할수 있습니다.");
+        } catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("NO DATA");
+        } catch (Exception e){
+            throw new Exception("INTERVAL SERVER ERROR");
         }
         return noticeReviewVO;
     }
-
-    public int UpdateNoticeReview(NoticeReviewVO noticeReviewVO) throws Exception{
-        try{
-            noticeReviewRepository.UpdateNoticeReview(noticeReviewVO);
-        }catch (Exception e){
-            throw new Exception("INTERVAL SERVER ERROR");
-        }
-        return 1;
-    }
-    public int DeleteNoticeReview(Long idx){
+    public int DeleteNoticeReview(DeleteNoticeReviewRequest deleteNoticeReviewRequest) throws IndexOutOfBoundsException, IllegalAccessException ,Exception{
+        ReadNoticeReviewVO noticeReviewVO;
         //delete 시도
         try{
-            noticeReviewRepository.DeleteNoticeReview(idx);
-        }catch(Exception e){
-            //실패
-            e.printStackTrace();
-            return -1;
+            noticeReviewVO = noticeReviewRepository.findByIdxAndIsDeleted(deleteNoticeReviewRequest.getIdx(),1).get(0);
+            deleteNoticeReviewRequest.CheckLoginValidate(noticeReviewVO.getMemberidx());
+            noticeReviewVO.setIsDeleted(9);
+            noticeReviewRepository.save(noticeReviewVO);
+        }catch(IndexOutOfBoundsException e){
+            throw new IndexOutOfBoundsException("NO DATA");
+        }catch(IllegalAccessException e){
+            throw new IllegalAccessException("No Token or Token Expired");
+        }
+        catch(Exception e){
+            throw new Exception("INTERNAL SERVER ERROR");
         }
         return 1;
     }

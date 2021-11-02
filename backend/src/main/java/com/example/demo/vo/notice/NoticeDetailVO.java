@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/*
+* 공지사항 상세 Entity
+*
+*/
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +28,9 @@ public class NoticeDetailVO {
 	
 	@Column(name ="imageurl")
 	private String imageurl;
+
+	@Column(name="isdeleted")
+	private Integer isdeleted;
 
 	public boolean IsValidate() throws NullPointerException{
 		if(content.equals("") || content==null|| noticeidx==null||noticeidx<=0) throw new NullPointerException("BAD REQUEST");
