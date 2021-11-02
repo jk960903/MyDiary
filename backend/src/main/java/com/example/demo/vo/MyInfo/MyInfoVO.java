@@ -16,5 +16,6 @@ import java.util.List;
 public class MyInfoVO {
     private MemberVO memberVO;
     private List<MyInfoVisit> visitList;
+    private FriendsVO friends;
     // 팔로워 및 팔로잉 보여주기
 }

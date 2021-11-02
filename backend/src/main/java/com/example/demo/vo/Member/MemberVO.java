@@ -43,10 +43,10 @@ public class MemberVO{
 	private String name;
 	//성별( 남자는 1 여자는 2)
 	@Column
-	private Byte sex;
+	private Integer sex;
 	//삭제 9 기본 1
 	@Column
-	private Byte isdeleted;
+	private Integer isdeleted;
 
 
 	public boolean CheckValidate() throws NullPointerException{

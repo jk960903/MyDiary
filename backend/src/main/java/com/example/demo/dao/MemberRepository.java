@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.Member.FindMemberEmailRequest;
+import com.example.demo.vo.Login.LoginRequestVO;
 import com.example.demo.vo.Member.MemberVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,31 +13,17 @@ import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberVO, Long>{
-    @Query(value="select * from Members where Members.ID = :ID" , nativeQuery = true)
-    public List<MemberVO> findByID(String ID);
 
-    @Query(value ="select * from Members where Members.Email = :email", nativeQuery=true)
+    //Duplicate email And 아이디 찾기
     public List<MemberVO> findByEmail(String email);
 
+    //로그인용
+    public List<MemberVO> findByIDAndPwd(String id,String pwd);
 
-    @Modifying
-    @Query(value="Insert into members(ID,pwd,Email,phone,name,sex,isDeleted) "
-            + "value(:#{#member.ID},:#{#member.pwd},:#{#member.email},:#{#member.phone},:#{#member.name},:#{#member.sex},0)" , nativeQuery=true)
-    @Transactional
-    public Integer MakeAccount(MemberVO member);
+    //DuplicateID로 쓰임
+    public List<MemberVO> findByID(String ID);
 
 
-    @Query(value = "select * from members where members.ID = :ID and members.pwd = :password" ,nativeQuery= true)
-    public List<MemberVO> Login(String ID,String password);
 
-    @Query(value="select * from members where members.id=:ID" ,nativeQuery = true)
-    public List<MemberVO> DuplicateID(String ID);
 
-    @Query(value="select * from members where members.email=:email",nativeQuery = true)
-    public List<MemberVO> DuplicateEmail(String email);
-
-    @Modifying
-    @Query(value="Update set members.Email=:#{#member.email},members.phone=:#{member.phone} from members where members.idx=:#{#member.idx}",nativeQuery = true)
-    @Transactional
-    public void UpdateAccount(MemberVO member);
 }

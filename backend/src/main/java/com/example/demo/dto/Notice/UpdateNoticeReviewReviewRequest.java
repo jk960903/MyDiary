@@ -2,22 +2,23 @@ package com.example.demo.dto.Notice;
 
 import lombok.*;
 
-//solid 원칙때문에 새로 팜
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DeleteNoticeReviewRequest {
+public class UpdateNoticeReviewReviewRequest {
     private Long idx;
-    private Long member_idx;
+    private Long memberidx;
+    private String content;
 
-    public boolean CheckValidate(){
-        if(this.member_idx <=0||idx<=0) throw new NullPointerException("BAD REQEUST");
+    public boolean CheckValidate() throws NullPointerException{
+        if(content==null || content.equals("") || this.memberidx <=0) throw new NullPointerException("BAD REQEUST");
         return true;
     }
+
     public boolean CheckLoginValidate(Long member_idx) throws IllegalAccessException{
-        if(this.member_idx.equals(member_idx)) return true;
+        if(this.memberidx == member_idx) return true;
         else throw new IllegalAccessException("No Token Or Token is Expired");
     }
 }

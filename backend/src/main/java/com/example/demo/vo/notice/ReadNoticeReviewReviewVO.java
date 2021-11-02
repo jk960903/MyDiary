@@ -12,7 +12,8 @@ import java.sql.Date;
 @Builder
 @Entity
 @Table(name="notice_review_review")
-public class NoticeReviewReviewVO {
+//읽기 전용 VO
+public class ReadNoticeReviewReviewVO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idx;
@@ -31,6 +32,10 @@ public class NoticeReviewReviewVO {
 
     @Column(name="isdeleted")
     private Integer isdeleted;
+
+    @OneToOne
+    @JoinColumn(name="memberidx",referencedColumnName = "idx",insertable = false, updatable = false)
+    private ReviewWriterVO reviewWriterVO;
 
     public boolean CheckValidate(){
         if(content==null || content.equals("") || this.reviewidx <=0 || this.memberidx <=0) throw new NullPointerException("BAD REQEUST");

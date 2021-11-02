@@ -3,7 +3,11 @@ package com.example.demo.JWT;
 import com.example.demo.vo.Member.MemberVO;
 
 import io.jsonwebtoken.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +17,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-@RequiredArgsConstructor
 @Service
 public class JwtService {
 
 
     //하드코드 되어있어서 수정이 필요합니다.
     private final String key ="thisisjung9keyipnida";
+
+    @Autowired
+    public JwtService(){
+
+    }
 
     //토큰생성성
    public String createLoginToken(MemberVO member,int auto){

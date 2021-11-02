@@ -5,53 +5,53 @@ import com.example.demo.dao.NoticeReviewService;
 import com.example.demo.dao.NoticeService;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
-import com.example.demo.dto.Notice.ChangeNoticeReviewRequest;
+import com.example.demo.dto.Notice.UpdateNoticeReviewRequest;
 import com.example.demo.dto.Notice.AddNoticeReviewRequest;
 import com.example.demo.dto.Notice.DeleteNoticeReviewRequest;
-import com.example.demo.vo.notice.NoticeReviewVO;
+import com.example.demo.vo.notice.ReadNoticeReviewVO;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/noticereview")
+@NoArgsConstructor
 public class NoticeReviewController {
-    private final NoticeService noticeService;
+    private  NoticeService noticeService;
 
-    private final NoticeReviewService noticeReviewService;
+    private  NoticeReviewService noticeReviewService;
 
-    private final JwtService jwtService;
+    private  JwtService jwtService;
 
+    @Autowired
     public NoticeReviewController(NoticeService noticeService, NoticeReviewService noticeReviewService, JwtService jwtService) {
         this.noticeService = noticeService;
         this.noticeReviewService = noticeReviewService;
         this.jwtService = jwtService;
     }
 
-    @RequestMapping(value = "/addnotice-review", method = RequestMethod.POST)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewRequest model){
+    @PostMapping(value = "/addnotice-review")
+    public ResponseEntity<SendMessage<ReadNoticeReviewVO>> AddNoticeReview(HttpServletRequest request, AddNoticeReviewRequest model){
         Map<String,Object> auth;
-        SendMessage<NoticeReviewVO> sendMessage=null;
+        SendMessage<ReadNoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         int result=0;
         try{
             auth= jwtService.requestAuthorization(request);
             model.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
             model.CheckValidate();
-            noticeReviewVO = NoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
-                    .memberidx(model.getMember_idx()).isDeleted(Byte.parseByte("1")).build();
+            noticeReviewVO = ReadNoticeReviewVO.builder().noticeidx(model.getNotice_idx()).content(model.getContent())
+                    .memberidx(model.getMember_idx()).isDeleted(1).build();
             result= noticeReviewService.AddNoticeReview(noticeReviewVO);
         } catch (IllegalAccessException e) {
             sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
@@ -66,53 +66,29 @@ public class NoticeReviewController {
         sendMessage = new SendMessage<>(noticeReviewVO,StatusEnum.OK,"OK");
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
-    //단순 보이는 것이기 때문에 로그인 필요없음
-    @RequestMapping(value ="/getnotice-review", method = RequestMethod.GET)
-    public ResponseEntity<SendMessage<List<NoticeReviewVO>>> GetNoticeReview(HttpServletRequest request, Long notice_seq){
-        SendMessage<List<NoticeReviewVO>> sendMessage=null;
-        HttpHeaders headers = new HttpHeaders();
-        List<NoticeReviewVO> noticeReviewVOList = new ArrayList<>();
-        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        try{
-            if(notice_seq <= 0){
-                return new ResponseEntity<>(null,headers,HttpStatus.BAD_REQUEST);
-            }
-            noticeReviewVOList = noticeReviewService.getNoticeReviewList(notice_seq);
-
-        } catch (Exception e) {
-            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
-            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if(noticeReviewVOList == null){
-            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,"SERVER ERROR ");
-            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
 
 
-    }
-
-    @RequestMapping(value = "/updatenotice-review", method = RequestMethod.PATCH)
-    public ResponseEntity<SendMessage<NoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , ChangeNoticeReviewRequest changeNoticeReviewVO){
+    @PatchMapping(value = "/updatenotice-review")
+    public ResponseEntity<SendMessage<ReadNoticeReviewVO>> UpdateNoticeReview(HttpServletRequest request , UpdateNoticeReviewRequest changeNoticeReviewVO){
         Map<String,Object> auth;
-        SendMessage<NoticeReviewVO> sendMessage=null;
+        SendMessage<ReadNoticeReviewVO> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        int result=0;
+
         try {
             auth = jwtService.requestAuthorization(request);
-            changeNoticeReviewVO.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
             changeNoticeReviewVO.CheckValidate();
-            noticeReviewVO = noticeReviewService.getNoticeReview(changeNoticeReviewVO.getReview_idx());
-            noticeReviewVO.setContent(changeNoticeReviewVO.getContent());
-            result= noticeReviewService.UpdateNoticeReview(noticeReviewVO);
+            noticeReviewVO= noticeReviewService.UpdateNoticeReview(changeNoticeReviewVO);
         } catch (IllegalAccessException e) {
             sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
         } catch(NullPointerException e){
             sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        } catch(IndexOutOfBoundsException e){
+            sendMessage=new SendMessage<>(null,StatusEnum.NOT_FOUND,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -121,27 +97,29 @@ public class NoticeReviewController {
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value ="deletenotice-review", method=RequestMethod.PATCH)
+    @PatchMapping(value ="deletenotice-review")
     public ResponseEntity<SendMessage<Integer>> DeleteNoticeReview(HttpServletRequest request, DeleteNoticeReviewRequest model){
         Map<String,Object> auth;
         SendMessage<Integer> sendMessage=null;
         HttpHeaders headers = new HttpHeaders();
-        NoticeReviewVO noticeReviewVO;
+        ReadNoticeReviewVO noticeReviewVO;
         headers.setContentType(new MediaType("application","json",Charset.forName("UTF-8")));
         int result=0;
         try{
             auth=jwtService.requestAuthorization(request);
-            model.CheckLoginValidate(Long.parseLong((String)auth.get("idx")));
             model.CheckValidate();
-            noticeReviewVO = noticeReviewService.getNoticeReview(model.getReview_idx());
-            result= noticeReviewService.DeleteNoticeReview(noticeReviewVO.getIdx());
+            result= noticeReviewService.DeleteNoticeReview(model);
         } catch (IllegalAccessException e) {
             sendMessage=new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
         } catch(NullPointerException e){
             sendMessage=new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        }catch(IndexOutOfBoundsException e){
+            sendMessage = new SendMessage<>(null,StatusEnum.NOT_FOUND,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
             sendMessage=new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
             return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
         }

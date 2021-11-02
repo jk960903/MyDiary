@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChangeNoticeReviewRequest {
+public class UpdateNoticeReviewRequest {
+    private Long idx;
     private Long notice_idx;
     private Long member_idx;
     private Long review_idx;
     private String content;
-    public boolean CheckValidate(){
+    public boolean CheckValidate() throws NullPointerException{
         if(content==null || content.equals("") || this.notice_idx <=0 || this.member_idx <=0||review_idx<=0) throw new NullPointerException("BAD REQEUST");
         return true;
     }
