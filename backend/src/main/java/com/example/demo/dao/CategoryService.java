@@ -46,17 +46,18 @@ public class CategoryService {
     }
 
 
-    public void UpdateCategory(Integer categorynum,Long cateogryIdx) throws Exception{
+    public CategoryVO UpdateCategory(Integer categorynum,Long cateogryIdx) throws Exception{
         CategoryVO categoryVO = null;
         try{
             categoryVO = categoryRepository.findCategoryByIdx(cateogryIdx).get(0);
-            categoryRepository.save(categoryVO);
+            categoryVO = categoryRepository.save(categoryVO);
         }catch(IndexOutOfBoundsException e){
             throw new IndexOutOfBoundsException("NO DATE");
         }
         catch(Exception e){
             throw new Exception("INTERNAL SERVER ERROR");
         }
+        return categoryVO;
     }
 
 

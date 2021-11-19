@@ -4,6 +4,7 @@ import com.example.demo.JWT.JwtService;
 import com.example.demo.dao.CategoryService;
 import com.example.demo.dto.Category.AddCategoryRequest;
 import com.example.demo.dto.Category.DeleteCategoryRequest;
+import com.example.demo.dto.Category.UpdateCategoryRequest;
 import com.example.demo.vo.Category.CategoryVO;
 import com.example.demo.vo.Enum.StatusEnum;
 import com.example.demo.SendMessage.SendMessage;
@@ -121,6 +122,30 @@ public class CategoryController {
         sendMessage = new SendMessage<>(true,StatusEnum.OK,"OK");
         return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
 
+    }
+
+    @PatchMapping(value = "updatecategory")
+    public ResponseEntity<SendMessage<CategoryVO>> UpdateCategory(HttpServletRequest request , UpdateCategoryRequest updatecategory){
+        Map<String,Object> auth;
+        SendMessage<CategoryVO> sendMessage = null;
+        HttpHeaders headers = new HttpHeaders();
+        CategoryVO categoryVO=null;
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try{
+            auth = jwtService.requestAuthorization(request);
+            categoryVO = categoryService.UpdateCategory(updatecategory.getCategoryNum(), updatecategory.getMemberId());
+        }catch(IllegalAccessException e){
+            sendMessage = new SendMessage<>(null,StatusEnum.UNAUTHORIZED,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.UNAUTHORIZED);
+        }catch(IndexOutOfBoundsException e){
+            sendMessage = new SendMessage<>(null,StatusEnum.BAD_REQUEST,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            sendMessage = new SendMessage<>(null,StatusEnum.INTERNAL_SERVER_ERROOR,e.getMessage());
+            return new ResponseEntity<>(sendMessage,headers,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        sendMessage = new SendMessage<>(categoryVO,StatusEnum.OK,"OK");
+        return new ResponseEntity<>(sendMessage,headers,HttpStatus.OK);
     }
 
 
